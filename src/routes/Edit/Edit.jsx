@@ -1,7 +1,8 @@
 import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../components/context/Context";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const Edit = () => {
+  const navigate = useNavigate()
   const { entries, setEntries } = useContext(MyContext);
   const { id } = useParams();
   const [currentEntry, setCurrentEntry] = useState(() => {
@@ -44,14 +45,9 @@ const Edit = () => {
         [e.target.id]: value,
       });
     } else if (e.target.id === "date") {
-      const temp = new Date(
-        e.target.value.slice(0, 4),
-        e.target.value.slice(5, 7) - 1,
-        e.target.value.slice(8, 10)
-      );
       setFormInput({
         ...formInput,
-        [e.target.id]: temp,
+        [e.target.id]: value,
       });
       // console.log(new Date().toISOString().substring(0, 10))
     } else if (e.target.dataset.parent) {
@@ -178,10 +174,14 @@ const Edit = () => {
               arrClone[arrClone.indexOf(currentEntry)] = clone
               return arrClone
             });
+            navigate(`/details/${currentEntry.id}`)
           }}
         >
           Save
         </button>
+        <button onClick={() => {
+          navigate(`/details/${currentEntry.id}`)
+        }}>Back</button>
       </form>
     </div>
   );

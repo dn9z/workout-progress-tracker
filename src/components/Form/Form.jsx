@@ -2,7 +2,7 @@ import "./Form.scss";
 import { useState, useContext } from "react";
 import { MyContext } from "../context/Context";
 
-const Form = () => {
+const Form = ({setShowAddModal}) => {
   const { entries, setEntries } = useContext(MyContext);
   const [formInput, setFormInput] = useState({
     id: undefined,
@@ -10,7 +10,7 @@ const Form = () => {
     date: new Date().toISOString().substring(0, 10),
     notes: "",
     type: {
-      name: "",
+      name: "weights",
       // withWeights: this.name==='weights'?true:false
       // withWeights: () => {
       //   console.log(this.name);
@@ -27,7 +27,7 @@ const Form = () => {
 
   function handleChange(e) {
     const value = e.target.value;
-    // console.log(e.target.value);
+    console.log(e.target.value);
     if (e.target.id === "name") {
       setFormInput({
         ...formInput,
@@ -171,7 +171,7 @@ const Form = () => {
               date: new Date(formInput.date.slice(0, 4),formInput.date.slice(5, 7) - 1, formInput.date.slice(8, 10))
             };
             // setFormInput(clone);
-            setEntries((prevArray) => [...prevArray, clone]);
+            setEntries((prevArray) => [...prevArray, clone]);setShowAddModal(false)
           }}
         >
           Add Entry

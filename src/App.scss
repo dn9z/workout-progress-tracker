@@ -29,35 +29,41 @@ body {
     align-items: stretch;
     .home-left {
       width: 50%;
+      // margin-right: 0.5rem;
     }
     .home-right {
       width: 50%;
-      display: flex;
-      flex-direction: column;
-
-      .primary-tiles {
-        height: 35%;
-        border: 1px solid black;
-        border-radius: 1rem;
-        background-color: rgb(201, 201, 201);
-        margin: 0 0 0 1rem;
-      }
-      .secondary-tiles {
+      // margin-left: 0.5rem;
+      .tiles-container{
         display: flex;
-        flex-wrap: wrap;
-        text-align: center;
-        height: 65%;
-
-
-        .tile {
-          width: calc(50% - 1rem);
-          height: calc(50% - 1rem);
-          margin: 1rem 0 0 1rem;
+        flex-direction: column;
+        height: 100%;
+        .primary-tiles {
+          height: 35%;
           border: 1px solid black;
           border-radius: 1rem;
           background-color: rgb(201, 201, 201);
+          margin: 0 0 0 1rem;
+        }
+        .secondary-tiles {
+          display: flex;
+          flex-wrap: wrap;
+          text-align: center;
+          height: 65%;
+  
+  
+          .tile {
+            width: calc(50% - 1rem);
+            height: calc(50% - 1rem);
+            margin: 1rem 0 0 1rem;
+            border: 1px solid black;
+            border-radius: 1rem;
+            background-color: rgb(201, 201, 201);
+          }
         }
       }
+
+
     }
 
     // display: grid;

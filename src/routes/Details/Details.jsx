@@ -1,13 +1,14 @@
-import { useContext, useState ,useEffect} from "react";
+import "./Details.scss";
+import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../components/context/Context";
-import { useParams,useNavigate } from "react-router-dom";
-const Details = () => {
+import { useParams, useNavigate } from "react-router-dom";
+const Details = ({ setShowDetails }) => {
   const { entries, setEntries } = useContext(MyContext);
   const { id } = useParams();
   const [currentEntry, setCurrentEntry] = useState(() => {
-      const entry = entries.find((ele) => ele.id === Number(id));
-      // console.log(entry)
-      return entry
+    const entry = entries.find((ele) => ele.id === Number(id));
+    // console.log(entry)
+    return entry;
   });
   // console.log(currentEntry)
   const navigate = useNavigate();
@@ -15,9 +16,9 @@ const Details = () => {
   useEffect(() => {
     setCurrentEntry(() => {
       const entry = entries.find((ele) => ele.id === Number(id));
-      return entry
-  })
-  },[id])
+      return entry;
+    });
+  }, [id]);
 
   return (
     <div className="details-container">
@@ -29,13 +30,24 @@ const Details = () => {
       <p>Weights: {currentEntry.data.weights}</p>
       <ul>
         Sets
-        {currentEntry.data.sets.map((ele,i) => {
-          return(<li>{ele}</li>)
+        {currentEntry.data.sets.map((ele, i) => {
+          return <li key={i}>{ele}</li>;
         })}
       </ul>
-        <button onClick={() => {
-                navigate(`/edit/${currentEntry.id}`);
-              }}>Edit</button>
+      <button
+        onClick={() => {
+          navigate(`/edit/${currentEntry.id}`);
+        }}
+      >
+        Edit
+      </button>
+      <button
+        onClick={() => {
+          navigate(`/`);
+        }}
+      >
+        Home
+      </button>
     </div>
   );
 };
