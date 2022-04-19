@@ -36,17 +36,10 @@ const Details = ({ setShowDetails }) => {
       </ul>
       <button
         onClick={() => {
-          navigate(`/edit/${currentEntry.id}`);
+          navigate(`/workouts/edit/${currentEntry.id}`);
         }}
       >
         Edit
-      </button>
-      <button
-        onClick={() => {
-          navigate(`/`);
-        }}
-      >
-        Home
       </button>
     </div>
   );

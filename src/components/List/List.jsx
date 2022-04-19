@@ -25,10 +25,7 @@ const List = ({ activeItem, setActiveItem }) => {
           return (
             <li
               onClick={() => {
-                // console.log(location.pathname.slice(1,8))
-                // navigate(`/details/${ele.id}`);
-                location.pathname.slice(1,8) === "details" &&
-                  navigate(`/details/${ele.id}`);
+                navigate(`/workouts/details/${ele.id}`);
                 setActiveItem(ele);
               }}
               key={i}

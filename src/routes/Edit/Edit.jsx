@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../components/context/Context";
 import { useNavigate, useParams } from "react-router-dom";
 const Edit = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { entries, setEntries } = useContext(MyContext);
   const { id } = useParams();
   const [currentEntry, setCurrentEntry] = useState(() => {
@@ -15,8 +15,8 @@ const Edit = () => {
     workoutName: currentEntry.workoutName,
     date: currentEntry.date.toISOString().substring(0, 10),
     notes: currentEntry.notes,
-    type: {...currentEntry.types },
-    data: {...currentEntry.data},
+    type: { ...currentEntry.types },
+    data: { ...currentEntry.data },
   });
   const [repetition, setRepetition] = useState(12);
   useEffect(() => {
@@ -164,24 +164,32 @@ const Edit = () => {
             e.preventDefault();
             const clone = {
               ...formInput,
-              date: new Date(formInput.date.slice(0, 4),formInput.date.slice(5, 7) - 1, formInput.date.slice(8, 10))
+              date: new Date(
+                formInput.date.slice(0, 4),
+                formInput.date.slice(5, 7) - 1,
+                formInput.date.slice(8, 10)
+              ),
             };
             // setFormInput(clone);
             setEntries((prevArray) => {
-              console.log(prevArray.indexOf(currentEntry))
+              console.log(prevArray.indexOf(currentEntry));
               // return [...prevArray, clone]
-              const arrClone = [...prevArray]
-              arrClone[arrClone.indexOf(currentEntry)] = clone
-              return arrClone
+              const arrClone = [...prevArray];
+              arrClone[arrClone.indexOf(currentEntry)] = clone;
+              return arrClone;
             });
-            navigate(`/details/${currentEntry.id}`)
+            navigate(`/workouts/details/${currentEntry.id}`);
           }}
         >
           Save
         </button>
-        <button onClick={() => {
-          navigate(`/details/${currentEntry.id}`)
-        }}>Back</button>
+        <button
+          onClick={() => {
+            navigate(`/workouts/details/${currentEntry.id}`);
+          }}
+        >
+          Back
+        </button>
       </form>
     </div>
   );
