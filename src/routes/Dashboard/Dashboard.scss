@@ -1,0 +1,38 @@
+.home-container {
+  width: 100%;
+  display: flex;
+  .home-left {
+    width: 43%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .welcome {
+      // flex-grow: 1;
+      height: 50%;
+    }
+    .calendar {
+      // flex-grow: 1;
+      height: 50%;
+    }
+  }
+  .home-right {
+    width: 57%;
+    height: 100%;
+    .entry-count {
+      height: 30%;
+    }
+    .random1 {
+      height: 30%;
+    }
+    .random2 {
+      // height: 30%;
+    }
+  }
+  div {
+    // width: 2rem;
+    // height: 2rem;
+    // // background-color: #fff;
+    // margin: 1rem;
+    border: 1px solid black;
+  }
+}

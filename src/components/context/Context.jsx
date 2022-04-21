@@ -5,7 +5,7 @@ const MyContext = createContext(null)
 
 const MyProvider = ({children}) => {
 
-  const [entries, setEntries] = useState(mockArray());
+  const [entries, setEntries] = useState(mockArray);
   // const [selection, setSelection] = useState({});
   // console.log(mockArray())
 
