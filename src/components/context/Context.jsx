@@ -1,11 +1,24 @@
 import { createContext, useState } from "react";
 // import { useLocation } from "react-router-dom";
-import mockArray from "../../mock";
+import mockEntries from "../../mockEntries";
 const MyContext = createContext(null)
+
+const types = [{
+  typeName: 'weights',
+  withWeights: true,
+},{
+  typeName: 'bodyweight',
+  withWeights: false,
+},{
+  typeName: 'distance',
+  withWeights: false,
+}]
 
 const MyProvider = ({children}) => {
 
-  const [entries, setEntries] = useState(mockArray);
+  const [entries, setEntries] = useState(mockEntries);
+  const [types, setTypes] = useState([]);
+  
   // const [selection, setSelection] = useState({});
   // console.log(mockArray())
 
@@ -18,8 +31,5 @@ const MyProvider = ({children}) => {
   )
 
 }
-
-
-
 
 export {MyProvider, MyContext}

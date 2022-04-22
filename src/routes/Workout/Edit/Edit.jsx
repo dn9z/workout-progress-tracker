@@ -1,29 +1,31 @@
-import "./Form.scss";
-import { useState, useContext } from "react";
-import { MyContext } from "../context/Context";
-
-const Form = ({setShowAddModal}) => {
+import { useContext, useState, useEffect } from "react";
+import { MyContext } from "../../../components/context/Context";
+import { useNavigate, useParams } from "react-router-dom";
+const Edit = () => {
+  const navigate = useNavigate();
   const { entries, setEntries } = useContext(MyContext);
-  const [formInput, setFormInput] = useState({
-    id: undefined,
-    workoutName: "My Workout",
-    date: new Date().toISOString().substring(0, 10),
-    notes: "",
-    type: {
-      name: "weights",
-      // withWeights: this.name==='weights'?true:false
-      // withWeights: () => {
-      //   console.log(this.name);
-      //   return this.name === "weights" ? true : false;
-      // },
-    },
-    data: {
-      weights: 0,
-      sets: [],
-    },
+  const { id } = useParams();
+  const [currentEntry, setCurrentEntry] = useState(() => {
+    const entry = entries.find((ele) => ele.id === Number(id));
+    // console.log(entry)
+    return entry;
   });
-
+  const [formInput, setFormInput] = useState({
+    id: currentEntry.id,
+    workoutName: currentEntry.workoutName,
+    date: currentEntry.date.toISOString().substring(0, 10),
+    notes: currentEntry.notes,
+    type: { ...currentEntry.types },
+    data: { ...currentEntry.data },
+  });
   const [repetition, setRepetition] = useState(12);
+  useEffect(() => {
+    setCurrentEntry(() => {
+      const entry = entries.find((ele) => ele.id === Number(id));
+      // console.log(new Date().toLocaleString().slice(0, 9));
+      return entry;
+    });
+  }, [id]);
 
   function handleChange(e) {
     const value = e.target.value;
@@ -38,7 +40,6 @@ const Form = ({setShowAddModal}) => {
       });
       // console.log(formInput.type.withWeights())
     } else if (e.target.id === "notes" || e.target.id === "workoutName") {
-      console.log(e.target.id)
       setFormInput({
         ...formInput,
         [e.target.id]: value,
@@ -66,7 +67,7 @@ const Form = ({setShowAddModal}) => {
   }
 
   return (
-    <div className="form-container">
+    <div className="edit-form-container">
       <form>
         <li>
           <label htmlFor="workoutName">Workout name</label>
@@ -161,25 +162,37 @@ const Form = ({setShowAddModal}) => {
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            const temp = new Date(
-              e.target.value.slice(0, 4),
-              e.target.value.slice(5, 7) - 1,
-              e.target.value.slice(8, 10)
-            );
             const clone = {
               ...formInput,
-              id: Math.floor(100000 + Math.random() * 900000),
-              date: new Date(formInput.date.slice(0, 4),formInput.date.slice(5, 7) - 1, formInput.date.slice(8, 10))
+              date: new Date(
+                formInput.date.slice(0, 4),
+                formInput.date.slice(5, 7) - 1,
+                formInput.date.slice(8, 10)
+              ),
             };
             // setFormInput(clone);
-            setEntries((prevArray) => [...prevArray, clone]);setShowAddModal(false)
+            setEntries((prevArray) => {
+              console.log(prevArray.indexOf(currentEntry));
+              // return [...prevArray, clone]
+              const arrClone = [...prevArray];
+              arrClone[arrClone.indexOf(currentEntry)] = clone;
+              return arrClone;
+            });
+            navigate(`/workouts/details/${currentEntry.id}`);
           }}
         >
-          Add Entry
+          Save
+        </button>
+        <button
+          onClick={() => {
+            navigate(`/workouts/details/${currentEntry.id}`);
+          }}
+        >
+          Back
         </button>
       </form>
     </div>
   );
 };
 
-export default Form;
+export default Edit;

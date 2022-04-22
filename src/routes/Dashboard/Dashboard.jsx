@@ -1,6 +1,6 @@
 import "./Dashboard.scss";
 import { useRef, useState } from "react";
-import Form from "../../components/Form/Form";
+import Form from "../../components/AddEntryForm/AddEntryForm";
 import List from "../../components/List/List";
 import { Outlet, useLocation } from "react-router-dom";
 import Tiles from "../../components/Tiles/Tiles";

@@ -4,7 +4,7 @@ import "./List.scss";
 import { MyContext } from "../context/Context";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
-import Form from "../Form/Form";
+import Form from "../AddEntryForm/AddEntryForm";
 const List = ({ activeItem, setActiveItem }) => {
   const { entries } = useContext(MyContext);
   const navigate = useNavigate();

@@ -7,7 +7,6 @@ const Workout = () => {
 
   return (
     <>
-      
         <>
           <div className="home-left">
             <List activeItem={activeItem} setActiveItem={setActiveItem}/>

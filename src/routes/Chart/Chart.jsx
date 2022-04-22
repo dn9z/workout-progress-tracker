@@ -105,14 +105,6 @@ const Chart = () => {
         ) : (
           "Sorry, no data found!"
         )}
-
-        <button
-          onClick={() => {
-            navigate(`/`);
-          }}
-        >
-          Home
-        </button>
       </div>
     </div>
   );

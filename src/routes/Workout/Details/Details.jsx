@@ -1,6 +1,6 @@
 import "./Details.scss";
 import { useContext, useState, useEffect } from "react";
-import { MyContext } from "../../components/context/Context";
+import { MyContext } from "../../../components/context/Context";
 import { useParams, useNavigate } from "react-router-dom";
 const Details = ({ setShowDetails }) => {
   const { entries, setEntries } = useContext(MyContext);
