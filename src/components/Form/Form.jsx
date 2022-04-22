@@ -38,6 +38,7 @@ const Form = ({setShowAddModal}) => {
       });
       // console.log(formInput.type.withWeights())
     } else if (e.target.id === "notes" || e.target.id === "workoutName") {
+      console.log(e.target.id)
       setFormInput({
         ...formInput,
         [e.target.id]: value,
