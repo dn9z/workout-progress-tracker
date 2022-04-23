@@ -31,7 +31,7 @@ const List = ({ activeItem, setActiveItem }) => {
               key={i}
               className={activeItem && activeItem.id === ele.id ? `active` : ""}
             >
-              {ele.workoutName}
+              {ele.type.name}
             </li>
           );
         })}

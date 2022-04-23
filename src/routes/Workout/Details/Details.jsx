@@ -24,16 +24,27 @@ const Details = ({ setShowDetails }) => {
     <div className="details-container">
       <p>The id of the Workout {id}</p>
       <p>Date: {currentEntry.date.toString()}</p>
-      <p>Name: {currentEntry.workoutName}</p>
-      <p>Type: {currentEntry.type.name}</p>
+      <p>Name: {currentEntry.type.name}</p>
+      <p>Type: {currentEntry.type.category}</p>
       <p>Notes: {currentEntry.notes}</p>
-      <p>Weights: {currentEntry.data.weights}</p>
-      <ul>
-        Sets
-        {currentEntry.data.sets.map((ele, i) => {
-          return <li key={i}>{ele}</li>;
-        })}
-      </ul>
+      {currentEntry.type.category === "weights" && (
+        <p>Weights: {currentEntry.data.weights}</p>
+      )}
+      {(currentEntry.type.category === "weights" ||
+        currentEntry.type.category === "bodyweight") && (
+        <ul>
+          Sets
+          {currentEntry.data.sets&&currentEntry.data.sets.map((ele, i) => {
+            return <li key={i}>{ele}</li>;
+          })}
+        </ul>
+      )}
+      {currentEntry.type.category === "distance" && <ul>
+          Sets
+          {currentEntry.data.rounds.map((ele, i) => {
+            return <li key={i}>{ele}</li>;
+          })}
+        </ul>}
       <button
         onClick={() => {
           navigate(`/workouts/edit/${currentEntry.id}`);
