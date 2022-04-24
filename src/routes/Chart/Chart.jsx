@@ -1,5 +1,5 @@
 import "./Chart.scss";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { MyContext } from "../../components/context/Context";
 import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
@@ -8,11 +8,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 // ChartJS.register()
 
 const createDateObj = (dateISOStr) => {
-  const temp = new Date(
-    dateISOStr.slice(0, 4),
-    dateISOStr.slice(5, 7) - 1,
-    dateISOStr.slice(8, 10)
-  );
+  const temp = new Date(dateISOStr);
+  // console.log(temp.getTime())
   return temp;
 };
 
@@ -22,80 +19,148 @@ const Chart = () => {
   const navigate = useNavigate();
   const { entries } = useContext(MyContext);
   const [typeFilterInput, setTypeFilterInput] = useState("weights");
-  const [dateInput, setDateInput] = useState({
-    from: entries[0].date.toISOString().substring(0, 10),
-    to: new Date().toISOString().substring(0, 10),
-  });
-  const formatData = () => {
-    const filteredData = entries.filter((ele) => {
+
+  const [filteredEntries, setFilteredEntries] = useState(() => {
+    const clone = entries.filter((ele) => {
       return ele.type.category === typeFilterInput;
     });
+    return clone;
+  });
+
+  const [dateInput, setDateInput] = useState({
+    from: filteredEntries[0].date.toISOString().substring(0, 10),
+    to: new Date().toISOString().substring(0, 10),
+  });
+
+  const chartRef = useRef()
+
+  const formatData = () => {
+    //   console.log('run')
     const labels = [];
     const dataset1 = [];
     const dataset2 = [];
-    for (let i = 0; i < filteredData.length; i++) {
+    for (let i = 0; i < filteredEntries.length; i++) {
+      const from = Date.parse(dateInput.from);
+      const to = Date.parse(dateInput.to);
       if (
-        filteredData[i].date.getTime() >
-          createDateObj(dateInput.from).getTime() &&
-        filteredData[i].date.getTime() < createDateObj(dateInput.to).getTime()
+        // true
+        //something is wrong with here
+        filteredEntries[i].date.getTime() >= from &&
+        filteredEntries[i].date.getTime() <= to
       ) {
-        labels.push(filteredData[i].date.toISOString().substring(0, 10));
+        labels.push(filteredEntries[i].date.toISOString().substring(0, 10));
 
         if (typeFilterInput === "weights") {
-          dataset1.push(filteredData[i].data.weights);
+          dataset1.push(filteredEntries[i].data.weights);
           let acc = 0;
-          for (let j = 0; j < filteredData[i].data.sets.length; j++) {
-            acc += filteredData[i].data.sets[j];
+          for (let j = 0; j < filteredEntries[i].data.sets.length; j++) {
+            console.log(filteredEntries[i].data.sets.length);
+            acc += filteredEntries[i].data.sets[j];
           }
-          dataset2.push(acc / filteredData[i].data.sets.length);
-        } else if(typeFilterInput === "bodyweight"){
+          dataset2.push(acc / filteredEntries[i].data.sets.length);
+        } else if (typeFilterInput === "bodyweight") {
           let acc = 0;
-          for (let j = 0; j < filteredData[i].data.sets.length; j++) {
-            acc += filteredData[i].data.sets[j];
+          for (let j = 0; j < filteredEntries[i].data.sets.length; j++) {
+            acc += filteredEntries[i].data.sets[j];
           }
-          dataset2.push(acc / filteredData[i].data.sets.length);
-        } else if(typeFilterInput === "distance"){
-          dataset1.push(filteredData[i].data.distance);
+          dataset2.push(acc / filteredEntries[i].data.sets.length);
+        } else if (typeFilterInput === "distance") {
+          dataset1.push(filteredEntries[i].data.distance);
           let acc = 0;
-          for (let j = 0; j < filteredData[i].data.rounds.length; j++) {
-            acc += filteredData[i].data.rounds[j];
+          for (let j = 0; j < filteredEntries[i].data.rounds.length; j++) {
+            acc += filteredEntries[i].data.rounds[j];
           }
-          dataset2.push(acc / filteredData[i].data.rounds.length);
+          dataset2.push(acc / filteredEntries[i].data.rounds.length);
         }
       }
     }
+    let clone = {};
+    if (typeFilterInput === "weights") {
+      clone = {
+        ...formatedChartData,
+        labels: labels,
+        datasets: [
+          {
+            label: "Weights",
+            data: dataset1,
+            yAxisID: "y1",
+            borderWidth: 3,
+            fill: false,
+            backgroundColor: "#3ABEFF",
+            borderColor: "#3ABEFF",
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            lineTension: 0.05,
+          },
+          {
+            label: "Sets",
+            data: dataset2,
+            yAxisID: "y2",
+            type: "bar",
+            borderWidth: 3,
+            fill: false,
+            backgroundColor: "#df5858",
+            borderColor: "#df5858",
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            lineTension: 0.05,
+          },
+        ],
+      };
+    } else if (typeFilterInput === "bodyweight") {
+      clone = {
+        ...formatedChartData,
+        labels: labels,
+        datasets: [
+          {
+            label: "Sets",
+            data: dataset2,
+            yAxisID: "y2",
+            type: "bar",
+            borderWidth: 3,
+            fill: false,
+            backgroundColor: "#df5858",
+            borderColor: "#df5858",
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            lineTension: 0.05,
+          },
+        ],
+      };
+    } else if (typeFilterInput === "distance") {
+      clone = {
+        ...formatedChartData,
+        labels: labels,
+        datasets: [
+          {
+            label: "Distance",
+            data: dataset1,
+            yAxisID: "y1",
+            borderWidth: 3,
+            fill: false,
+            backgroundColor: "#3ABEFF",
+            borderColor: "#3ABEFF",
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            lineTension: 0.05,
+          },
+          {
+            label: "Rounds",
+            data: dataset2,
+            yAxisID: "y2",
+            type: "bar",
+            borderWidth: 3,
+            fill: false,
+            backgroundColor: "#df5858",
+            borderColor: "#df5858",
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            lineTension: 0.05,
+          },
+        ],
+      };
+    }
 
-    const clone = {
-      ...formatedChartData,
-      labels: labels,
-      datasets: [
-        {
-          label: "Weights",
-          data: dataset1,
-          yAxisID: "y1",
-          borderWidth: 3,
-          fill: false,
-          backgroundColor: "#3ABEFF",
-          borderColor: "#3ABEFF",
-          pointRadius: 0,
-          pointHoverRadius: 0,
-          lineTension: 0.05,
-        },
-        {
-          label: "Sets",
-          data: dataset2,
-          yAxisID: "y2",
-          type: "bar",
-          borderWidth: 3,
-          fill: false,
-          backgroundColor: "#df5858",
-          borderColor: "#df5858",
-          pointRadius: 0,
-          pointHoverRadius: 0,
-          lineTension: 0.05,
-        },
-      ],
-    };
     return clone;
   };
   const [formatedChartData, setFormatedChartData] = useState({
@@ -131,6 +196,12 @@ const Chart = () => {
 
   useEffect(() => {
     setFormatedChartData(formatData());
+    setFilteredEntries(() => {
+      const clone = entries.filter((ele) => {
+        return ele.type.category === typeFilterInput;
+      });
+      return clone;
+    });
   }, [dateInput, typeFilterInput]);
 
   function handleChange(e) {
@@ -195,7 +266,7 @@ const Chart = () => {
           setTypeFilterInput(e.target.value);
         }}
       >
-        <option value="weights">weights</option>
+        <option value="weights">Weights</option>
         <option value="bodyweight">Bodyweight</option>
         <option value="distance">Distance</option>
       </select>
@@ -203,7 +274,7 @@ const Chart = () => {
       <div className="chart-container">
         {formatedChartData.labels.length ? (
           <div className="chart-wrapper">
-            <Line data={formatedChartData} redraw={true} options={options} />
+            <Line ref={chartRef} data={formatedChartData} redraw={true} options={options} />
           </div>
         ) : (
           "Sorry, no data found!"
