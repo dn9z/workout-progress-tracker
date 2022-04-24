@@ -35,11 +35,9 @@ const Chart = () => {
     const labels = [];
     const dataset1 = [];
     const dataset2 = [];
-
     const filteredClone = entries.filter((ele) => {
       return ele.type.category === typeFilterInput;
     });
-    console.log(filteredClone);
     for (let i = 0; i < filteredClone.length; i++) {
       if (input.from && input.to) {
         if (
@@ -50,8 +48,7 @@ const Chart = () => {
           labels.push(filteredClone[i].date.toLocaleString().slice(0, 9));
           if (typeFilterInput === "weights")
             dataset1.push(filteredClone[i].data.weights);
-          if (typeFilterInput === "weights")
-            dataset2.push(filteredClone[i].data.sets);
+          dataset2.push(filteredClone[i].data.sets);
           if (typeFilterInput === "bodyweight")
             dataset1.push(filteredClone[i].data.sets);
           if (typeFilterInput === "distance")
@@ -59,24 +56,40 @@ const Chart = () => {
         }
       } else {
         labels.push(filteredClone[i].date.toLocaleString().slice(0, 9));
-        if (typeFilterInput === "weights")
+        if (typeFilterInput === "weights") {
+          dataset1.push(filteredClone[i].data.weights);
+          let acc = 0;
+          for (let j = 0; j < filteredClone[i].data.sets.length; j++) {
+            acc += filteredClone[i].data.sets[j];
+          }
+          dataset2.push(acc / filteredClone[i].data.sets.length);
+        }
+        if (typeFilterInput === "bodyweight") {
           dataset1.push(filteredClone[i].data.sets);
-        if (typeFilterInput === "weights")
-          dataset2.push(filteredClone[i].data.weights);
-        if (typeFilterInput === "bodyweight")
-          dataset1.push(filteredClone[i].data.sets);
-        if (typeFilterInput === "distance")
-          dataset1.push(filteredClone[i].data.distance);
+          let acc = 0;
+          for (let j = 0; j < filteredClone[i].data.sets.length; j++) {
+            acc += filteredClone[i].data.sets[j];
+          }
+          dataset2.push(acc / filteredClone[i].data.sets.length);
+        }
+        if (typeFilterInput === "distance") {
+          let acc = 0;
+          for (let j = 0; j < filteredClone[i].data.rounds.length; j++) {
+            acc += filteredClone[i].data.rounds[j];
+          }
+          dataset2.push(acc / filteredClone[i].data.rounds.length);
+        }
       }
     }
-    console.log(dataset1);
     return {
       labels: labels,
       datasets: [
         {
           label: "Weights",
           data: dataset1,
-          yAxisID:'y1',
+          yAxisID: "y1",
+          // type: "bar",
+
           borderWidth: 3,
           fill: false,
           backgroundColor: "#3ABEFF",
@@ -88,8 +101,8 @@ const Chart = () => {
         {
           label: "Sets",
           data: dataset2,
-          yAxisID:'y2',
-          type:'bar',
+          yAxisID: "y2",
+          type: "bar",
           borderWidth: 3,
           fill: false,
           backgroundColor: "#df5858",
@@ -124,26 +137,26 @@ const Chart = () => {
   const options = {
     responsive: true,
     interaction: {
-      mode: 'index',
+      mode: "index",
       intersect: false,
     },
     stacked: false,
     plugins: {
       title: {
         display: true,
-        text: 'Chart.js Line Chart - Multi Axis',
+        text: "Chart.js Line Chart - Multi Axis",
       },
     },
     scales: {
       y1: {
-        type: 'linear',
+        type: "linear",
         display: true,
-        position: 'left',
+        position: "left",
       },
       y2: {
-        type: 'linear',
+        type: "linear",
         display: true,
-        position: 'right',
+        position: "right",
         grid: {
           drawOnChartArea: false,
         },
