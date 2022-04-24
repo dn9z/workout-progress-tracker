@@ -38,25 +38,17 @@ const Chart = () => {
       for (let i = 0; i < filteredData.length; i++) {
         if (
           filteredData[i].date.getTime() >
-            createDateObj(dateInput.from).getTime() &&
+          createDateObj(dateInput.from).getTime() &&
           filteredData[i].date.getTime() < createDateObj(dateInput.to).getTime()
-        ) {
-          labels.push(filteredData[i].date.toLocaleString().slice(0, 9));
+          ) {
+          labels.push(filteredData[i].date.toISOString().substring(0, 10));
           dataset1.push(filteredData[i].data.weights);
           let acc = 0;
           for (let j = 0; j < filteredData[i].data.sets.length; j++) {
             acc += filteredData[i].data.sets[j];
           }
           dataset2.push(acc / filteredData[i].data.sets.length);
-        } else {
-          labels.push(filteredData[i].date.toLocaleString().slice(0, 9));
-          dataset1.push(filteredData[i].data.weights);
-          let acc = 0;
-          for (let j = 0; j < filteredData[i].data.sets.length; j++) {
-            acc += filteredData[i].data.sets[j];
-          }
-          dataset2.push(acc / filteredData[i].data.sets.length);
-        }
+        } 
       }
     }
 
