@@ -48,6 +48,14 @@ const Chart = () => {
             acc += filteredData[i].data.sets[j];
           }
           dataset2.push(acc / filteredData[i].data.sets.length);
+        } else {
+          labels.push(filteredData[i].date.toLocaleString().slice(0, 9));
+          dataset1.push(filteredData[i].data.weights);
+          let acc = 0;
+          for (let j = 0; j < filteredData[i].data.sets.length; j++) {
+            acc += filteredData[i].data.sets[j];
+          }
+          dataset2.push(acc / filteredData[i].data.sets.length);
         }
       }
     }
