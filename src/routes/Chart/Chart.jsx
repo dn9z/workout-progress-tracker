@@ -23,10 +23,9 @@ const Chart = () => {
   const { entries } = useContext(MyContext);
   const [typeFilterInput, setTypeFilterInput] = useState("weights");
   const [dateInput, setDateInput] = useState({
-    from: "",
+    from: entries[0].date.toISOString().substring(0, 10),
     to: new Date().toISOString().substring(0, 10),
   });
-
   const formatData = () => {
     const filteredData = entries.filter((ele) => {
       return ele.type.category === typeFilterInput;
@@ -34,21 +33,35 @@ const Chart = () => {
     const labels = [];
     const dataset1 = [];
     const dataset2 = [];
-    if (typeFilterInput === "weights") {
-      for (let i = 0; i < filteredData.length; i++) {
-        if (
-          filteredData[i].date.getTime() >
+    for (let i = 0; i < filteredData.length; i++) {
+      if (
+        filteredData[i].date.getTime() >
           createDateObj(dateInput.from).getTime() &&
-          filteredData[i].date.getTime() < createDateObj(dateInput.to).getTime()
-          ) {
-          labels.push(filteredData[i].date.toISOString().substring(0, 10));
+        filteredData[i].date.getTime() < createDateObj(dateInput.to).getTime()
+      ) {
+        labels.push(filteredData[i].date.toISOString().substring(0, 10));
+
+        if (typeFilterInput === "weights") {
           dataset1.push(filteredData[i].data.weights);
           let acc = 0;
           for (let j = 0; j < filteredData[i].data.sets.length; j++) {
             acc += filteredData[i].data.sets[j];
           }
           dataset2.push(acc / filteredData[i].data.sets.length);
-        } 
+        } else if(typeFilterInput === "bodyweight"){
+          let acc = 0;
+          for (let j = 0; j < filteredData[i].data.sets.length; j++) {
+            acc += filteredData[i].data.sets[j];
+          }
+          dataset2.push(acc / filteredData[i].data.sets.length);
+        } else if(typeFilterInput === "distance"){
+          dataset1.push(filteredData[i].data.distance);
+          let acc = 0;
+          for (let j = 0; j < filteredData[i].data.rounds.length; j++) {
+            acc += filteredData[i].data.rounds[j];
+          }
+          dataset2.push(acc / filteredData[i].data.rounds.length);
+        }
       }
     }
 
