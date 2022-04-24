@@ -21,75 +21,45 @@ const Chart = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { entries } = useContext(MyContext);
-  // console.log(entries[0].date.toLocaleString().slice(0,9));
-  const [input, setInput] = useState({
+  const [typeFilterInput, setTypeFilterInput] = useState("weights");
+  const [dateInput, setDateInput] = useState({
     from: "",
     to: new Date().toISOString().substring(0, 10),
   });
 
-  const [typeFilterInput, setTypeFilterInput] = useState("weights");
   const formatData = () => {
-    // console.log(createDateObj(input.from).getTime())
-    // console.log(createDateObj(input.to).getTime())
-
+    const filteredData = entries.filter((ele) => {
+      return ele.type.category === typeFilterInput;
+    });
     const labels = [];
     const dataset1 = [];
     const dataset2 = [];
-    const filteredClone = entries.filter((ele) => {
-      return ele.type.category === typeFilterInput;
-    });
-    for (let i = 0; i < filteredClone.length; i++) {
-      if (input.from && input.to) {
+    if (typeFilterInput === "weights") {
+      for (let i = 0; i < filteredData.length; i++) {
         if (
-          filteredClone[i].date.getTime() >
-            createDateObj(input.from).getTime() &&
-          filteredClone[i].date.getTime() < createDateObj(input.to).getTime()
+          filteredData[i].date.getTime() >
+            createDateObj(dateInput.from).getTime() &&
+          filteredData[i].date.getTime() < createDateObj(dateInput.to).getTime()
         ) {
-          labels.push(filteredClone[i].date.toLocaleString().slice(0, 9));
-          if (typeFilterInput === "weights")
-            dataset1.push(filteredClone[i].data.weights);
-          dataset2.push(filteredClone[i].data.sets);
-          if (typeFilterInput === "bodyweight")
-            dataset1.push(filteredClone[i].data.sets);
-          if (typeFilterInput === "distance")
-            dataset1.push(filteredClone[i].data.distance);
-        }
-      } else {
-        labels.push(filteredClone[i].date.toLocaleString().slice(0, 9));
-        if (typeFilterInput === "weights") {
-          dataset1.push(filteredClone[i].data.weights);
+          labels.push(filteredData[i].date.toLocaleString().slice(0, 9));
+          dataset1.push(filteredData[i].data.weights);
           let acc = 0;
-          for (let j = 0; j < filteredClone[i].data.sets.length; j++) {
-            acc += filteredClone[i].data.sets[j];
+          for (let j = 0; j < filteredData[i].data.sets.length; j++) {
+            acc += filteredData[i].data.sets[j];
           }
-          dataset2.push(acc / filteredClone[i].data.sets.length);
-        }
-        if (typeFilterInput === "bodyweight") {
-          dataset1.push(filteredClone[i].data.sets);
-          let acc = 0;
-          for (let j = 0; j < filteredClone[i].data.sets.length; j++) {
-            acc += filteredClone[i].data.sets[j];
-          }
-          dataset2.push(acc / filteredClone[i].data.sets.length);
-        }
-        if (typeFilterInput === "distance") {
-          let acc = 0;
-          for (let j = 0; j < filteredClone[i].data.rounds.length; j++) {
-            acc += filteredClone[i].data.rounds[j];
-          }
-          dataset2.push(acc / filteredClone[i].data.rounds.length);
+          dataset2.push(acc / filteredData[i].data.sets.length);
         }
       }
     }
-    return {
+
+    const clone = {
+      ...formatedChartData,
       labels: labels,
       datasets: [
         {
           label: "Weights",
           data: dataset1,
           yAxisID: "y1",
-          // type: "bar",
-
           borderWidth: 3,
           fill: false,
           backgroundColor: "#3ABEFF",
@@ -113,22 +83,52 @@ const Chart = () => {
         },
       ],
     };
+    return clone;
   };
-  const [formatedChartData, setFormatedChartData] = useState(formatData());
+  const [formatedChartData, setFormatedChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Weights",
+        data: [],
+        yAxisID: "y1",
+        borderWidth: 3,
+        fill: false,
+        backgroundColor: "#3ABEFF",
+        borderColor: "#3ABEFF",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        lineTension: 0.05,
+      },
+      {
+        label: "Sets",
+        data: [],
+        yAxisID: "y2",
+        type: "bar",
+        borderWidth: 3,
+        fill: false,
+        backgroundColor: "#df5858",
+        borderColor: "#df5858",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        lineTension: 0.05,
+      },
+    ],
+  });
 
   useEffect(() => {
     setFormatedChartData(formatData());
-  }, [input, typeFilterInput]);
+  }, [dateInput, typeFilterInput]);
 
   function handleChange(e) {
     if (e.target.id === "from") {
-      setInput({
-        ...input,
+      setDateInput({
+        ...dateInput,
         [e.target.id]: e.target.value,
       });
     } else if (e.target.id === "to") {
-      setInput({
-        ...input,
+      setDateInput({
+        ...dateInput,
         [e.target.id]: e.target.value,
       });
     }
@@ -166,9 +166,14 @@ const Chart = () => {
   return (
     <div className="chart-main">
       <label htmlFor="from">From</label>
-      <input id="from" type="date" value={input.from} onChange={handleChange} />
+      <input
+        id="from"
+        type="date"
+        value={dateInput.from}
+        onChange={handleChange}
+      />
       <label htmlFor="to">To</label>
-      <input id="to" type="date" value={input.to} onChange={handleChange} />
+      <input id="to" type="date" value={dateInput.to} onChange={handleChange} />
       <label htmlFor="type">Type</label>
       <select
         id="type"
