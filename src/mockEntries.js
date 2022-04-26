@@ -2,7 +2,7 @@ class WeightsWorkout {
   constructor() {
     this.id = Math.floor(100000 + Math.random() * 900000);
     this.date = new Date(
-      Math.floor(Math.random()*(2023 - 2020) + 2020),
+      Math.floor(Math.random()*(2022 - 2019) + 2019),
       Math.floor(Math.random()*11),
       Math.floor(Math.random()*28))
     this.notes = "";
@@ -24,7 +24,7 @@ class DistanceWorkout {
   constructor() {
     this.id = Math.floor(100000 + Math.random() * 900000);
     this.date = new Date(
-      Math.floor(Math.random()*(2023 - 2020) + 2020),
+      Math.floor(Math.random()*(2022 - 2019) + 2019),
       Math.floor(Math.random()*11),
       Math.floor(Math.random()*28))
     this.notes = "";
@@ -47,7 +47,7 @@ class BodyweightWorkout {
   constructor() {
     this.id = Math.floor(100000 + Math.random() * 900000);
     this.date = new Date(
-      Math.floor(Math.random()*(2023 - 2020) + 2020),
+      Math.floor(Math.random()*(2022 - 2019) + 2019),
       Math.floor(Math.random()*11),
       Math.floor(Math.random()*28))
     this.notes = "";

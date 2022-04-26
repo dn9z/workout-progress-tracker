@@ -15,7 +15,7 @@ const Calendar = () => {
       const arr = [];
       for (let i = 0; i < entries.length; i++) {
         const event = {
-          title: entries[i].workoutName,
+          title: entries[i].type.name,
           date: toCalendarString(entries[i].date.toISOString()),
         };
         arr.push(event);
