@@ -4,7 +4,8 @@ class WeightsWorkout {
     this.date = new Date(
       Math.floor(Math.random()*(2022 - 2019) + 2019),
       Math.floor(Math.random()*11),
-      Math.floor(Math.random()*28))
+      Math.floor(Math.random()*(28 -1)+1),
+      5,0,0)
     this.notes = "";
     this.type = {
       name: `W-Workout ${Math.floor(10 + Math.random() * 50)}`,
@@ -26,7 +27,8 @@ class DistanceWorkout {
     this.date = new Date(
       Math.floor(Math.random()*(2022 - 2019) + 2019),
       Math.floor(Math.random()*11),
-      Math.floor(Math.random()*28))
+      Math.floor(Math.random()*(28 -1)+1),
+      5,0,0)
     this.notes = "";
     this.type = {
       name: `D-Workout ${Math.floor(10 + Math.random() * 50)}`,
@@ -35,9 +37,9 @@ class DistanceWorkout {
     this.data = {
       distance: Math.round((Math.random()*(10 - 6) + 6) * 100) / 100,
       rounds: [
-        `${Math.floor(Math.random() * 1)}:${Math.floor(Math.random() * (60 - 1) + 1)}:${Math.floor(Math.random() * (60 - 1) + 1)}`,
-        `${Math.floor(Math.random() * 1)}:${Math.floor(Math.random() * (60 - 1) + 1)}:${Math.floor(Math.random() * (60 - 1) + 1)}`,
-        `${Math.floor(Math.random() * 1)}:${Math.floor(Math.random() * (60 - 1) + 1)}:${Math.floor(Math.random() * (60 - 1) + 1)}`,
+        `1:${Math.floor(Math.random() * (60 - 50) + 50)}:${Math.floor(Math.random() * (60 - 1) + 1)}`,
+        `1:${Math.floor(Math.random() * (60 - 50) + 50)}:${Math.floor(Math.random() * (60 - 1) + 1)}`,
+        `1:${Math.floor(Math.random() * (60 - 50) + 50)}:${Math.floor(Math.random() * (60 - 1) + 1)}`,
       ],
     };
   }
@@ -49,7 +51,8 @@ class BodyweightWorkout {
     this.date = new Date(
       Math.floor(Math.random()*(2022 - 2019) + 2019),
       Math.floor(Math.random()*11),
-      Math.floor(Math.random()*28))
+      Math.floor(Math.random()*(28 -1)+1),
+      5,0,0)
     this.notes = "";
     this.type = {
       name: `B-Workout ${Math.floor(10 + Math.random() * 50)}`,
