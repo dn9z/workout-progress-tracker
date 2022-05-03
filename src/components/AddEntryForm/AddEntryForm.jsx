@@ -1,6 +1,7 @@
 import "./Form.scss";
 import { useState, useContext } from "react";
 import { MyContext } from "../context/Context";
+import axios from "axios";
 
 const AddEntryForm = ({ setShowAddModal }) => {
   const { entries, setEntries } = useContext(MyContext);
@@ -32,7 +33,6 @@ const AddEntryForm = ({ setShowAddModal }) => {
 
   function handleChange(e) {
     const value = e.target.value;
-    console.log(e.target.value);
     if (e.target.id === "name") {
       setFormInput({
         ...formInput,
@@ -50,7 +50,6 @@ const AddEntryForm = ({ setShowAddModal }) => {
         },
       });
     } else if (e.target.id === "notes") {
-      console.log(e.target.id);
       setFormInput({
         ...formInput,
         [e.target.id]: value,
@@ -78,6 +77,34 @@ const AddEntryForm = ({ setShowAddModal }) => {
     }
   }
   
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const temp = new Date(
+      formInput.date.slice(0, 4),
+      formInput.date.slice(5, 7) - 1,
+      formInput.date.slice(8, 10)
+    );
+    console.log(      formInput.date.slice(0, 4),
+    formInput.date.slice(5, 7) - 1,
+    formInput.date.slice(8, 10))
+    const clone = {
+      ...formInput,
+      id: Math.floor(100000 + Math.random() * 900000),
+      date: temp,
+    };
+    // setFormInput(clone);
+    // setEntries((prevArray) => [...prevArray, clone]);
+    
+    setShowAddModal(false);
+
+    try {
+        const res = await axios.post('http://localhost:9001/api/workouts/add', clone)
+        console.log("data saved ", res)
+    } catch (error) {
+        console.warn("There was an error", error)
+    }
+ }
+
   return (
     <div className="form-container">
       <form>
@@ -224,22 +251,7 @@ const AddEntryForm = ({ setShowAddModal }) => {
         </li>
         <button
           type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            const temp = new Date(
-              formInput.date.slice(0, 4),
-              formInput.date.slice(5, 7) - 1,
-              formInput.date.slice(8, 10)
-            );
-            const clone = {
-              ...formInput,
-              id: Math.floor(100000 + Math.random() * 900000),
-              date: temp,
-            };
-            // setFormInput(clone);
-            setEntries((prevArray) => [...prevArray, clone]);
-            setShowAddModal(false);
-          }}
+          onClick={handleSubmit}
         >
           Add Entry
         </button>
