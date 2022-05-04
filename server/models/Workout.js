@@ -11,10 +11,10 @@ const workoutSchema = new Schema({
 
   },
   data:{
-    weights:{type:Number},
-    sets:[{type:Number}],
-    distance:{type:Number, required:false},
-    rounds:[{type:String}]
+    // weights:{type:Number},
+    // sets:[{type:Number}],
+    // distance:{type:Number, required:false},
+    // rounds:[{type:String}]
   },
 
   // _user:{type: Schema.Types.ObjectId, ref:'users'},

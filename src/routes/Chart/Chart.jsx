@@ -21,20 +21,9 @@ const Chart = () => {
   const [outcomeInput, setOutcomeInput] = useState("average");
   const [typeFilterInput, setTypeFilterInput] = useState("weights");
   const [dateInput, setDateInput] = useState({
-    // from: workouts[0].date.substring(0, 10),
-    // from: workouts[0].date.toISOString().substring(0, 10),
     from: "2020-01-01",
     to: new Date().toISOString().substring(0, 10),
   });
-  // const [chartData, setChartData] = useState({
-  //   labels: [],
-  //   datasets: [
-  //     {
-  //       label: "",
-  //       data: [],
-  //     },
-  //   ],
-  // });
   const [labels, setLabels] = useState([]);
   const [dataset1, setDataset] = useState([]);
   const [dataset2, setDataset2] = useState([]);
@@ -43,20 +32,105 @@ const Chart = () => {
     const filteredLabels = [];
     const filteredDataset1 = [];
     const filteredDataset2 = [];
-    for (let i = 0; i < workouts.length; i++) {
-      if (
-        new Date(workouts[i].date) > new Date(dateInput.from) &&
-        new Date(workouts[i].date) < new Date(dateInput.to) &&
-        workouts[i].type.category === typeFilterInput
-      ) {
-        filteredLabels.push(workouts[i].date.slice(0, 10));
-        filteredDataset1.push(workouts[i].data.weights);
-        const acc = workouts[i].data.sets.reduce(
-          (acc, ele) => acc + ele
-        );
-        filteredDataset2.push(acc / workouts[i].data.sets.length);
+    if (typeFilterInput === "weights") {
+      workouts.forEach((ele, i) => {
+        if (ele.type.category === "weights") {
+          filteredLabels.push(workouts[i].date.slice(0, 10));
+          filteredDataset1.push(workouts[i].data.weights);
+          
+          if (outcomeInput === "average") {
+            const acc = workouts[i].data.sets.reduce(
+              (acc, ele) => acc + ele
+              );
+              filteredDataset2.push(acc / workouts[i].data.sets.length);
+            }
+            if (outcomeInput === "highest") {
+            const highest = workouts[i].data.sets.reduce((acc, ele) =>
+              acc < ele ? ele : acc
+            );
+            filteredDataset2.push(highest);
+          }
+          if (outcomeInput === "lowest") {
+            const lowest = workouts[i].data.sets.reduce((acc, ele) =>
+            acc > ele ? ele : acc
+            );
+            filteredDataset2.push(lowest);
+          }
+        }
+      });
+    }
+    if (typeFilterInput === "bodyweight") {
+      workouts.forEach((ele, i) => {
+        if (ele.type.category === "bodyweight") {
+          filteredLabels.push(workouts[i].date.slice(0, 10));
+          if (outcomeInput === "average") {
+            const acc = workouts[i].data.sets.reduce(
+              (acc, ele) => acc + ele
+            );
+            filteredDataset2.push(acc / workouts[i].data.sets.length);
+          }
+          if (outcomeInput === "highest") {
+            const highest = workouts[i].data.sets.reduce((acc, ele) =>
+            acc < ele ? ele : acc
+            );
+            filteredDataset2.push(highest);
+          }
+          if (outcomeInput === "lowest") {
+            const lowest = workouts[i].data.sets.reduce((acc, ele) =>
+            acc > ele ? ele : acc
+            );
+            filteredDataset2.push(lowest);
+          }
+        }
+      });
+      // console.log(filteredDataset1)
+    }
+    if (typeFilterInput === "distance") {
+      workouts.forEach((ele, i) => {
+        if (ele.type.category === "distance") {
+          filteredLabels.push(workouts[i].date.slice(0, 10));
+          filteredDataset1.push(workouts[i].data.distance);
+          if (outcomeInput === "average") {
+            const avgSeconds = workouts[i].data.rounds.reduce(
+              (acc, ele) => {
+                let seconds = toSeconds(ele)
+                return acc + seconds;
+              },
+              0
+              );
+              filteredDataset2.push(
+              avgSeconds / workouts[i].data.rounds.length / 60
+              );
+          }
+          if (outcomeInput === "highest") {
+            const highestSeconds = workouts[i].data.rounds.reduce(
+              (acc, ele) => {
+                let seconds = toSeconds(ele)
+                return seconds < acc ? acc : seconds;
+              },
+              0
+            );
 
-      }
+            filteredDataset2.push(highestSeconds / 60);
+          }
+          if (outcomeInput === "lowest") {
+            const lowestSeconds = workouts[i].data.rounds.reduce(
+              (acc, ele) => {
+                // console.log(first)
+                const timeArr = ele.split(":");
+                let seconds =
+                +timeArr[0] * 60 * 60 + +timeArr[1] * 60 + +timeArr[2];
+                return seconds > acc ? acc : seconds;
+              },
+              toSeconds(workouts[i].data.rounds[0])
+            );
+            
+            filteredDataset2.push(lowestSeconds / 60);
+            console.log(lowestSeconds)
+          }
+        }
+      });
+        
     }
     setLabels(filteredLabels);
     setDataset(filteredDataset1);
@@ -82,19 +156,12 @@ const Chart = () => {
       .get("http://localhost:9001/api/workouts/")
       .then((res) => {
         if (res) {
-
-                  // const sorted = res.data.sort((a, b) => {
-        //   return new Date(a.date) - new Date(b.date);
-        // });
-        // return sorted;
         setWorkouts(res.data);
         };
       })
-
       .catch((error) => {
         console.warn("There was an error", error);
       });
-    // console.log(res.data)
   }, []);
 
   return (
@@ -151,7 +218,7 @@ const Chart = () => {
                     pointHoverRadius: 0,
                     lineTension: 0.05,
                   },
-                  dataset2.length && {
+                  {
                     label: "Sets",
                     data: dataset2,
                     yAxisID: "y2",
@@ -182,7 +249,7 @@ const Chart = () => {
                 scales: {
                   y1: {
                     type: "linear",
-                    display: true,
+                    display: dataset1.length, // display only if dataset 1 exists
                     position: "left",
                   },
                   y2: {

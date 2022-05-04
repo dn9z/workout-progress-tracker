@@ -61,7 +61,6 @@ const AddEntryForm = ({ setShowAddModal }) => {
       });
       // console.log(new Date().toISOString().substring(0, 10))
     } else if (e.target.dataset.parent) {
-      console.log(e.target.id);
       setFormInput({
         ...formInput,
         [e.target.dataset.parent]: {
@@ -84,9 +83,6 @@ const AddEntryForm = ({ setShowAddModal }) => {
       formInput.date.slice(5, 7) - 1,
       formInput.date.slice(8, 10)
     );
-    console.log(      formInput.date.slice(0, 4),
-    formInput.date.slice(5, 7) - 1,
-    formInput.date.slice(8, 10))
     const clone = {
       ...formInput,
       id: Math.floor(100000 + Math.random() * 900000),
