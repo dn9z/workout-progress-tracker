@@ -7,18 +7,11 @@ const AddEntryForm = ({ setShowAddModal }) => {
   const { entries, setEntries } = useContext(MyContext);
   const [formInput, setFormInput] = useState({
     id: undefined,
-    // workoutName: "My Workout",
     date: new Date().toISOString().substring(0, 10),
     notes: "",
     type: {
       name: "My Workout",
       category: "weights",
-
-      // withWeights: this.name==='weights'?true:false
-      // withWeights: () => {
-      //   console.log(this.name);
-      //   return this.name === "weights" ? true : false;
-      // },
     },
     data: {
       weights: 0,
@@ -27,7 +20,6 @@ const AddEntryForm = ({ setShowAddModal }) => {
       rounds: [],
     },
   });
-// console.log(Math.round((Math.random()*(2023 - 2020) + 2020) * 100) / 100)
   const [repetition, setRepetition] = useState(12);
   const [time, setTime] = useState("00:00:00");
 
@@ -88,8 +80,6 @@ const AddEntryForm = ({ setShowAddModal }) => {
       id: Math.floor(100000 + Math.random() * 900000),
       date: temp,
     };
-    // setFormInput(clone);
-    // setEntries((prevArray) => [...prevArray, clone]);
     
     setShowAddModal(false);
 
