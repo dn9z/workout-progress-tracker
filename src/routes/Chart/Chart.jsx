@@ -1,11 +1,10 @@
 import "./Chart.scss";
 import { useContext, useState, useEffect, useRef } from "react";
 import { MyContext } from "../../components/context/Context";
-import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import axios from "axios";
 import { format } from "date-fns";
-
+import ChartItem from "./ChartItem";
 const toSeconds = (str) => {
   const timeArr = str.split(":");
   let seconds = +timeArr[0] * 60 * 60 + +timeArr[1] * 60 + +timeArr[2];
@@ -29,81 +28,84 @@ const Chart = () => {
     const filteredLabels = [];
     const filteredDataset1 = [];
     const filteredDataset2 = [];
-    if (typeFilterInput === "weights") {
-      workouts.forEach((ele, i) => {
-        if (ele.type.category === "weights") {
-          filteredLabels.push(workouts[i].date.slice(0, 10));
-          filteredDataset1.push(workouts[i].data.weights);
 
-          if (outcomeInput === "average") {
-            const acc = workouts[i].data.sets.reduce((acc, ele) => acc + ele);
-            filteredDataset2.push(acc / workouts[i].data.sets.length);
-          }
-          if (outcomeInput === "highest") {
-            const highest = workouts[i].data.sets.reduce((acc, ele) => (acc < ele ? ele : acc));
-            filteredDataset2.push(highest);
-          }
-          if (outcomeInput === "lowest") {
-            const lowest = workouts[i].data.sets.reduce((acc, ele) => (acc > ele ? ele : acc));
-            filteredDataset2.push(lowest);
+    workouts.forEach((ele, i) => {
+      if (
+        new Date(workouts[i].date) > new Date(dateInput.from) &&
+        new Date(workouts[i].date) < new Date(dateInput.to)
+      ) {
+        if (typeFilterInput === "weights") {
+          if (ele.type.category === "weights") {
+            filteredLabels.push(workouts[i].date.slice(0, 10));
+            filteredDataset1.push(workouts[i].data.weights);
+
+            if (outcomeInput === "average") {
+              const acc = workouts[i].data.sets.reduce((acc, ele) => acc + ele);
+              filteredDataset2.push(acc / workouts[i].data.sets.length);
+            }
+            if (outcomeInput === "highest") {
+              const highest = workouts[i].data.sets.reduce((acc, ele) => (acc < ele ? ele : acc));
+              filteredDataset2.push(highest);
+            }
+            if (outcomeInput === "lowest") {
+              const lowest = workouts[i].data.sets.reduce((acc, ele) => (acc > ele ? ele : acc));
+              filteredDataset2.push(lowest);
+            }
           }
         }
-      });
-    }
-    if (typeFilterInput === "bodyweight") {
-      workouts.forEach((ele, i) => {
-        if (ele.type.category === "bodyweight") {
-          filteredLabels.push(workouts[i].date.slice(0, 10));
-          if (outcomeInput === "average") {
-            const acc = workouts[i].data.sets.reduce((acc, ele) => acc + ele);
-            filteredDataset2.push(acc / workouts[i].data.sets.length);
+        if (typeFilterInput === "bodyweight") {
+          if (ele.type.category === "bodyweight") {
+            filteredLabels.push(workouts[i].date.slice(0, 10));
+            if (outcomeInput === "average") {
+              const acc = workouts[i].data.sets.reduce((acc, ele) => acc + ele);
+              filteredDataset2.push(acc / workouts[i].data.sets.length);
+            }
+            if (outcomeInput === "highest") {
+              const highest = workouts[i].data.sets.reduce((acc, ele) => (acc < ele ? ele : acc));
+              filteredDataset2.push(highest);
+            }
+            if (outcomeInput === "lowest") {
+              const lowest = workouts[i].data.sets.reduce((acc, ele) => (acc > ele ? ele : acc));
+              filteredDataset2.push(lowest);
+            }
           }
-          if (outcomeInput === "highest") {
-            const highest = workouts[i].data.sets.reduce((acc, ele) => (acc < ele ? ele : acc));
-            filteredDataset2.push(highest);
-          }
-          if (outcomeInput === "lowest") {
-            const lowest = workouts[i].data.sets.reduce((acc, ele) => (acc > ele ? ele : acc));
-            filteredDataset2.push(lowest);
+          // console.log(filteredDataset1)
+        }
+        if (typeFilterInput === "distance") {
+          if (ele.type.category === "distance") {
+            filteredLabels.push(workouts[i].date.slice(0, 10));
+            filteredDataset1.push(workouts[i].data.distance);
+            if (outcomeInput === "average") {
+              const avgSeconds = workouts[i].data.rounds.reduce((acc, ele) => {
+                let seconds = toSeconds(ele);
+                return acc + seconds;
+              }, 0);
+              filteredDataset2.push(avgSeconds / workouts[i].data.rounds.length / 60);
+            }
+            if (outcomeInput === "highest") {
+              const highestSeconds = workouts[i].data.rounds.reduce((acc, ele) => {
+                let seconds = toSeconds(ele);
+                return seconds < acc ? acc : seconds;
+              }, 0);
+
+              filteredDataset2.push(highestSeconds / 60);
+            }
+            if (outcomeInput === "lowest") {
+              const lowestSeconds = workouts[i].data.rounds.reduce((acc, ele) => {
+                // console.log(first)
+                const timeArr = ele.split(":");
+                let seconds = +timeArr[0] * 60 * 60 + +timeArr[1] * 60 + +timeArr[2];
+                return seconds > acc ? acc : seconds;
+              }, toSeconds(workouts[i].data.rounds[0]));
+
+              filteredDataset2.push(lowestSeconds / 60);
+              console.log(lowestSeconds);
+            }
           }
         }
-      });
-      // console.log(filteredDataset1)
-    }
-    if (typeFilterInput === "distance") {
-      workouts.forEach((ele, i) => {
-        if (ele.type.category === "distance") {
-          filteredLabels.push(workouts[i].date.slice(0, 10));
-          filteredDataset1.push(workouts[i].data.distance);
-          if (outcomeInput === "average") {
-            const avgSeconds = workouts[i].data.rounds.reduce((acc, ele) => {
-              let seconds = toSeconds(ele);
-              return acc + seconds;
-            }, 0);
-            filteredDataset2.push(avgSeconds / workouts[i].data.rounds.length / 60);
-          }
-          if (outcomeInput === "highest") {
-            const highestSeconds = workouts[i].data.rounds.reduce((acc, ele) => {
-              let seconds = toSeconds(ele);
-              return seconds < acc ? acc : seconds;
-            }, 0);
+      }
+    });
 
-            filteredDataset2.push(highestSeconds / 60);
-          }
-          if (outcomeInput === "lowest") {
-            const lowestSeconds = workouts[i].data.rounds.reduce((acc, ele) => {
-              // console.log(first)
-              const timeArr = ele.split(":");
-              let seconds = +timeArr[0] * 60 * 60 + +timeArr[1] * 60 + +timeArr[2];
-              return seconds > acc ? acc : seconds;
-            }, toSeconds(workouts[i].data.rounds[0]));
-
-            filteredDataset2.push(lowestSeconds / 60);
-            console.log(lowestSeconds);
-          }
-        }
-      });
-    }
     setLabels(filteredLabels);
     setDataset(filteredDataset1);
     setDataset2(filteredDataset2);
@@ -123,32 +125,29 @@ const Chart = () => {
     }
   }
   useEffect(() => {
-      axios
-        .get("http://localhost:9001/api/workouts/")
-        .then((res) => {
-          if (res) {
-            setWorkouts(res.data);
-          }
-        })
-        .catch((error) => {
-          console.warn("There was an error", error);
-        });
-    
+    axios
+      .get("http://localhost:9001/api/workouts/")
+      .then((res) => {
+        if (res) {
+          setWorkouts(res.data);
+        }
+      })
+      .catch((error) => {
+        console.warn("There was an error", error);
+      });
   }, []);
 
-  // useEffect(() => {
-  //   filterData()
-  //   console.log(workouts)
-  //   // setDateInput({
-  //   //   ...dateInput,
-  //   //   from: workouts[0].date.slice(0,10)
-  //   // })
-  // },[workouts])
+  useEffect(() => {
+    filterData()
+    if(workouts.length){
+    setDateInput({
+      ...dateInput,
+      from: workouts[0].date.slice(0,10)
+    })
+    }
 
-  // useEffect(() => {
-    
-  // },[])
-  
+  },[workouts])
+
   return (
     <div className="chart-main">
       <label htmlFor="from">From</label>
@@ -182,71 +181,7 @@ const Chart = () => {
       <button onClick={filterData}>Filter</button>
       <div className="chart-container">
         <div className="chart-wrapper">
-          <Line
-            // data={chartData}
-            redraw={true}
-            data={{
-              labels: labels,
-              datasets: [
-                {
-                  label: "Weights",
-                  data: dataset1,
-                  yAxisID: "y1",
-                  // type: "bar",
-
-                  borderWidth: 3,
-                  fill: false,
-                  backgroundColor: "#3ABEFF",
-                  borderColor: "#3ABEFF",
-                  pointRadius: 0,
-                  pointHoverRadius: 0,
-                  lineTension: 0.05,
-                },
-                {
-                  label: "Sets",
-                  data: dataset2,
-                  yAxisID: "y2",
-                  type: "bar",
-                  borderWidth: 3,
-                  fill: false,
-                  backgroundColor: "#df5858",
-                  borderColor: "#df5858",
-                  pointRadius: 0,
-                  pointHoverRadius: 0,
-                  lineTension: 0.05,
-                },
-              ],
-            }}
-            options={{
-              responsive: true,
-              interaction: {
-                mode: "index",
-                intersect: false,
-              },
-              stacked: false,
-              plugins: {
-                title: {
-                  display: true,
-                  text: "Chart.js Line Chart - Multi Axisss",
-                },
-              },
-              scales: {
-                y1: {
-                  type: "linear",
-                  display: dataset1.length, // display only if dataset 1 exists
-                  position: "left",
-                },
-                y2: {
-                  type: "linear",
-                  display: true,
-                  position: "right",
-                  grid: {
-                    drawOnChartArea: false,
-                  },
-                },
-              },
-            }}
-          />
+          <ChartItem labels={labels} dataset1={dataset1} dataset2={dataset2} />
         </div>
       </div>
     </div>
