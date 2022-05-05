@@ -129,7 +129,10 @@ const Chart = () => {
       .get("http://localhost:9001/api/workouts/")
       .then((res) => {
         if (res) {
-          setWorkouts(res.data);
+          const sorted = res.data.sort((a,b) => {
+            return new Date(a.date) - new Date(b.date)
+          })
+          setWorkouts(sorted);
         }
       })
       .catch((error) => {
@@ -138,15 +141,16 @@ const Chart = () => {
   }, []);
 
   useEffect(() => {
-    filterData()
-    if(workouts.length){
-    setDateInput({
-      ...dateInput,
-      from: workouts[0].date.slice(0,10)
-    })
+    filterData();
+    if (workouts.length) {
+      // Set from input field to first date of workout matching typeFilterInput
+      const firstDate = workouts.find((ele) => ele.type.category === typeFilterInput)
+      setDateInput({
+        ...dateInput,
+        from: firstDate.date.slice(0, 10),
+      });
     }
-
-  },[workouts])
+  }, [workouts]);
 
   return (
     <div className="chart-main">

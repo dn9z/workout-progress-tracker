@@ -23,7 +23,6 @@ const Calendar = () => {
       return arr;
     })
   }, []);
-console.log(entries)
   function toCalendarString(str) {
     const res = `${str.slice(0, 4)}-${str.slice(5, 7)}-${str.slice(8, 10)}`;
     return res;
