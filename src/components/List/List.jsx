@@ -1,32 +1,30 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect,useRef,useCallback } from "react";
 import "./List.scss";
 import axios from "axios";
-import { MyContext } from "../context/Context";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import Form from "../AddEntryForm/AddEntryForm";
+import usePaginate from "./usePaginate";
 const List = ({ activeItem, setActiveItem }) => {
-  // const { entries } = useContext(MyContext);
   const navigate = useNavigate();
   const [showAddModal, setShowAddModal] = useState(false);
-  const [workouts, setWorkouts] = useState([]);
-  const location = useLocation();
+  const [pageNumber, setPageNumber] = useState(1)
+  const data = usePaginate(pageNumber)
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:9001/api/workouts/")
-      .then((res) => {
-        if (res) {
-          const sorted = res.data.sort((a, b) => {
-            return new Date(a.date) - new Date(b.date);
-          });
-          setWorkouts(sorted);
-        }
-      })
-      .catch((error) => {
-        console.warn("There was an error", error);
-      });
-  }, []);
+
+  const observer = useRef()
+  const lastWorkoutElementRef = useCallback(node => {
+    console.log('triggered')
+    if (data.loading) return
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && data.hasMore) {
+        setPageNumber(prevPageNumber => prevPageNumber + 1)
+      }
+    })
+    if (node) observer.current.observe(node)
+  }, [data.loading, data.hasMore])
+
 
   return (
     <>
@@ -38,20 +36,17 @@ const List = ({ activeItem, setActiveItem }) => {
         >
           New
         </button>
-        {workouts.map((ele, i) => {
-          return (
-            <li
-              onClick={() => {
-                navigate(`/workouts/details/${ele._id}`);
-                setActiveItem(ele);
-              }}
-              key={i}
-              className={activeItem && activeItem._id === ele._id ? `active` : ""}
-            >
-              {ele.type.name}
-            </li>
-          );
-        })}
+
+
+          {data.workouts.map((ele,i) => {
+            if(data.workouts.length === i + 1){
+              return <li ref={lastWorkoutElementRef} key={i}>{ele.type.name}</li>
+            }else{
+              return <li key={i}>{ele.type.name}</li>
+            }
+          })}
+
+
       </div>
       {/* <Outlet /> */}
       {showAddModal && (

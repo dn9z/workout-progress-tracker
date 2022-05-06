@@ -10,7 +10,7 @@ const Details = () => {
   
   useEffect(() => {
     axios
-      .get(`http://localhost:9001/api/workouts/${_id}`)
+      .get(`http://localhost:9001/api/workouts/find/${_id}`)
       .then((res) => {
         if (res) {
           console.log(activeItem)
