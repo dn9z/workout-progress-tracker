@@ -16,8 +16,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/workouts" element={<Workout />}>
-            <Route path="/workouts/details/:id" element={<Details />} />
-            <Route path="/workouts/edit/:id" element={<Edit />} />
+            <Route path="/workouts/details/:_id" element={<Details />} />
+            <Route path="/workouts/edit/:_id" element={<Edit />} />
           </Route>
           <Route path="/chart" element={<Chart />} />
           <Route path="/calendar" element={<Calendar />} />

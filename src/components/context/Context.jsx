@@ -18,6 +18,8 @@ const MyProvider = ({children}) => {
 
   const [entries, setEntries] = useState(mockEntries);
   const [types, setTypes] = useState([]);
+  const [selectedWorkout, setSelectedWorkout] = useState('');
+  
   
   // const [selection, setSelection] = useState({});
   // console.log(mockArray())

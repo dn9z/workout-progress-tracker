@@ -1,31 +1,64 @@
 import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../../components/context/Context";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import axios from "axios";
 const Edit = () => {
   const navigate = useNavigate();
-  const { entries, setEntries } = useContext(MyContext);
-  const { id } = useParams();
-  const [currentEntry, setCurrentEntry] = useState(() => {
-    const entry = entries.find((ele) => ele.id === Number(id));
-    // console.log(entry)
-    return entry;
-  });
+  const [activeItem] = useOutletContext()
+  const { _id } = useParams();
+  const [currentEntry, setCurrentEntry] = useState(null);
   const [formInput, setFormInput] = useState({
-    id: currentEntry.id,
-    workoutName: currentEntry.workoutName,
-    date: currentEntry.date.toISOString().substring(0, 10),
-    notes: currentEntry.notes,
-    type: { ...currentEntry.types },
-    data: { ...currentEntry.data },
+    date: '',
+    notes: "",
+    type: {
+      name: "",
+      category: "",
+    },
+    data: {
+      weights: 0,
+      sets: [],
+      distance: 0,
+      rounds: [],
+    },
   });
   const [repetition, setRepetition] = useState(12);
+
+  
+
   useEffect(() => {
-    setCurrentEntry(() => {
-      const entry = entries.find((ele) => ele.id === Number(id));
-      // console.log(new Date().toLocaleString().slice(0, 9));
-      return entry;
-    });
-  }, [id]);
+    axios
+      .get(`http://localhost:9001/api/workouts/${_id}`)
+      .then((res) => {
+        if (res) {
+          console.log(activeItem)
+          setCurrentEntry(res.data);
+        }
+      })
+      .catch((error) => {
+        console.warn("There was an error", error);
+      });
+
+
+  }, [activeItem]);
+
+
+  useEffect(() => {
+    currentEntry && setFormInput({
+      date: currentEntry.date.slice(0,10),
+      notes: currentEntry.notes,
+      type: {
+        name: currentEntry.type.name,
+        category: currentEntry.type.category,
+      },
+      data: {
+        weights: currentEntry.data.weights,
+        sets: currentEntry.data.sets,
+        distance: currentEntry.data.distance,
+        rounds: currentEntry.data.rounds,
+      },
+    })
+  },[currentEntry])
+
 
   function handleChange(e) {
     const value = e.target.value;
@@ -66,6 +99,7 @@ const Edit = () => {
     }
   }
 
+
   return (
     <div className="edit-form-container">
       <form>
@@ -75,15 +109,15 @@ const Edit = () => {
             id="workoutName"
             type="text"
             onChange={handleChange}
-            value={formInput.workoutName}
+            value={formInput.type.name}
           />
         </li>
         <li>
-          <label htmlFor="name">Type</label>
+          <label htmlFor="category">Type</label>
           <select
-            id="name"
+            id="category"
             onChange={handleChange}
-            value={formInput.type.name}
+            value={formInput.type.category}
             data-parent="type"
           >
             <option value="weights">Weights</option>
@@ -158,7 +192,7 @@ const Edit = () => {
             rows="10"
           ></textarea>
         </li>
-        <button
+        {/* <button
           type="submit"
           onClick={(e) => {
             e.preventDefault();
@@ -182,7 +216,7 @@ const Edit = () => {
           }}
         >
           Save
-        </button>
+        </button> */}
         <button
           onClick={() => {
             navigate(`/workouts/details/${currentEntry.id}`);
