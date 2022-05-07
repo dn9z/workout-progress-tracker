@@ -7,10 +7,10 @@ const Workout = () => {
 
   return (
         <div className="workout-page-container">
-          <div className="home-left">
+          <div className="workout-left">
             <List activeItem={activeItem} setActiveItem={setActiveItem}/>
           </div>
-          <div className="home-right">
+          <div className="workout-right">
             {activeItem? <Outlet context={[activeItem]} />:'please select'}
           </div>
         </div>

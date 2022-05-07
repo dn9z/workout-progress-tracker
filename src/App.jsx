@@ -15,17 +15,19 @@ function App() {
       <main>
         <Navbar />
         <section>
-        <Header/>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/workouts" element={<Workout />}>
-            <Route path="/workouts/details/:_id" element={<Details />} />
-            <Route path="/workouts/edit/:_id" element={<Edit />} />
-          </Route>
-          <Route path="/chart" element={<Chart />} />
-          <Route path="/calendar" element={<Calendar />} />
-          {/* <Route path="*" element={<Home/>} /> */}
-        </Routes>
+          <Header />
+          <div className="content-container">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/workouts" element={<Workout />}>
+                <Route path="/workouts/details/:_id" element={<Details />} />
+                <Route path="/workouts/edit/:_id" element={<Edit />} />
+              </Route>
+              <Route path="/chart" element={<Chart />} />
+              <Route path="/calendar" element={<Calendar />} />
+              {/* <Route path="*" element={<Home/>} /> */}
+            </Routes>
+          </div>
         </section>
       </main>
     </MyProvider>
