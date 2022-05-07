@@ -8,11 +8,14 @@ import Chart from "./routes/Chart/Chart";
 import Workout from "./routes/Workout/Workout";
 import Navbar from "./components/Navbar/Navbar";
 import Calendar from "./routes/Calendar/Calendar";
+import Header from "./components/Header/Header";
 function App() {
   return (
     <MyProvider>
       <main>
         <Navbar />
+        <section>
+        <Header/>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/workouts" element={<Workout />}>
@@ -23,6 +26,7 @@ function App() {
           <Route path="/calendar" element={<Calendar />} />
           {/* <Route path="*" element={<Home/>} /> */}
         </Routes>
+        </section>
       </main>
     </MyProvider>
   );

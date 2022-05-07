@@ -13,7 +13,6 @@ const Details = () => {
       .get(`http://localhost:9001/api/workouts/find/${_id}`)
       .then((res) => {
         if (res) {
-          console.log(activeItem)
           setCurrentEntry(res.data);
         }
       })

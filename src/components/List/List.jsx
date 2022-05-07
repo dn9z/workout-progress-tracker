@@ -14,7 +14,6 @@ const List = ({ activeItem, setActiveItem }) => {
 
   const observer = useRef()
   const lastWorkoutElementRef = useCallback(node => {
-    console.log('triggered')
     if (data.loading) return
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
@@ -37,15 +36,22 @@ const List = ({ activeItem, setActiveItem }) => {
           New
         </button>
 
-
           {data.workouts.map((ele,i) => {
             if(data.workouts.length === i + 1){
-              return <li ref={lastWorkoutElementRef} key={i}>{ele.type.name}</li>
+              // if last element of fetch call, add ref to element to trigger intersectionobserver when element is visible
+              return <li ref={lastWorkoutElementRef} onClick={() => {
+                navigate(`/workouts/details/${ele._id}`);
+                setActiveItem(ele);
+              }} className={activeItem && activeItem._id === ele._id ? `active` : ""} key={i}><div>{ele.type.name}</div><div>{ele.date.slice(0,10)}</div></li>
             }else{
-              return <li key={i}>{ele.type.name}</li>
+              return <li key={i} onClick={() => {
+                navigate(`/workouts/details/${ele._id}`);
+                setActiveItem(ele);
+              }} className={activeItem && activeItem._id === ele._id ? `active` : ""}><div>{ele.type.name}</div><div>{ele.date.slice(0,10)}</div></li>
             }
           })}
-
+          {data.loading && <div>loading....</div>}
+          {data.error && <div>error</div>}
 
       </div>
       {/* <Outlet /> */}
