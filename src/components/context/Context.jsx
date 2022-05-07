@@ -3,31 +3,16 @@ import { createContext, useState } from "react";
 import mockEntries from "../../mockEntries";
 const MyContext = createContext(null)
 
-const types = [{
-  typeName: 'weights',
-  withWeights: true,
-},{
-  typeName: 'bodyweight',
-  withWeights: false,
-},{
-  typeName: 'distance',
-  withWeights: false,
-}]
+
 
 const MyProvider = ({children}) => {
 
-  const [entries, setEntries] = useState(mockEntries);
-  const [types, setTypes] = useState([]);
-  const [selectedWorkout, setSelectedWorkout] = useState('');
-  
-  
-  // const [selection, setSelection] = useState({});
-  // console.log(mockArray())
+  const [searchQueryInput, setSearchQueryInput] = useState('');
+  const [pageNumber, setPageNumber] = useState(1)
 
-  // const location = useLocation()
-  // console.log(location)
+  
   return(
-    <MyContext.Provider value={{entries, setEntries}}>
+    <MyContext.Provider value={{searchQueryInput, setSearchQueryInput,pageNumber, setPageNumber}}>
       {children}
     </MyContext.Provider>
   )

@@ -1,15 +1,16 @@
-import { useState, useEffect,useRef,useCallback } from "react";
+import { useState, useEffect,useRef,useCallback ,useContext } from "react";
 import "./List.scss";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import Form from "../AddEntryForm/AddEntryForm";
-import usePaginate from "./usePaginate";
+import usePaginate from "../utils/usePaginate";
+import { MyContext } from "../context/Context";
 const List = ({ activeItem, setActiveItem }) => {
   const navigate = useNavigate();
   const [showAddModal, setShowAddModal] = useState(false);
-  const [pageNumber, setPageNumber] = useState(1)
-  const data = usePaginate(pageNumber)
+  const {searchQueryInput, pageNumber, setPageNumber} = useContext(MyContext)
+  const data = usePaginate(searchQueryInput,pageNumber)
 
 
   const observer = useRef()
@@ -23,6 +24,8 @@ const List = ({ activeItem, setActiveItem }) => {
     })
     if (node) observer.current.observe(node)
   }, [data.loading, data.hasMore])
+
+
 
 
   return (
