@@ -1,0 +1,10 @@
+.workout-page-container {
+  display: flex;
+  height: 100%;
+  .workout-left{
+    width: 40%;
+  }
+  .workout-right{
+    width: 60%;
+  }
+}
