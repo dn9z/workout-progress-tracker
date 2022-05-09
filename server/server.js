@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import workoutRoutes from './routes/workoutRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,8 @@ mongoose
   });
 
 app.use("/api/workouts", workoutRoutes);
+app.use("/api/users", userRoutes);
+
 
 app.all("*", (req, res) => {
   res.status(500);
