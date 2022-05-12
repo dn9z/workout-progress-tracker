@@ -60,7 +60,7 @@ router.get('/paginate', async(req, res) => {
   const pageSize = Number(req.query.pageSize) || 10
   const skipRows = (page - 1) * pageSize;
   
-  console.log('searchQuery:',searchQuery)
+  // console.log('searchQuery:',searchQuery)
 
   let workouts = []
   if(searchQuery){

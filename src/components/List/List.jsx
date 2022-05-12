@@ -3,7 +3,7 @@ import "./List.scss";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Modal from "../utils/Modal/Modal";
-import Form from "../AddEntryForm/AddEntryForm";
+import AddEntryForm from "../AddEntryForm/AddEntryForm";
 import usePaginate from "../utils/usePaginate";
 import { MyContext } from "../context/Context";
 const List = ({ activeItem, setActiveItem }) => {
@@ -77,8 +77,8 @@ const List = ({ activeItem, setActiveItem }) => {
       {/* <Outlet /> */}
       {showAddModal && (
         <Modal
-          component={<Form setShowAddModal={setShowAddModal} />}
-          setShowAddModal={setShowAddModal}
+          component={<AddEntryForm setShowAddModal={setShowAddModal} />}
+          setShowModal={setShowAddModal}
         />
       )}
     </>

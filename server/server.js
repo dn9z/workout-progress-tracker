@@ -2,8 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
-import workoutRoutes from './routes/workoutRoutes.js'
-import userRoutes from './routes/userRoutes.js'
+import workoutRoutes from "./routes/workoutRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import passport from 'passport';
+// import path from 'path'
+import configurePassport from './passport-config.js';
 
 dotenv.config();
 const app = express();
@@ -13,6 +16,11 @@ app.set("port", process.env.PORT || 4000);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+
+//initialize passport 
+app.use(passport.initialize());
+//configure passport using our function.
+configurePassport(passport);
 
 mongoose
   .connect(
@@ -29,14 +37,18 @@ mongoose
     console.log("an error occurred while connecting to the db", error);
   });
 
-app.use("/api/workouts", workoutRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/workouts", workoutRoutes);
 
 app.all("*", (req, res) => {
   res.status(500);
   res.send("Invalid path");
 });
+
+// app.use(express.static(path.join(__dirname, "client/build")));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname + "/client/build/index.html"));
+// });
 
 app.listen(app.get("port"), () => {
   console.log("Server started on port " + app.get("port"));

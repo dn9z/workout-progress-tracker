@@ -10,7 +10,6 @@ export default function usePaginate(searchQueryInput, pageNumber) {
   });
 
   const getData = async () => {
-    console.log('triggered')
     setPaginate({
       ...paginate,
       loading: true,
