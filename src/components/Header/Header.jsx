@@ -20,7 +20,7 @@ const Header = () => {
 
   const logout =async () => {
     try {
-      await axios.get("http://localhost:9001/api/users/logout");
+      await axios.get("/api/users/logout");
       handleLogin(""); // empty strings will resolve to falsey value
 
       // Navigate("/");

@@ -9,6 +9,7 @@ import Workout from "./routes/Workout/Workout";
 import Navbar from "./components/Navbar/Navbar";
 import Calendar from "./routes/Calendar/Calendar";
 import Header from "./components/Header/Header";
+import Profile from "./routes/Profile/Profile";
 function App() {
   return (
     <MyProvider>
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/workouts/details/:_id" element={<Details />} />
                 <Route path="/workouts/edit/:_id" element={<Edit />} />
               </Route>
+              <Route path="/profile" element={<Profile />} />
               <Route path="/chart" element={<Chart />} />
               <Route path="/calendar" element={<Calendar />} />
               {/* <Route path="*" element={<Home/>} /> */}

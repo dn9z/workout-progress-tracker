@@ -2,8 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 import workoutRoutes from "./routes/workoutRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import typeRoutes from './routes/typeRoutes.js'
 import passport from 'passport';
 // import path from 'path'
 import configurePassport from './passport-config.js';
@@ -15,9 +17,16 @@ app.set("port", process.env.PORT || 4000);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: true,
+  })
+);
+
 
 //initialize passport 
+app.use(cookieParser());
 app.use(passport.initialize());
 //configure passport using our function.
 configurePassport(passport);
@@ -39,6 +48,8 @@ mongoose
 
 app.use("/api/users", userRoutes);
 app.use("/api/workouts", workoutRoutes);
+app.use("/api/types", typeRoutes);
+
 
 app.all("*", (req, res) => {
   res.status(500);
