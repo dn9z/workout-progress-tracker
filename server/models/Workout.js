@@ -12,7 +12,7 @@ const workoutSchema = new Schema({
     distance:{type:Number, required:false},
     rounds:[{type:String}]
   },
-  notes:{type:String},
+  note:{type:String},
 })
 
 

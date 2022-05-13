@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Modal from "../utils/Modal/Modal";
 import AddEntryForm from "../AddEntryForm/AddEntryForm";
+import AddWorkoutForm from "../AddEntryForm/AddWorkoutForm";
 import usePaginate from "../utils/usePaginate";
 import { MyContext } from "../context/Context";
 const List = ({ activeItem, setActiveItem }) => {
@@ -77,7 +78,7 @@ const List = ({ activeItem, setActiveItem }) => {
       {/* <Outlet /> */}
       {showAddModal && (
         <Modal
-          component={<AddEntryForm setShowAddModal={setShowAddModal} />}
+          component={<AddWorkoutForm setShowAddModal={setShowAddModal} />}
           setShowModal={setShowAddModal}
         />
       )}

@@ -7,7 +7,7 @@ import workoutRoutes from "./routes/workoutRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import typeRoutes from './routes/typeRoutes.js'
 import passport from 'passport';
-// import path from 'path'
+// import path from 'path'clear
 import configurePassport from './passport-config.js';
 
 dotenv.config();

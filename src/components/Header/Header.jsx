@@ -2,8 +2,8 @@ import { useState, useContext } from "react";
 import "./Header.scss";
 import { MyContext } from "../context/Context";
 import Modal from "../utils/Modal/Modal";
-import LoginForm from "../RegisterForm/LoginForm";
-import RegisterForm from "../RegisterForm/RegisterForm";
+import LoginForm from "../UserForms/LoginForm";
+import RegisterForm from "../UserForms/RegisterForm";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 const Header = () => {
