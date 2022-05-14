@@ -28,7 +28,7 @@ const List = ({ activeItem, setActiveItem }) => {
     },
     [data.loading, data.hasMore]
   );
-
+  
   function handleNavigate(ele) {
     navigate(`/workouts/details/${ele._id}`);
     setActiveItem(ele);

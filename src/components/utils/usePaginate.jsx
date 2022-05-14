@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 export default function usePaginate(searchQueryInput, pageNumber) {
+  const abortControllerRef = useRef();
+
   const [paginate, setPaginate] = useState({
     loading: true,
     error: false,
@@ -10,6 +12,7 @@ export default function usePaginate(searchQueryInput, pageNumber) {
   });
 
   const getData = async () => {
+    abortControllerRef.current = new AbortController();
     setPaginate({
       ...paginate,
       loading: true,
@@ -17,16 +20,21 @@ export default function usePaginate(searchQueryInput, pageNumber) {
     });
     // let cancel;
     try {
-      return await axios({
-        method: "GET",
-        url: `/api/workouts/paginate`,
-        params: { searchquery: searchQueryInput, page: pageNumber },
-        // cancelToken: new axios.CancelToken((c) => (cancel = c)),
-      });
-      // return await axios.get(`/api/workouts/paginate?searchQuery=${searchQueryInput}&page=${pageNumber}`)
+      // return await axios({
+      //   method: "GET",
+      //   url: `/api/workouts/paginate`,
+      //   params: { searchquery: searchQueryInput, page: pageNumber },
+      //   // cancelToken: new axios.CancelToken((c) => (cancel = c)),
+      // });
+      return await axios.get(
+        `/api/workouts/paginate?searchQuery=${searchQueryInput}&page=${pageNumber}`,
+        {
+          signal: abortControllerRef.current.signal,
+        }
+      );
     } catch (e) {
       // if (axios.isCancel(e)) return;
-      console.log(e)
+      console.log(e);
       setPaginate({
         ...paginate,
         error: true,
@@ -46,25 +54,22 @@ export default function usePaginate(searchQueryInput, pageNumber) {
       });
     });
     return () => {
-      setPaginate({
-        ...paginate,
-        workouts:[]
-      });
+      abortControllerRef.current.abort();
     };
   }, [searchQueryInput]);
 
   useEffect(() => {
     getData().then((res) => {
-      setPaginate(() => {
-        // console.log(paginate.workouts)
-        return {
-          ...paginate,
-          workouts: [...paginate.workouts, ...res.data],
-          hasMore: res.data.length > 0,
-          loading: false,
-        };
+      setPaginate({
+        ...paginate,
+        workouts: [...paginate.workouts, ...res.data],
+        hasMore: res.data.length > 0,
+        loading: false,
       });
     });
+    return () => {
+      abortControllerRef.current.abort();
+    };
   }, [pageNumber]);
 
   return paginate;
