@@ -7,31 +7,33 @@ import AddEntryForm from "../EntryForms/AddEntryForm";
 import AddWorkoutForm from "../EntryForms/AddWorkoutForm";
 import usePaginate from "../utils/usePaginate";
 import { MyContext } from "../context/Context";
+import InfiniteScroll from "react-infinite-scroller";
 const List = ({ activeItem, setActiveItem }) => {
   const navigate = useNavigate();
   const [showAddModal, setShowAddModal] = useState(false);
-
   const { searchQueryInput, pageNumber, setPageNumber } = useContext(MyContext);
-  const data = usePaginate(searchQueryInput, pageNumber);
+  // const data = usePaginate(searchQueryInput, pageNumber);
+  const [hasMore, sethasMore] = useState(true);
+  const [workouts, setWorkouts] = useState([]);
 
-  const observer = useRef();
-  const lastWorkoutElementRef = useCallback(
-    (node) => {
-      if (data.loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && data.hasMore) {
-          setPageNumber((prevPageNumber) => prevPageNumber + 1);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [data.loading, data.hasMore]
-  );
-  
   function handleNavigate(ele) {
     navigate(`/workouts/details/${ele._id}`);
     setActiveItem(ele);
+  }
+
+  useEffect(() => {
+    setWorkouts([])
+  }, [searchQueryInput])
+
+ async function loadMore(){
+   try {
+      const res = await axios.get(`/api/workouts/paginate?searchquery=${searchQueryInput}&page=${pageNumber}`) 
+      setWorkouts([...workouts,...res.data])    
+      setPageNumber(pageNumber+1) 
+      if (res.data.length === 0) sethasMore(false)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return (
@@ -45,35 +47,26 @@ const List = ({ activeItem, setActiveItem }) => {
           New
         </button>
 
-        {data.workouts.map((ele, i) => {
-          if (data.workouts.length === i + 1) {
-            // if last element of fetch call, add ref to element to trigger intersectionobserver when element is visible
-            return (
-              <li
-                ref={lastWorkoutElementRef}
-                onClick={() => handleNavigate(ele)}
-                className={activeItem && activeItem._id === ele._id ? `active` : ""}
-                key={i}
-              >
-                <div>{ele._type.name}</div>
-                <div>{ele.date.slice(0, 10)}</div>
-              </li>
-            );
-          } else {
-            return (
-              <li
-                key={i}
-                onClick={() => handleNavigate(ele)}
-                className={activeItem && activeItem._id === ele._id ? `active` : ""}
-              >
-                <div>{ele._type.name}</div>
-                <div>{ele.date.slice(0, 10)}</div>
-              </li>
-            );
-          }
-        })}
-        {data.loading && <div>loading....</div>}
-        {data.error && <div>error</div>}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={loadMore}
+            hasMore={hasMore}
+            loader={<div className="loader" key={0}>Loading ...</div>}
+            useWindow={false}
+          >
+            {workouts.map((ele, i) => {
+              return (
+                <li
+                  key={i+1}
+                  onClick={() => handleNavigate(ele)}
+                  className={activeItem && activeItem._id === ele._id ? `active` : ""}
+                >
+                  <div>{ele._type.name}</div>
+                  <div>{ele.date.slice(0, 10)}</div>
+                </li>
+              );
+            })}
+          </InfiniteScroll>
       </div>
       {/* <Outlet /> */}
       {showAddModal && (
