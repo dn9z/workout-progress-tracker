@@ -19,10 +19,11 @@ export default function usePaginate(searchQueryInput, pageNumber) {
     try {
       return await axios({
         method: "GET",
-        url: `http://localhost:9001/api/workouts/paginate`,
-        params: { searchQuery: searchQueryInput, page: pageNumber },
+        url: `/api/workouts/paginate`,
+        params: { searchquery: searchQueryInput, page: pageNumber },
         // cancelToken: new axios.CancelToken((c) => (cancel = c)),
       });
+      // return await axios.get(`/api/workouts/paginate?searchQuery=${searchQueryInput}&page=${pageNumber}`)
     } catch (e) {
       // if (axios.isCancel(e)) return;
       console.log(e)
@@ -36,7 +37,6 @@ export default function usePaginate(searchQueryInput, pageNumber) {
   useEffect(() => {
     getData().then((res) => {
       setPaginate(() => {
-        // console.log(paginate.workouts)
         return {
           ...paginate,
           workouts: [...res.data],
@@ -45,7 +45,12 @@ export default function usePaginate(searchQueryInput, pageNumber) {
         };
       });
     });
-    // return () => cancel();
+    return () => {
+      setPaginate({
+        ...paginate,
+        workouts:[]
+      });
+    };
   }, [searchQueryInput]);
 
   useEffect(() => {
@@ -59,36 +64,7 @@ export default function usePaginate(searchQueryInput, pageNumber) {
           loading: false,
         };
       });
-      // return () => cancel();
     });
-
-    // setPaginate({
-    //   ...paginate,
-    //   loading: true,
-    //   error: false,
-    // });
-    // let cancel;
-    // axios({
-    //   method: "GET",
-    //   url: `http://localhost:9001/api/workouts/paginate`,
-    //   params: { searchQuery: searchQueryInput, page: pageNumber },
-    //   cancelToken: new axios.CancelToken((c) => (cancel = c)),
-    // })
-    //   .then((res) => {
-    //     setPaginate(() => {
-    //       // console.log(paginate.workouts)
-    //       return {
-    //         ...paginate,
-    //         workouts: [...paginate.workouts, ...res.data],
-    //         hasMore: res.data.length > 0,
-    //         loading: false,
-    //       };
-    //     });
-    //   })
-    //   .catch((e) => {
-
-    //   });
-    // return () => cancel();
   }, [pageNumber]);
 
   return paginate;

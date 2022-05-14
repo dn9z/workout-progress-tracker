@@ -3,8 +3,8 @@ import "./List.scss";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Modal from "../utils/Modal/Modal";
-import AddEntryForm from "../AddEntryForm/AddEntryForm";
-import AddWorkoutForm from "../AddEntryForm/AddWorkoutForm";
+import AddEntryForm from "../EntryForms/AddEntryForm";
+import AddWorkoutForm from "../EntryForms/AddWorkoutForm";
 import usePaginate from "../utils/usePaginate";
 import { MyContext } from "../context/Context";
 const List = ({ activeItem, setActiveItem }) => {
@@ -55,7 +55,7 @@ const List = ({ activeItem, setActiveItem }) => {
                 className={activeItem && activeItem._id === ele._id ? `active` : ""}
                 key={i}
               >
-                <div>{ele.type.name}</div>
+                <div>{ele._type.name}</div>
                 <div>{ele.date.slice(0, 10)}</div>
               </li>
             );
@@ -66,7 +66,7 @@ const List = ({ activeItem, setActiveItem }) => {
                 onClick={() => handleNavigate(ele)}
                 className={activeItem && activeItem._id === ele._id ? `active` : ""}
               >
-                <div>{ele.type.name}</div>
+                <div>{ele._type.name}</div>
                 <div>{ele.date.slice(0, 10)}</div>
               </li>
             );

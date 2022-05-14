@@ -8,7 +8,9 @@ const router = express.Router();
 
 router.use(passport.authenticate("jwt", { session: false }));
 
-router.post("/create", workoutController.create);
+router.post("/create/:typeid", workoutController.create);
+
+router.get("/paginate", workoutController.paginate);
 
 // router.post("/getonebyname", workoutController.getOneByName);
 
