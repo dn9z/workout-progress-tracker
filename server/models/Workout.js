@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Type from './Type.js'
 const {Schema, model} = mongoose;
 
 

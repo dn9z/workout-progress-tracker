@@ -23,6 +23,9 @@ const List = ({ activeItem, setActiveItem }) => {
 
   useEffect(() => {
     setWorkouts([])
+    return () => {
+      setPageNumber(1)
+    }
   }, [searchQueryInput])
 
  async function loadMore(){
