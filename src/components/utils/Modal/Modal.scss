@@ -1,0 +1,18 @@
+.modal-bg{
+  background-color: rgba(35, 35, 35, 0.606);
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .modal-content{
+    // width: 30rem;
+    // height: 30rem;
+    // margin: auto;
+    // height: 50%;
+    // line-height: 50%;
+  }
+}
