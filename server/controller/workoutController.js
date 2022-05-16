@@ -38,11 +38,12 @@ export const paginate = async (req, res) => {
             match: { name: searchQuery },
           },
         ])
-        .exec((err, users) => {
-          return users.filter((user) => {
-            return user._type;
+        .exec((err, data) => {
+          if (err) console.log(err)
+          const filtered = data.filter((ele) => {
+            return ele._type;
           });
-          // console.log(users)
+          console.log(filtered)
         })
         .skip(skipRows)
         .limit(pageSize);
@@ -50,7 +51,7 @@ export const paginate = async (req, res) => {
     if (!searchQuery) {
       workouts = await Workout.find().populate(["_user", "_type"]).skip(skipRows).limit(pageSize);
     }
-    // console.log(workouts);
+    console.log(workouts);
     return res.status(200).json(workouts);
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error });
