@@ -35,7 +35,7 @@ const Chart = () => {
         new Date(workouts[i].date) < new Date(dateInput.to)
       ) {
         if (typeFilterInput === "weights") {
-          if (ele.type.category === "weights") {
+          if (ele._type.category === "weights") {
             filteredLabels.push(workouts[i].date.slice(0, 10));
             filteredDataset1.push(workouts[i].data.weights);
 
@@ -54,7 +54,7 @@ const Chart = () => {
           }
         }
         if (typeFilterInput === "bodyweight") {
-          if (ele.type.category === "bodyweight") {
+          if (ele._type.category === "bodyweight") {
             filteredLabels.push(workouts[i].date.slice(0, 10));
             if (outcomeInput === "average") {
               const acc = workouts[i].data.sets.reduce((acc, ele) => acc + ele);
@@ -72,7 +72,7 @@ const Chart = () => {
           // console.log(filteredDataset1)
         }
         if (typeFilterInput === "distance") {
-          if (ele.type.category === "distance") {
+          if (ele._type.category === "distance") {
             filteredLabels.push(workouts[i].date.slice(0, 10));
             filteredDataset1.push(workouts[i].data.distance);
             if (outcomeInput === "average") {
@@ -126,7 +126,7 @@ const Chart = () => {
   }
   useEffect(() => {
     axios
-      .get("http://localhost:9001/api/workouts/")
+      .get("/api/workouts/chart")
       .then((res) => {
         if (res) {
           const sorted = res.data.sort((a,b) => {
@@ -144,7 +144,7 @@ const Chart = () => {
     filterData();
     if (workouts.length) {
       // Set from input field to first date of workout matching typeFilterInput
-      const firstDate = workouts.find((ele) => ele.type.category === typeFilterInput)
+      const firstDate = workouts.find((ele) => ele._type.category === typeFilterInput)
       setDateInput({
         ...dateInput,
         from: firstDate.date.slice(0, 10),

@@ -12,6 +12,8 @@ router.post("/create/:typeid", workoutController.create);
 
 router.get("/paginate", workoutController.paginate);
 
+router.get("/chart", workoutController.chart);
+
 // router.post("/getonebyname", workoutController.getOneByName);
 
 

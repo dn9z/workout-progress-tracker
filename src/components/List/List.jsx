@@ -13,7 +13,7 @@ const List = ({ activeItem, setActiveItem }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const { searchQueryInput, pageNumber, setPageNumber } = useContext(MyContext);
   // const data = usePaginate(searchQueryInput, pageNumber);
-  const [hasMore, sethasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
   const [workouts, setWorkouts] = useState([]);
 
   function handleNavigate(ele) {
@@ -23,6 +23,7 @@ const List = ({ activeItem, setActiveItem }) => {
 
   useEffect(() => {
     setWorkouts([])
+    loadMore()
     return () => {
       setPageNumber(1)
     }
@@ -32,8 +33,8 @@ const List = ({ activeItem, setActiveItem }) => {
    try {
       const res = await axios.get(`/api/workouts/paginate?searchquery=${searchQueryInput}&page=${pageNumber}`) 
       setWorkouts([...workouts,...res.data])    
-      setPageNumber(pageNumber+1) 
-      if (res.data.length === 0) sethasMore(false)
+      setPageNumber(pageNumber+1)
+      setHasMore(res.data.length > 0)
     } catch (e) {
       console.log(e)
     }

@@ -1,4 +1,5 @@
 import Workout from "../models/Workout.js";
+import Type from "../models/Type.js";
 
 export const create = async (req, res) => {
   try {
@@ -30,28 +31,45 @@ export const paginate = async (req, res) => {
   try {
     let workouts = [];
     if (searchQuery) {
-      workouts = await Workout.find()
-        .populate([
-          "_user",
-          {
-            path: "_type",
-            match: { name: searchQuery },
-          },
-        ])
-        .exec((err, data) => {
-          if (err) console.log(err)
-          const filtered = data.filter((ele) => {
-            return ele._type;
-          });
-          console.log(filtered)
-        })
-        .skip(skipRows)
-        .limit(pageSize);
+      const type = await Type.findOne({name:searchQuery}).select('_id')
+      // console.log(type._id)
+
+      workouts = await Workout.find({_type:type._id}).populate("_type").skip(skipRows).limit(pageSize)
+      // console.log(workouts)
+      // workouts = await Workout.find()
+      //   .populate([
+      //     "_user",
+      //     {
+      //       path: "_type",
+      //       match: { name: searchQuery },
+      //     },
+      //   ])
+      //   .exec((err, data) => {
+      //     if (err) console.log(err)
+      //     const filtered = data.filter((ele) => {
+      //       return ele._type;
+      //     });
+      //     console.log(filtered)
+      //   })
+      //   .skip(skipRows)
+      //   .limit(pageSize);
     }
     if (!searchQuery) {
-      workouts = await Workout.find().populate(["_user", "_type"]).skip(skipRows).limit(pageSize);
+      workouts = await Workout.find().populate("_type").skip(skipRows).limit(pageSize);
     }
-    console.log(workouts);
+    // console.log(workouts);
+    return res.status(200).json(workouts);
+  } catch (error) {
+    return res.status(400).json({ message: "Error happened", error: error });
+  }
+};
+
+export const chart = async (req, res) => {
+  try {
+    const workouts = await Workout.find().populate('_type');
+    if (!workouts) {
+      return res.status(404).json("Workout not found");
+    }
     return res.status(200).json(workouts);
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error });
@@ -86,4 +104,43 @@ export const paginate = async (req, res) => {
 //   }
 // };
 
-export default { create, paginate };
+// export const paginate = async (req, res) => {
+//   // console.log('test')
+//   const searchQuery = req.query.searchquery;
+//   const page = Number(req.query.page) || 1;
+//   const pageSize = Number(req.query.pageSize) || 10;
+//   const skipRows = (page - 1) * pageSize;
+
+//   try {
+//     let workouts = [];
+//     if (searchQuery) {
+//       workouts = await Workout.find()
+//       .skip(skipRows)
+//         .populate([
+//           "_user",
+//           {
+//             path: "_type",
+//             match: { name: searchQuery },
+//           },
+//         ])
+
+
+//         .exec()
+
+//           workouts = workouts.filter((user) => {
+//           return user._type;
+//           })
+
+//     }
+//     if (!searchQuery) {
+//       workouts = await Workout.find().populate(["_user", "_type"]).skip(skipRows).limit(pageSize);
+//     }
+//     // console.log(workouts);
+//     return res.status(200).json(workouts);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(400).json({ message: "Error happened", error: error });
+//   }
+// };
+
+export default { create, paginate, chart };
