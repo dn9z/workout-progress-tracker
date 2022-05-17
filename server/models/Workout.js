@@ -7,15 +7,15 @@ const workoutSchema = new Schema({
   _type:{type: Schema.Types.ObjectId, ref:'types'},
   date:{type:Date, required:true},
   data:{
-    weights:{type:Number},
-    sets:[{type:Number}],
+    weights:{type:Number, required:false},
+    sets:[{type:Number, required:false}],
     distance:{type:Number, required:false},
-    rounds:[{type:String}]
+    rounds:[{type:String, required:false}]
   },
   note:{type:String},
 })
 
 
-const Order = model('workouts', workoutSchema);
+const Workout = model('workouts', workoutSchema);
 
-export default Order;
+export default Workout;

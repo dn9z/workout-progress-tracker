@@ -1,5 +1,6 @@
 import Workout from "../models/Workout.js";
 import Type from "../models/Type.js";
+import { startOfDay, endOfDay } from "date-fns";
 
 export const create = async (req, res) => {
   try {
@@ -31,11 +32,14 @@ export const paginate = async (req, res) => {
   try {
     let workouts = [];
     if (searchQuery) {
-      const type = await Type.findOne({name:searchQuery}).select('_id')
+      const type = await Type.findOne({ name: searchQuery }).select("_id");
       // console.log(type._id)
 
-      workouts = await Workout.find({_type:type._id}).populate("_type").skip(skipRows).limit(pageSize)
-      // console.log(workouts)
+      workouts = await Workout.find({ _type: type._id })
+        .populate("_type")
+        .skip(skipRows)
+        .limit(pageSize);
+        
       // workouts = await Workout.find()
       //   .populate([
       //     "_user",
@@ -65,14 +69,31 @@ export const paginate = async (req, res) => {
 };
 
 export const chart = async (req, res) => {
+  const searchQuery = req.query.searchquery;
+  const from = req.query.from;
+  const to = req.query.to;
   try {
-    const workouts = await Workout.find().populate('_type');
-    if (!workouts) {
-      return res.status(404).json("Workout not found");
+    let workouts = [];
+    if (searchQuery) {
+      const type = await Type.findOne({ name: searchQuery }).select("_id");
+      workouts = await Workout.find({ _type: type._id }).populate("_type");
     }
+    if (!searchQuery) {
+      // const type = await Type.findOne({name:'B-Workout'}).select("_id");
+      workouts = await Workout.find({
+        date: {
+          $gte: new Date("2022-04-01"),
+          $lt: new Date("2022-05-02"),
+        },
+      })
+      .sort({date: 1})
+
+      console.log("res length:", workouts.length);
+    }
+
     return res.status(200).json(workouts);
   } catch (error) {
-    return res.status(400).json({ message: "Error happened", error: error });
+    return res.status(400).json({ message: "Error happened", error: error.message });
   }
 };
 
@@ -123,7 +144,6 @@ export const chart = async (req, res) => {
 //             match: { name: searchQuery },
 //           },
 //         ])
-
 
 //         .exec()
 

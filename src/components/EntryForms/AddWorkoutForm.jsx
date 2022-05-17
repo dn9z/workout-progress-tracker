@@ -29,12 +29,11 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
     event.preventDefault();
     console.log("Submit the form");
     const formData = new FormData(event.target);
-
     let data = {};
     if (selectedType.category === "weights") {
       data = {
         type: formData.get("type"), //get the data from the input with name type
-        date: formData.get("date"),
+        date: new Date(Date.parse(formData.get("date"))),
         data: {
           weights: formData.get("weights"),
           sets: setsArr,
@@ -44,7 +43,7 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
     } else if (selectedType.category === "bodyweight") {
       data = {
         type: formData.get("type"), //get the data from the input with name type
-        date: formData.get("date"),
+        date: new Date(Date.parse(formData.get("date"))),
         data: {
           sets: setsArr,
         },
@@ -53,7 +52,7 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
     } else if (selectedType.category === "distance") {
       data = {
         type: formData.get("type"), //get the data from the input with name type
-        date: formData.get("date"),
+        date: new Date(Date.parse(formData.get("date"))),
         data: {
           distance: formData.get("distance"),
           rounds: roundsArr,
