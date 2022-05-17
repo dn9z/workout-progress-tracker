@@ -72,6 +72,7 @@ export const chart = async (req, res) => {
   const searchQuery = req.query.searchquery;
   const from = req.query.from;
   const to = req.query.to;
+  console.log('test')
 
   try {
     let workouts = [];
@@ -87,7 +88,6 @@ export const chart = async (req, res) => {
     }
     if (!searchQuery) {
       const type = await Type.findOne().select("_id");
-      // console.log(type)
       workouts = await Workout.find({
         _type: type._id,
         date: {

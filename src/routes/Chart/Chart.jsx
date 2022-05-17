@@ -56,7 +56,7 @@ const Chart = () => {
 
  async function getData(){
    try {
-      const res = await axios.get(`/api/workouts/chart?searchquery=${searchQueryInput?searchQueryInput:selectedType.name}&from=${dateInput.from}&to=${dateInput.to}`) 
+      const res = await axios.get(`/api/workouts/chart?searchquery=${searchQueryInput?searchQueryInput:selectedType&&selectedType.name}&from=${dateInput.from}&to=${dateInput.to}`) 
       setWorkouts(res.data)
       // console.log(selectedType.name)
     } catch (e) {
@@ -65,6 +65,7 @@ const Chart = () => {
   }
 
   function setData(){
+    getData()
     const labels = []
     const dataset1 = []
     const dataset2 = []
@@ -101,6 +102,7 @@ const Chart = () => {
           }
       }
       if (selectedType.category === "distance") {
+        // console.log(selectedType)
           dataset1.push(workouts[i].data.distance);
           if (outcomeInput === "average") {
             const avgSeconds = workouts[i].data.rounds.reduce((acc, ele) => {
@@ -154,21 +156,6 @@ const Chart = () => {
       });
     }
   }
-  // useEffect(() => {
-  //   axios
-  //     .get(`/api/workouts/chart?searchquery`)
-  //     .then((res) => {
-  //       if (res) {
-  //         const sorted = res.data.sort((a,b) => {
-  //           return new Date(a.date) - new Date(b.date)
-  //         })
-  //         setWorkouts(sorted);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.warn("There was an error", error);
-  //     });
-  // }, []);
 
   // useEffect(() => {
   //   filterData();
@@ -216,7 +203,7 @@ const Chart = () => {
       <button onClick={setData}>Filter</button>
       <div className="chart-container">
         <div className="chart-wrapper">
-          <ChartItem labels={labels} dataset1={dataset1} dataset2={dataset2} />
+          <ChartItem labels={labels} dataset1={dataset1} dataset2={dataset2} category={selectedType} />
         </div>
       </div>
     </div>
