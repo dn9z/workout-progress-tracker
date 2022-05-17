@@ -39,7 +39,7 @@ export const paginate = async (req, res) => {
         .populate("_type")
         .skip(skipRows)
         .limit(pageSize);
-        
+
       // workouts = await Workout.find()
       //   .populate([
       //     "_user",
@@ -72,24 +72,31 @@ export const chart = async (req, res) => {
   const searchQuery = req.query.searchquery;
   const from = req.query.from;
   const to = req.query.to;
+
   try {
     let workouts = [];
     if (searchQuery) {
       const type = await Type.findOne({ name: searchQuery }).select("_id");
-      workouts = await Workout.find({ _type: type._id }).populate("_type");
+      workouts = await Workout.find({
+        _type: type._id,
+        date: {
+          $gte: new Date(from),
+          $lt: new Date(to),
+        },
+      }).populate("_type");
     }
     if (!searchQuery) {
-      // const type = await Type.findOne({name:'B-Workout'}).select("_id");
+      const type = await Type.findOne().select("_id");
+      // console.log(type)
       workouts = await Workout.find({
+        _type: type._id,
         date: {
-          $gte: new Date("2022-04-01"),
-          $lt: new Date("2022-05-02"),
+          $gte: new Date(from),
+          $lt: new Date(to),
         },
-      })
-      .sort({date: 1})
-
-      console.log("res length:", workouts.length);
+      }).sort({ date: 1 }); // will be removed at later stage
     }
+    console.log("res length:", workouts.length);
 
     return res.status(200).json(workouts);
   } catch (error) {
