@@ -72,7 +72,6 @@ export const chart = async (req, res) => {
   const searchQuery = req.query.searchquery;
   const from = req.query.from;
   const to = req.query.to;
-  console.log('test')
 
   try {
     let workouts = [];
@@ -96,8 +95,6 @@ export const chart = async (req, res) => {
         },
       }).sort({ date: 1 }); // will be removed at later stage
     }
-    console.log("res length:", workouts.length);
-
     return res.status(200).json(workouts);
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error.message });

@@ -18,8 +18,9 @@ export const create = async (req, res) => {
 };
 
 export const getOneByName = async (req, res) => {
+  const typeName = req.query.typename
   try {
-    const type = await Type.findOne({ _user: req.user._id, name: req.body.typeName });
+    const type = await Type.findOne({ _user: req.user._id, name: typeName });
     return res.status(200).json({ type });
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error });

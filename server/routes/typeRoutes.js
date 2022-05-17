@@ -10,7 +10,7 @@ router.use(passport.authenticate("jwt", { session: false }));
 
 router.post("/create", typeController.create);
 
-router.post("/getonebyname", typeController.getOneByName);
+router.get("/getonebyname", typeController.getOneByName);
 
 
 router.get("/getall", typeController.getAll);
