@@ -5,6 +5,7 @@ import { Chart as ChartJS } from "chart.js/auto";
 import axios from "axios";
 import { format, parseISO } from "date-fns";
 import ChartItem from "./ChartItem";
+// import {update} from 'chart.js'
 const toSeconds = (str) => {
   const timeArr = str.split(":");
   let seconds = +timeArr[0] * 60 * 60 + +timeArr[1] * 60 + +timeArr[2];
@@ -14,7 +15,7 @@ const toSeconds = (str) => {
 const Chart = () => {
   const { searchQueryInput } = useContext(MyContext);
 
-  const [workouts, setWorkouts] = useState([]);
+  // const [workouts, setWorkouts] = useState([]);
 
   const [outcomeInput, setOutcomeInput] = useState("average");
   // const [typeFilterInput, setTypeFilterInput] = useState("weights");
@@ -40,42 +41,33 @@ const Chart = () => {
   }, []);
 
   useEffect(() => {
-    // console.log(myTypes)
     async function getTypeObj() {
       const res = await axios.get(`/api/types/getonebyname?typename=${typeInput}`);
       setSelectedType(res.data.type);
     }
-    typeInput&&getTypeObj();
+    typeInput && getTypeObj();
   }, [typeInput]);
 
   useEffect(() => {
-    async function getData() {
-      try {
-        const res = await axios.get(
-          `/api/workouts/chart?searchquery=${
-            searchQueryInput ? searchQueryInput : selectedType && selectedType.name
-          }&from=${dateInput.from}&to=${dateInput.to}`
-        );
-        //  console.log(res.data)
-        setWorkouts(res.data);
-        // console.log(selectedType.name)
-      } catch (e) {
-        console.log(e);
-      }
+    async function getWorkouts() {
+      const res = await axios.get(
+        `/api/workouts/chart?searchquery=${
+          searchQueryInput ? searchQueryInput : selectedType.name
+        }&from=${dateInput.from}&to=${dateInput.to}`
+      );
+      // setWorkouts(res.data);
+      setData(res.data)
     }
-    getData();
-  }, []);
+    (searchQueryInput || Object.keys(selectedType).length !== 0) && getWorkouts();
+  }, [selectedType]);
 
-  useEffect(() => {
-    setData();
-  }, [workouts]);
 
-  function setData() {
-    const labels = [];
+  function setData(workouts) {
+    const dataLabels = [];
     const dataset1 = [];
     const dataset2 = [];
     workouts.forEach((ele, i) => {
-      labels.push(format(parseISO(workouts[i].date), "MMM dd, yyyy"));
+      dataLabels.push(format(parseISO(workouts[i].date), "MMM dd, yyyy"));
       if (selectedType.category === "weights") {
         dataset1.push(workouts[i].data.weights);
 
@@ -107,7 +99,6 @@ const Chart = () => {
         }
       }
       if (selectedType.category === "distance") {
-        // console.log(selectedType)
         dataset1.push(workouts[i].data.distance);
         if (outcomeInput === "average") {
           const avgSeconds = workouts[i].data.rounds.reduce((acc, ele) => {
@@ -126,29 +117,19 @@ const Chart = () => {
         }
         if (outcomeInput === "lowest") {
           const lowestSeconds = workouts[i].data.rounds.reduce((acc, ele) => {
-            // console.log(first)
             const timeArr = ele.split(":");
             let seconds = +timeArr[0] * 60 * 60 + +timeArr[1] * 60 + +timeArr[2];
             return seconds > acc ? acc : seconds;
           }, toSeconds(workouts[i].data.rounds[0]));
 
           dataset2.push(lowestSeconds / 60);
-          // console.log(lowestSeconds);
         }
       }
     });
-
-    // console.log(workouts)
-
-    setLabels(labels);
-    setDataset(dataset1);
-    setDataset2(dataset2);
+    setLabels(() => [...dataLabels]);
+    setDataset(() => [...dataset1]);
+    setDataset2(() => [...dataset2]);
   }
-
-  // useEffect(() => {
-  //   setWorkouts([])
-  //   getData()
-  // }, [searchQueryInput])
 
   function handleChange(e) {
     if (e.target.id === "from") {

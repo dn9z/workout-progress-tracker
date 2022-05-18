@@ -3,7 +3,6 @@ import { Line, Bar } from "react-chartjs-2";
 
 const ChartItem = ({labels,dataset1,dataset2}) => {
   return (
-    <>
       <Line
             // data={chartData}
             redraw={true}
@@ -69,7 +68,6 @@ const ChartItem = ({labels,dataset1,dataset2}) => {
               },
             }}
           />
-    </>
   )
 }
 
