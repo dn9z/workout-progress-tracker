@@ -15,7 +15,7 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
 
   useEffect(() => {
     const getOne = async () => {
-      const res = await axios.post("/api/types/getonebyname", { typeName: typeInput });
+      const res = await axios.get(`/api/types/getonebyname?typename=${typeInput}`);
       setSelectedType(res.data.type);
     };
     getOne();
@@ -69,7 +69,7 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
         setShowAddModal(false);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       // setIsError(true);
       // setErrorMessage(error.response.data.message);
     }
