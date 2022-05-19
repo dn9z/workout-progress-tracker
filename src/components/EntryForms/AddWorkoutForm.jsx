@@ -69,7 +69,7 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
         setShowAddModal(false);
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
       // setIsError(true);
       // setErrorMessage(error.response.data.message);
     }

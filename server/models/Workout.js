@@ -8,9 +8,12 @@ const workoutSchema = new Schema({
   date:{type:Date, required:true},
   data:{
     weights:{type:Number},
-    sets:[{type:Number}],
+    // sets:[{type:Number}],
+    sets:{type:[{type:Number}],default:undefined},
+
     distance:{type:Number},
-    rounds:[{type:String}]
+    // rounds:[{type:String, default:undefined}]
+    rounds:{type:[{type:String}],default:undefined}
   },
   note:{type:String},
 })
