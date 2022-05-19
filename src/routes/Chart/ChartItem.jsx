@@ -61,9 +61,6 @@ const ChartItem = ({labels,dataset1,dataset2}) => {
                   type: "linear",
                   display: true,
                   position: "right",
-                  grid: {
-                    drawOnChartArea: false,
-                  },
                 },
               },
             }}
