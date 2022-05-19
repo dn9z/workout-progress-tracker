@@ -7,31 +7,28 @@ const Edit = () => {
   const [activeItem] = useOutletContext()
   const { _id } = useParams();
   const [currentEntry, setCurrentEntry] = useState(null);
-  const [formInput, setFormInput] = useState({
-    date: '',
-    notes: "",
-    type: {
-      name: "",
-      category: "",
-    },
-    data: {
-      weights: 0,
-      sets: [],
-      distance: 0,
-      rounds: [],
-    },
-  });
-  const [repetition, setRepetition] = useState(12);
 
+
+  const [dateInput, setDateInput] = useState('');
+  const [noteInput, setNoteInput] = useState('');
   
+  
+  const [weights, setWeights] = useState(0);
+  const [distance, setDistance] = useState(0);
+  const [typeInput, setTypeInput] = useState('');
+  
+
+  const [set, setSet] = useState(0);
+  const [setsArr, setSetsArr] = useState([]);
+  const [round, setRound] = useState("");
+  const [roundsArr, setRoundsArr] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9001/api/workouts/find/${_id}`)
-      .then((res) => {
+    .get(`/api/workouts/findbyid/${_id}`)
+    .then((res) => {
         if (res) {
-          console.log(activeItem)
-          setCurrentEntry(res.data);
+          setCurrentEntry(res.data.workout);
         }
       })
       .catch((error) => {
@@ -41,189 +38,201 @@ const Edit = () => {
 
   }, [activeItem]);
 
-
   useEffect(() => {
-    currentEntry && setFormInput({
-      date: currentEntry.date.slice(0,10),
-      notes: currentEntry.notes,
-      type: {
-        name: currentEntry.type.name,
-        category: currentEntry.type.category,
-      },
-      data: {
-        weights: currentEntry.data.weights,
-        sets: currentEntry.data.sets,
-        distance: currentEntry.data.distance,
-        rounds: currentEntry.data.rounds,
-      },
-    })
+    if(currentEntry){
+      setDateInput(currentEntry.date.slice(0,10))
+      setNoteInput(currentEntry.note)
+      setTypeInput(currentEntry._type.category)
+
+      if(currentEntry._type.category === "weights"){
+        setWeights(currentEntry.data.weights)
+        setSetsArr(currentEntry.data.sets)
+      }
+      else if(currentEntry._type.category === "bodyweight"){
+        setSetsArr(currentEntry.data.sets)
+      }
+      else if(currentEntry._type.category === "distance"){
+        setDistance(currentEntry.data.distance)
+        setRoundsArr(currentEntry.data.rounds)
+      }
+    }
+
+    // currentEntry && setFormInput({
+    //   date: currentEntry.date.slice(0,10),
+    //   notes: currentEntry.notes,
+    //   type: {
+    //     name: currentEntry._type.name,
+    //     category: currentEntry._type.category,
+    //   },
+    //   data: {
+    //     weights: currentEntry.data.weights,
+    //     sets: currentEntry.data.sets,
+    //     distance: currentEntry.data.distance,
+    //     rounds: currentEntry.data.rounds,
+    //   },
+    // })
   },[currentEntry])
 
 
-  function handleChange(e) {
-    const value = e.target.value;
-    console.log(e.target.value);
-    if (e.target.id === "name") {
-      setFormInput({
-        ...formInput,
-        [e.target.dataset.parent]: {
-          ...formInput.type,
-          [e.target.id]: value,
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("Submit the form");
+    const formData = new FormData(event.target);
+    let data = {};
+    if (currentEntry._type.category === "weights") {
+      data = {
+        type: formData.get("type"), //get the data from the input with name type
+        date: new Date(Date.parse(formData.get("date"))),
+        data: {
+          weights: formData.get("weights"),
+          sets: setsArr,
         },
-      });
-      // console.log(formInput.type.withWeights())
-    } else if (e.target.id === "notes" || e.target.id === "workoutName") {
-      setFormInput({
-        ...formInput,
-        [e.target.id]: value,
-      });
-    } else if (e.target.id === "date") {
-      setFormInput({
-        ...formInput,
-        [e.target.id]: value,
-      });
-      // console.log(new Date().toISOString().substring(0, 10))
-    } else if (e.target.dataset.parent) {
-      setFormInput({
-        ...formInput,
-        [e.target.dataset.parent]: {
-          ...formInput.data,
-          [e.target.id]: value,
+        note: formData.get("note"),
+      };
+    } else if (currentEntry._type.category === "bodyweight") {
+      data = {
+        type: formData.get("type"), //get the data from the input with name type
+        date: new Date(Date.parse(formData.get("date"))),
+        data: {
+          sets: setsArr,
         },
-      });
-    } else {
-      setFormInput({
-        ...formInput,
-        [e.target.dataset.parent]: value,
-      });
+        note: formData.get("note"),
+      };
+    } else if (currentEntry._type.category === "distance") {
+      data = {
+        type: formData.get("type"), //get the data from the input with name type
+        date: new Date(Date.parse(formData.get("date"))),
+        data: {
+          distance: formData.get("distance"),
+          rounds: roundsArr,
+        },
+        note: formData.get("note"),
+      };
     }
-  }
+
+    try {
+      const response = await axios.post(`/api/workouts/create/${currentEntry._type._id}`, data);
+
+      if (response.status === 200) {
+        console.log("workout was created");
+      }
+    } catch (error) {
+      console.log(error);
+      // setIsError(true);
+      // setErrorMessage(error.response.data.message);
+    }
+  };
+
+
 
 
   return (
-    <div className="edit-form-container">
-      <form>
-        <li>
-          <label htmlFor="workoutName">Workout name</label>
-          <input
-            id="workoutName"
-            type="text"
-            onChange={handleChange}
-            value={formInput.type.name}
-          />
-        </li>
-        <li>
-          <label htmlFor="category">Type</label>
-          <select
-            id="category"
-            onChange={handleChange}
-            value={formInput.type.category}
-            data-parent="type"
-          >
-            <option value="weights">Weights</option>
-            <option value="bodyweight">Bodyweight</option>
-            <option value="distance">Distance</option>
+    <div className="edit-container">
+      <form onSubmit={handleSubmit}>
+        <h3>Edit Workout</h3>
+
+        <div>
+          <label>Type</label>
+          <select value={typeInput} onChange={(e) => setTypeInput(e.taget.value) } name="type">
+           <option value="weights">Weights</option>
+           <option value="bodyweight">Bodyweight</option>
+           <option value="distance">Distance</option>
           </select>
-        </li>
-        <li>
-          <label htmlFor="date">Date</label>
-          <input
-            id="date"
-            type="date"
-            onChange={handleChange}
-            value={formInput.date}
-          />
-        </li>
-        <li>
-          <label htmlFor="weights">Weights amount</label>
-          <input
-            id="weights"
-            data-parent="data"
-            type="number"
-            onChange={handleChange}
-            value={formInput.data.weights}
-          />
-        </li>
-        <li>
-          <label htmlFor="repetitionInputField">Repetitions</label>
-          <input
-            id="repetitionInputField"
-            data-parent="data"
-            type="number"
-            onChange={(e) => {
-              setRepetition(e.target.value);
-            }}
-            value={repetition}
-          />
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              const clone = { ...formInput };
-              clone.data.sets.push(repetition);
-              setFormInput(clone);
-            }}
-          >
-            Add set
-          </button>
-        </li>
-        <ol>
-          {formInput.data.sets.map((ele, i) => {
-            return <li key={i}>{ele}</li>;
-          })}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              const clone = { ...formInput };
-              clone.data.sets = [];
-              setFormInput(clone);
-            }}
-          >
-            Reset sets
-          </button>
-        </ol>
-        <li>
-          <label htmlFor="notes">Personal Note</label>
-          <textarea
-            id="notes"
-            data-parent="notes"
-            onChange={handleChange}
-            value={formInput.notes}
-            cols="30"
-            rows="10"
-          ></textarea>
-        </li>
-        {/* <button
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            const clone = {
-              ...formInput,
-              date: new Date(
-                formInput.date.slice(0, 4),
-                formInput.date.slice(5, 7) - 1,
-                formInput.date.slice(8, 10)
-              ),
-            };
-            // setFormInput(clone);
-            setEntries((prevArray) => {
-              console.log(prevArray.indexOf(currentEntry));
-              // return [...prevArray, clone]
-              const arrClone = [...prevArray];
-              arrClone[arrClone.indexOf(currentEntry)] = clone;
-              return arrClone;
-            });
-            navigate(`/workouts/details/${currentEntry.id}`);
-          }}
-        >
-          Save
-        </button> */}
-        <button
-          onClick={() => {
-            navigate(`/workouts/details/${currentEntry.id}`);
-          }}
-        >
-          Back
-        </button>
+        </div>
+
+        <div>
+          <label>Date</label>
+          <input value={dateInput} onChange={(e) => setDateInput(e)} type="date" name="date" />
+        </div>
+
+        {currentEntry && currentEntry._type.category === "weights" && (
+          <div>
+            <label>Weights amount</label>
+            <input value={weights} onChange={(e) => setWeights(e.target.value) } name="weights" type="number" />
+          </div>
+        )}
+        {currentEntry &&
+          (currentEntry._type.category === "weights" || currentEntry._type.category === "bodyweight") && (
+            <>
+              <div>
+                <label>Repetitions</label>
+                <input value={set} onChange={(e) => setSet(e.target.value)} type="number" />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const clone = [...setsArr];
+                    clone.push(set)
+                    setSetsArr(clone);
+                  }}
+                >
+                  Add set
+                </button>
+              </div>
+              <ol>
+                {setsArr.map((ele, i) => {
+                  return <li key={i}>{ele}</li>;
+                })}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSetsArr([]);
+                  }}
+                >
+                  Reset sets
+                </button>
+              </ol>
+            </>
+          )}
+        {currentEntry && currentEntry._type.category === "distance" && (
+          <>
+            <div>
+              <label>Distance</label>
+              <input value={distance} onChange={(e) => setDistance(e.target.value) } type="number" />
+            </div>
+            <div>
+              <label>Time</label>
+              <input
+                type="time"
+                step="1"
+                min="00:00"
+                max="24:00"
+                onChange={(e) => {
+                  setRound(e.target.value);
+                }}
+                value={round}
+              />
+                            <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  const clone = [...roundsArr];
+                  clone.push(round);
+                  setRoundsArr(clone);
+                }}
+              >
+                Add Round
+              </button>
+              <ul>
+                {roundsArr.map((ele, i) => {
+                  return <li key={i}>{ele}</li>;
+                })}
+              </ul>
+              <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setRoundsArr([]);
+                  }}
+                >
+                  Reset Rounds
+                </button>
+            </div>
+          </>
+        )}
+        <div>
+          <label>Personal Note</label>
+          <textarea  value={noteInput} onChange={(e) => setNoteInput(e)}  name="note" cols="30" rows="10"></textarea>
+        </div>
+
+        <button>Submit</button>
       </form>
     </div>
   );

@@ -1,18 +1,24 @@
 .chart-main {
   width: 90%;
+  height: 100%;
   .chart-container {
-    align-self: center;
-    position: relative;
+    // align-self: center;
+    // width: 50rem;
+    height: 100%;
+    // width: 100%;
 
+    // position: relative;
     .chart-wrapper {
-      overflow-x: scroll;
-      width: 50rem;
-      // height: 50rem;
+      height: 15rem;
+      // // height: 50rem;
+      // width: 40rem;
+    //  overflow-x: scroll;
+
       canvas{
-        position: absolute;
-        left: 0;
-        top: 0;
-        pointer-events:none;
+        // position: absolute;
+        // left: 0;
+        // top: 0;
+        // pointer-events:none;
       }
     }
   }

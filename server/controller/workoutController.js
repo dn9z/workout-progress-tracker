@@ -83,21 +83,31 @@ export const chart = async (req, res) => {
           $gte: new Date(from),
           $lt: new Date(to),
         },
-      }).populate("_type");
+      }).populate("_type").sort({ date: 1 })
     }
     if (!searchQuery) {
-      const type = await Type.findOne().select("_id");
+      const types = await Type.findOne().select("_id");
       workouts = await Workout.find({
-        _type: type._id,
+        _type: types._id,
         date: {
           $gte: new Date(from),
           $lt: new Date(to),
         },
       }).sort({ date: 1 }); // will be removed at later stage
+      console.log("types",types)
     }
     return res.status(200).json(workouts);
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error.message });
+  }
+};
+
+export const findById = async (req, res) => {
+  try {
+    const workout = await Workout.findById(req.params.id).populate('_type')
+    return res.status(200).json({ workout });
+  } catch (error) {
+    return res.status(400).json({ message: "Error happened", error: error });
   }
 };
 
@@ -167,4 +177,4 @@ export const chart = async (req, res) => {
 //   }
 // };
 
-export default { create, paginate, chart };
+export default { create, paginate, chart,findById };

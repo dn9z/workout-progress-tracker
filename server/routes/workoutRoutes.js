@@ -14,6 +14,9 @@ router.get("/paginate", workoutController.paginate);
 
 router.get("/chart", workoutController.chart);
 
+router.get("/findbyid/:id", workoutController.findById);
+
+
 // router.post("/getonebyname", workoutController.getOneByName);
 
 

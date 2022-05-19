@@ -10,10 +10,10 @@ const Details = () => {
   
   useEffect(() => {
     axios
-      .get(`http://localhost:9001/api/workouts/find/${_id}`)
+      .get(`/api/workouts/findbyid/${_id}`)
       .then((res) => {
         if (res) {
-          setCurrentEntry(res.data);
+          setCurrentEntry(res.data.workout);
         }
       })
       .catch((error) => {
@@ -21,28 +21,27 @@ const Details = () => {
       });
   }, [activeItem]);
 
-
   return (
     <div className="details-container">
       {currentEntry && (
         <>
           <p>The id of the Workout {_id}</p>
           <p>Date: {currentEntry.date.toString()}</p>
-          <p>Name: {currentEntry.type.name}</p>
-          <p>Type: {currentEntry.type.category}</p>
-          <p>Notes: {currentEntry.notes}</p>
-          {currentEntry.type.category === "weights" && <p>Weights: {currentEntry.data.weights}</p>}
-          {(currentEntry.type.category === "weights" ||
-            currentEntry.type.category === "bodyweight") && (
+          <p>Name: {currentEntry._type.name}</p>
+          <p>Type: {currentEntry._type.category}</p>
+          <p>Notes: {currentEntry.note}</p>
+          {currentEntry._type.category === "weights" && <p>Weights: {currentEntry.data.weights}</p>}
+          {(currentEntry._type.category === "weights" ||
+            currentEntry._type.category === "bodyweight") && (
             <ul>
               Sets
-              {currentEntry.data.sets &&
-                currentEntry.data.sets.map((ele, i) => {
+              {currentEntry._type.sets &&
+                currentEntry._type.sets.map((ele, i) => {
                   return <li key={i}>{ele}</li>;
                 })}
             </ul>
           )}
-          {currentEntry.type.category === "distance" && (
+          {currentEntry._type.category === "distance" && (
             <ul>
               Sets
               {currentEntry.data.rounds.map((ele, i) => {
