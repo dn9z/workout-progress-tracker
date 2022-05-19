@@ -15,8 +15,11 @@ router.get("/getonebyname", typeController.getOneByName);
 
 router.get("/getall", typeController.getAll);
 router.get("/getallall", typeController.getAllall);
+router.get("/findbyid/:id", typeController.findById);
 
-router.delete("/delete/:name", typeController.deleteOne);
+router.post("/updatename/:id", typeController.updateName);
+
+router.delete("/delete/:id", typeController.deleteOne);
 
 // router.post("/register", typeController.register);
 

@@ -40,23 +40,6 @@ export const paginate = async (req, res) => {
         .skip(skipRows)
         .limit(pageSize);
 
-      // workouts = await Workout.find()
-      //   .populate([
-      //     "_user",
-      //     {
-      //       path: "_type",
-      //       match: { name: searchQuery },
-      //     },
-      //   ])
-      //   .exec((err, data) => {
-      //     if (err) console.log(err)
-      //     const filtered = data.filter((ele) => {
-      //       return ele._type;
-      //     });
-      //     console.log(filtered)
-      //   })
-      //   .skip(skipRows)
-      //   .limit(pageSize);
     }
     if (!searchQuery) {
       workouts = await Workout.find().populate("_type").skip(skipRows).limit(pageSize);

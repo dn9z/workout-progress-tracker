@@ -42,7 +42,8 @@ const Chart = () => {
 
   useEffect(() => {
     async function getTypeObj() {
-      const res = await axios.get(`/api/types/getonebyname?typename=${typeInput}`);
+      const res = await axios.get(`/api/types/getonebyname?name=${typeInput}`);
+      console.log(res.data)
       setSelectedType(res.data.type);
     }
     typeInput && getTypeObj();

@@ -1,30 +1,55 @@
 import { useState, useEffect } from "react";
 import Modal from "../../components/utils/Modal/Modal";
 import AddTypeForm from "../../components/EntryForms/AddTypeForm";
+import SureToDelete from "../../components/messages/SureToDelete";
 import axios from "axios";
 
 const Profile = () => {
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [typeInput, setTypeInput] = useState("");
   const [myTypes, setMyTypes] = useState([]);
+  const [selectedType, setSelectedType] = useState({});
 
-  const getListOfTypes = async () => {
+  const [showEditFields, setShowEditFields] = useState(false);
+  const [editNameInput, setEditNameInput] = useState("");
+
+  async function getListOfTypes() {
     const res = await axios.get("/api/types/getall");
     setMyTypes(res.data.types);
-  };
+    setSelectedType(res.data.types[0]);
+  }
 
   useEffect(() => {
     getListOfTypes();
   }, []);
 
   // useEffect(() => {
-  //   getListOfusers();
-  // }, []);
+  //   getListOfTypes();
+  // }, [showEditFields,showAddModal,showDeleteModal]);
 
-  const deleteType = async () => {
-    await axios.delete(`/api/types/delete/${typeInput}`)
-  };
+  useEffect(() => {
+    async function getTypeObj() {
+      const res = await axios.get(`api/types/getonebyname?name=${typeInput}`);
+      setSelectedType(res.data.type);
+    }
+    getTypeObj();
+  }, [typeInput]);
+
+  useEffect(() => {
+    async function updateUI() {
+      const res = await axios.get(`api/types/getonebyname?name=${typeInput}`);
+      setSelectedType(res.data.type);
+      const res2 = await axios.get("/api/types/getall");
+      setMyTypes(res2.data.types);
+    }
+    updateUI();
+  }, [showEditFields, showAddModal, showDeleteModal]);
+
+  async function handleSave() {
+    await axios.post(`/api/types/updatename/${selectedType._id}`, { newName: editNameInput });
+  }
 
   return (
     <div className="profile-container">
@@ -52,11 +77,49 @@ const Profile = () => {
             })}
         </select>
       </div>
-      <button onClick={deleteType}>Delete</button>
+      {!showEditFields ? (
+        <>
+          <button onClick={() => setShowEditFields(true)}>Edit</button>
+          <button
+            onClick={() => {
+              setShowDeleteModal(true);
+              // deleteType()
+            }}
+          >
+            Delete
+          </button>
+        </>
+      ) : (
+        <>
+          <label>Edit Name:</label>
+          <input
+            value={editNameInput}
+            onChange={(e) => setEditNameInput(e.target.value)}
+            type="text"
+          />
+          <button onClick={() => setShowEditFields(false)}>Cancel</button>
+          <button
+            onClick={() => {
+              handleSave();
+              setShowEditFields(false);
+            }}
+          >
+            Save
+          </button>
+        </>
+      )}
       {showAddModal && (
         <Modal
           component={<AddTypeForm setShowAddModal={setShowAddModal} />}
           setShowModal={setShowAddModal}
+        />
+      )}
+      {showDeleteModal && (
+        <Modal
+          component={
+            <SureToDelete selectedTypeId={selectedType._id} setShowModal={setShowDeleteModal} />
+          }
+          setShowModal={setShowDeleteModal}
         />
       )}
     </div>

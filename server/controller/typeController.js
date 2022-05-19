@@ -18,7 +18,7 @@ export const create = async (req, res) => {
 };
 
 export const getOneByName = async (req, res) => {
-  const typeName = req.query.typename
+  const typeName = req.query.name
   try {
     const type = await Type.findOne({ _user: req.user._id, name: typeName });
     return res.status(200).json({ type });
@@ -37,9 +37,9 @@ export const getAll = async (req, res) => {
 };
 
 export const deleteOne = async (req, res) => {
-  const typeId = await Type.findOne({ name: req.params.name });
+  const id = req.params.id
   try {
-    const type = await Type.findByIdAndDelete(typeId._id);
+    const type = await Type.findByIdAndDelete(id);
     return res.status(200).json({ message: "deleted", type });
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error });
@@ -55,4 +55,25 @@ export const getAllall = async (req, res) => {
   }
 };
 
-export default { create, getOneByName, getAll,getAllall, deleteOne };
+export const updateName = async (req, res) => {
+  const id = req.params.id
+  const newName = req.body.newName
+  try {
+    const type = await Type.findByIdAndUpdate(id,{name:newName})
+    return res.status(200).json({ type });
+  } catch (error) {
+    return res.status(400).json({ message: "Error happened", error: error });
+  }
+};
+
+export const findById = async (req, res) => {
+  const id = req.params.id
+  try {
+    const type = await Type.findById(id)
+    return res.status(200).json({ type });
+  } catch (error) {
+    return res.status(400).json({ message: "Error happened", error: error });
+  }
+};
+
+export default { create, getOneByName, getAll,getAllall,findById,updateName, deleteOne };

@@ -3,7 +3,7 @@ const {Schema, model} = mongoose;
 
 
 const typeSchema = new Schema({
-    name:{type:String, required:true, unique:true},
+    name:{type:String, required:true},
     category:{type:String, enum:['weights','bodyweight','distance'], required:true},
     _user:{type: Schema.Types.ObjectId, ref:'users'},
 })
