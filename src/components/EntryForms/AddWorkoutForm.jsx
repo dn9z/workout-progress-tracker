@@ -79,6 +79,8 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
     const getListOfTypes = async () => {
       const res = await axios.get("/api/types/getall");
       setMyTypes(res.data.types);
+      setTypeInput(res.data.types[0].name)
+      // setSelectedType(res.data.types[0])
     };
     getListOfTypes();
   }, []);

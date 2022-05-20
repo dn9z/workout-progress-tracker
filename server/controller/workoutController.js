@@ -94,6 +94,16 @@ export const findById = async (req, res) => {
   }
 };
 
+export const deleteOne = async (req, res) => {
+  const id = req.params.id
+  try {
+    const workout = await Workout.findByIdAndDelete(id);
+    return res.status(200).json({ message: "deleted", workout });
+  } catch (error) {
+    return res.status(400).json({ message: "Error happened", error: error });
+  }
+};
+
 // export const getOneByName = async (req, res) => {
 //   try {
 //     const type = await Workout.findOne({ _user: req.user._id, name: req.body.typeName });
@@ -160,4 +170,4 @@ export const findById = async (req, res) => {
 //   }
 // };
 
-export default { create, paginate, chart,findById };
+export default { create, paginate, chart,findById ,deleteOne};

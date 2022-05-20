@@ -18,7 +18,9 @@ export const create = async (req, res) => {
 };
 
 export const getOneByName = async (req, res) => {
+  
   const typeName = req.query.name
+  console.log(req.user._id)
   try {
     const type = await Type.findOne({ _user: req.user._id, name: typeName });
     return res.status(200).json({ type });

@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Calendar from "./routes/Calendar/Calendar";
 import Header from "./components/Header/Header";
 import Profile from "./routes/Profile/Profile";
+import Settings from "./routes/Settings/Settings";
 function App() {
   return (
     <MyProvider>
@@ -27,6 +28,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/chart" element={<Chart />} />
               <Route path="/calendar" element={<Calendar />} />
+              <Route path="/settings" element={<Settings />} />
               {/* <Route path="*" element={<Home/>} /> */}
             </Routes>
           </div>

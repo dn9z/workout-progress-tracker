@@ -16,6 +16,7 @@ router.get("/chart", workoutController.chart);
 
 router.get("/findbyid/:id", workoutController.findById);
 
+router.delete("/delete/:id", workoutController.deleteOne);
 
 // router.post("/getonebyname", workoutController.getOneByName);
 
