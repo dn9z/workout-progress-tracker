@@ -4,7 +4,8 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import axios from "axios";
 const Edit = () => {
   const navigate = useNavigate();
-  const [activeItem] = useOutletContext()
+  const { setPageNumber } = useContext(MyContext);
+  const [activeItem,setActiveItem, setWorkouts] = useOutletContext()
   const { _id } = useParams();
   const [currentEntry, setCurrentEntry] = useState(null);
 
@@ -15,7 +16,6 @@ const Edit = () => {
   
   const [weights, setWeights] = useState(0);
   const [distance, setDistance] = useState(0);
-  const [typeInput, setTypeInput] = useState('');
   
 
   const [set, setSet] = useState(0);
@@ -42,7 +42,6 @@ const Edit = () => {
     if(currentEntry){
       setDateInput(currentEntry.date.slice(0,10))
       setNoteInput(currentEntry.note)
-      setTypeInput(currentEntry._type.category)
 
       if(currentEntry._type.category === "weights"){
         setWeights(currentEntry.data.weights)
@@ -56,65 +55,56 @@ const Edit = () => {
         setRoundsArr(currentEntry.data.rounds)
       }
     }
-
-    // currentEntry && setFormInput({
-    //   date: currentEntry.date.slice(0,10),
-    //   notes: currentEntry.notes,
-    //   type: {
-    //     name: currentEntry._type.name,
-    //     category: currentEntry._type.category,
-    //   },
-    //   data: {
-    //     weights: currentEntry.data.weights,
-    //     sets: currentEntry.data.sets,
-    //     distance: currentEntry.data.distance,
-    //     rounds: currentEntry.data.rounds,
-    //   },
-    // })
   },[currentEntry])
 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  async function handleSubmit (e)  {
+    e.preventDefault();
     console.log("Submit the form");
-    const formData = new FormData(event.target);
+    const formData = new FormData(e.target);
     let data = {};
     if (currentEntry._type.category === "weights") {
       data = {
-        type: formData.get("type"), //get the data from the input with name type
         date: new Date(Date.parse(formData.get("date"))),
         data: {
           weights: formData.get("weights"),
           sets: setsArr,
         },
         note: formData.get("note"),
+        type:currentEntry._type.category
+
       };
     } else if (currentEntry._type.category === "bodyweight") {
       data = {
-        type: formData.get("type"), //get the data from the input with name type
         date: new Date(Date.parse(formData.get("date"))),
         data: {
           sets: setsArr,
         },
         note: formData.get("note"),
+        type:currentEntry._type.category
+
       };
     } else if (currentEntry._type.category === "distance") {
       data = {
-        type: formData.get("type"), //get the data from the input with name type
         date: new Date(Date.parse(formData.get("date"))),
         data: {
           distance: formData.get("distance"),
           rounds: roundsArr,
         },
         note: formData.get("note"),
+        type:currentEntry._type.category
       };
     }
 
     try {
-      const response = await axios.post(`/api/workouts/create/${currentEntry._type._id}`, data);
+      const response = await axios.patch(`/api/workouts/update/${currentEntry._id}`, data);
 
       if (response.status === 200) {
-        console.log("workout was created");
+        console.log("workout was updated");
+        setWorkouts([])
+        setPageNumber(1)
+        setActiveItem(null)
+        navigate(`/workouts/details/${currentEntry._id}`);
       }
     } catch (error) {
       console.log(error);
@@ -123,7 +113,18 @@ const Edit = () => {
     }
   };
 
-
+  async function handleDelete(e){
+    e.preventDefault()
+    try {
+      const res = await axios.delete(`/api/workouts/deleteone/${currentEntry._id}`)
+      setWorkouts([])
+      setPageNumber(1)
+      setActiveItem(null)
+      navigate(`/workouts`)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
 
   return (
@@ -132,17 +133,8 @@ const Edit = () => {
         <h3>Edit Workout</h3>
 
         <div>
-          <label>Type</label>
-          <select value={typeInput} onChange={(e) => setTypeInput(e.taget.value) } name="type">
-           <option value="weights">Weights</option>
-           <option value="bodyweight">Bodyweight</option>
-           <option value="distance">Distance</option>
-          </select>
-        </div>
-
-        <div>
           <label>Date</label>
-          <input value={dateInput} onChange={(e) => setDateInput(e)} type="date" name="date" />
+          <input value={dateInput} onChange={(e) => setDateInput(e.target.value)} type="date" name="date" />
         </div>
 
         {currentEntry && currentEntry._type.category === "weights" && (
@@ -187,7 +179,7 @@ const Edit = () => {
           <>
             <div>
               <label>Distance</label>
-              <input value={distance} onChange={(e) => setDistance(e.target.value) } type="number" />
+              <input value={distance} onChange={(e) => setDistance(e.target.value) } type="number" name="distance" />
             </div>
             <div>
               <label>Time</label>
@@ -229,10 +221,13 @@ const Edit = () => {
         )}
         <div>
           <label>Personal Note</label>
-          <textarea  value={noteInput} onChange={(e) => setNoteInput(e)}  name="note" cols="30" rows="10"></textarea>
+          <textarea  value={noteInput} onChange={(e) => setNoteInput(e.target.value)}  name="note" cols="30" rows="10"></textarea>
         </div>
-
+        <button onClick={() => {
+              navigate(`/workouts/details/${currentEntry._id}`);
+            }}>Back</button>
         <button>Submit</button>
+        <button onClick={handleDelete}>Delete</button>
       </form>
     </div>
   );

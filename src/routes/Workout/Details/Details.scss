@@ -1,6 +1,36 @@
-.details-container{
-  border: 1px solid black;
-  border-radius: 1rem;
-  background-color: rgb(201, 201, 201);
+.details-container {
+  // border: 1px solid black;
+  // border-radius: 1rem;
+  // background-color: rgb(245, 245, 245);
   height: 100%;
+  font-family: "Teko";
+  padding: 2rem;
+  h1 {
+    font-family: "Goldman";
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+
+  .score{
+    font-size: 1.6rem;
+  }
+  // ul {
+    //   flex-wrap: wrap;
+    //   display: flex;
+    //   flex-direction: column;
+    // }
+    .details-set-list {
+      list-style: none;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: flex-end;
+
+    li {
+      padding: 0.2rem;
+      line-height: 2rem;
+
+    }
+  }
 }

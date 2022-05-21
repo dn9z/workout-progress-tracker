@@ -7,7 +7,7 @@ import RegisterForm from "../UserForms/RegisterForm";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 const Header = () => {
-  const { username, loggedIn,handleLogin, searchQueryInput, setSearchQueryInput, setPageNumber } =
+  const { username, loggedIn, handleLogin, searchQueryInput, setSearchQueryInput, setPageNumber } =
     useContext(MyContext);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -18,7 +18,7 @@ const Header = () => {
     setPageNumber(1);
   }
 
-  const logout =async () => {
+  const logout = async () => {
     try {
       await axios.get("/api/users/logout");
       handleLogin(""); // empty strings will resolve to falsey value
@@ -29,43 +29,49 @@ const Header = () => {
       // setIsError(true);
       // setErrorMessage(error.response.data.message);
     }
-  }
+  };
 
   return (
     <div className="header-container">
-      <div>LOGO</div>
-      <input value={searchQueryInput} onChange={handleSearch} type="text" />
-      {!loggedIn ? <>
-      <button
-        onClick={() => {
-          setShowLoginModal(true);
-        }}
-      >
-        Login
-      </button>
-      <button
-        onClick={() => {
-          setShowRegisterModal(true);
-        }}
-      >
-        Register
-      </button>      
-      </>:
-      <button onClick={logout}>Logout</button>
-      }
-      {showLoginModal && (
-        <Modal
-          component={<LoginForm setShowLoginModal={setShowLoginModal} />}
-          setShowModal={setShowLoginModal}
-        />
-      )}
+      <div className="header-left">
+        <input value={searchQueryInput} onChange={handleSearch} type="text" />
+      </div>
+      <div className="header-right">
+        {!loggedIn ? (
+          <>
+            <button
+              onClick={() => {
+                setShowLoginModal(true);
+              }}
+            >
+              Login
+            </button>
+            <button
+              onClick={() => {
+                setShowRegisterModal(true);
+              }}
+            >
+              Register
+            </button>
+          </>
+        ) : (
+          <button onClick={logout}>Logout</button>
+        )}
+        {showLoginModal && (
+          <Modal
+            component={<LoginForm setShowLoginModal={setShowLoginModal} />}
+            setShowModal={setShowLoginModal}
+          />
+        )}
+      </div>
+
       {showRegisterModal && (
         <Modal
           component={<RegisterForm setShowRegisterModal={setShowRegisterModal} />}
           setShowModal={setShowRegisterModal}
         />
       )}
-      {  (username && loggedIn) && <p>Logged in as {username}</p>}
+      {username && loggedIn && <p>Logged in as {username}</p>}
     </div>
   );
 };

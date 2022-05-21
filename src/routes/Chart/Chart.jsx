@@ -91,6 +91,7 @@ const Chart = () => {
       }
       if (selectedType.category === "bodyweight") {
         if (outcomeInput === "average") {
+          console.log(workouts[i])
           const acc = workouts[i].data.sets.reduce((acc, ele) => acc + ele);
           dataset2.push(acc / workouts[i].data.sets.length);
         }

@@ -37,17 +37,21 @@ export const paginate = async (req, res) => {
 
       workouts = await Workout.find({ _type: type._id })
         .populate("_type")
+        .sort({ date: -1 })
         .skip(skipRows)
         .limit(pageSize);
-
     }
     if (!searchQuery) {
-      workouts = await Workout.find().populate("_type").skip(skipRows).limit(pageSize);
+      workouts = await Workout.find()
+        .populate("_type")
+        .sort({ date: -1 })
+        .skip(skipRows)
+        .limit(pageSize);
     }
     // console.log(workouts);
     return res.status(200).json(workouts);
   } catch (error) {
-    return res.status(400).json({ message: "Error happened", error: error });
+    return res.status(400).json({ message: "Error happened", error: error.message });
   }
 };
 
@@ -66,7 +70,9 @@ export const chart = async (req, res) => {
           $gte: new Date(from),
           $lt: new Date(to),
         },
-      }).populate("_type").sort({ date: 1 })
+      })
+        .populate("_type")
+        .sort({ date: 1 });
     }
     if (!searchQuery) {
       const types = await Type.findOne().select("_id");
@@ -77,7 +83,7 @@ export const chart = async (req, res) => {
           $lt: new Date(to),
         },
       }).sort({ date: 1 }); // will be removed at later stage
-      console.log("types",types)
+      console.log("types", types);
     }
     return res.status(200).json(workouts);
   } catch (error) {
@@ -87,7 +93,7 @@ export const chart = async (req, res) => {
 
 export const findById = async (req, res) => {
   try {
-    const workout = await Workout.findById(req.params.id).populate('_type')
+    const workout = await Workout.findById(req.params.id).populate("_type");
     return res.status(200).json({ workout });
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error });
@@ -95,12 +101,46 @@ export const findById = async (req, res) => {
 };
 
 export const deleteOne = async (req, res) => {
-  const id = req.params.id
+  const id = req.params.id;
   try {
     const workout = await Workout.findByIdAndDelete(id);
     return res.status(200).json({ message: "deleted", workout });
   } catch (error) {
-    return res.status(400).json({ message: "Error happened", error: error });
+    return res.status(400).json({ message: "Error happened", error: error.message });
+  }
+};
+
+export const update = async (req, res) => {
+  const id = req.params.id;
+  console.log(req.body);
+  console.log(new Date(Date.parse(req.body.date)))
+  try {
+    let workout = {}
+    if(req.body.type === 'weights'){
+       workout = await Workout.findByIdAndUpdate(id, {
+        date: new Date(Date.parse(req.body.date)),
+        "data.weights": Number(req.body.data.weights),
+        "data.sets": req.body.data.sets,
+        note: req.body.note,
+      })
+    } else if(req.body.type === 'bodyweight'){
+       workout = await Workout.findByIdAndUpdate(id, {
+        date: new Date(Date.parse(req.body.date)),
+        "data.sets": req.body.data.sets,
+        note: req.body.note,
+      })
+    } else if(req.body.type === 'distance'){
+       workout = await Workout.findByIdAndUpdate(id, {
+        date: new Date(Date.parse(req.body.date)),
+        "data.distance": req.body.data.distance,
+        "data.rounds": req.body.data.rounds,
+        note: req.body.note,
+      })
+    }
+   
+    return res.status(200).json(workout);
+  } catch (error) {
+    return res.status(400).json({ message: "Error happened", error: error.message });
   }
 };
 
@@ -170,4 +210,4 @@ export const deleteOne = async (req, res) => {
 //   }
 // };
 
-export default { create, paginate, chart,findById ,deleteOne};
+export default { create, paginate, chart, findById, deleteOne, update };

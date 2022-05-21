@@ -1,15 +1,27 @@
-.navbar-container{
-  width: 3rem;
-  min-width: 3rem;
-  // text-align: center;
-  ul{
-    list-style: none;
-    a{
-      text-decoration: none;
-      width: 2rem;
-      margin: auto;
-      color: black;
-      &:visited{
+.navbar-container-wrapper{
+  width: 2.6rem;
+    // width: 4rem;
+display: flex;
+justify-content: center;
+  .navbar-container{
+    width: 1.8rem;
+    min-width:1.8rem;
+    // text-align: center;
+    ul{
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+
+      a{
+        text-decoration: none;
+        // width: 2rem;
+        // margin: auto;
+        color: black;
+        margin-top: 0.45rem;
+
+      }
+      a:last-child{
+        margin-bottom: 0.45rem;
       }
     }
   }

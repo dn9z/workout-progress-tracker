@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
-const AddWorkoutForm = ({ setShowAddModal }) => {
+const AddWorkoutForm = ({ setShowAddModal ,setWorkouts,setPageNumber}) => {
   const [myTypes, setMyTypes] = useState([]);
   const [typeInput, setTypeInput] = useState("");
   const [selectedType, setSelectedType] = useState({});
@@ -15,10 +15,11 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
 
   useEffect(() => {
     const getOne = async () => {
-      const res = await axios.get(`/api/types/getonebyname?typename=${typeInput}`);
+      console.log(typeInput)
+      const res = await axios.get(`/api/types/getonebyname?name=${typeInput}`);
       setSelectedType(res.data.type);
     };
-    getOne();
+    typeInput&&getOne();
   }, [typeInput]);
 
   // const navigate = useNavigate();
@@ -31,6 +32,8 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
     const formData = new FormData(event.target);
     let data = {};
     if (selectedType.category === "weights") {
+      if(!setsArr.length) alert('Data missing')
+
       data = {
         type: formData.get("type"), //get the data from the input with name type
         date: new Date(Date.parse(formData.get("date"))),
@@ -41,6 +44,7 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
         note: formData.get("note"),
       };
     } else if (selectedType.category === "bodyweight") {
+      if(!setsArr.length) return alert('Data missing')
       data = {
         type: formData.get("type"), //get the data from the input with name type
         date: new Date(Date.parse(formData.get("date"))),
@@ -50,6 +54,8 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
         note: formData.get("note"),
       };
     } else if (selectedType.category === "distance") {
+      if(!roundsArr.length) return alert('Data missing')
+
       data = {
         type: formData.get("type"), //get the data from the input with name type
         date: new Date(Date.parse(formData.get("date"))),
@@ -61,11 +67,15 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
       };
     }
 
+   
+
     try {
       const response = await axios.post(`/api/workouts/create/${selectedType._id}`, data);
 
       if (response.status === 200) {
         console.log("workout was created");
+        setPageNumber(1)
+        setWorkouts([])
         setShowAddModal(false);
       }
     } catch (error) {
@@ -88,7 +98,7 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
-        <h3>Add Workout-Type</h3>
+        <h3>Add Workout</h3>
 
         <div>
           <label>Type</label>
@@ -106,13 +116,13 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
 
         <div>
           <label>Date</label>
-          <input type="date" name="date" />
+          <input type="date" name="date" required/>
         </div>
 
         {selectedType && selectedType.category === "weights" && (
           <div>
             <label>Weights amount</label>
-            <input name="weights" type="number" />
+            <input name="weights" type="number" required/>
           </div>
         )}
         {selectedType &&
@@ -151,7 +161,7 @@ const AddWorkoutForm = ({ setShowAddModal }) => {
           <>
             <div>
               <label>Distance</label>
-              <input type="number" />
+              <input type="number" required/>
             </div>
             <div>
               <label>Time</label>
