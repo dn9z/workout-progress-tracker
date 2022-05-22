@@ -32,7 +32,7 @@ const AddWorkoutForm = ({ setShowAddModal ,setWorkouts,setPageNumber}) => {
     const formData = new FormData(event.target);
     let data = {};
     if (selectedType.category === "weights") {
-      if(!setsArr.length) alert('Data missing')
+      if(!setsArr.length) alert('Please add data')
 
       data = {
         type: formData.get("type"), //get the data from the input with name type
@@ -44,7 +44,7 @@ const AddWorkoutForm = ({ setShowAddModal ,setWorkouts,setPageNumber}) => {
         note: formData.get("note"),
       };
     } else if (selectedType.category === "bodyweight") {
-      if(!setsArr.length) return alert('Data missing')
+      if(!setsArr.length) return alert('Please add data')
       data = {
         type: formData.get("type"), //get the data from the input with name type
         date: new Date(Date.parse(formData.get("date"))),
@@ -54,7 +54,7 @@ const AddWorkoutForm = ({ setShowAddModal ,setWorkouts,setPageNumber}) => {
         note: formData.get("note"),
       };
     } else if (selectedType.category === "distance") {
-      if(!roundsArr.length) return alert('Data missing')
+      if(!roundsArr.length) return alert('Please add data')
 
       data = {
         type: formData.get("type"), //get the data from the input with name type

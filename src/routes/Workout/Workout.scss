@@ -1,11 +1,14 @@
 .workout-page-container {
   display: flex;
   height: 100%;
+  width: 100%;
   .workout-left{
     // width: 40%;
     width: 14rem;
   }
   .workout-right{
-    width: calc(100% - 14rem);
+    // width: calc(100% - 14rem);
+    // width: 100%;
+    // min-width: 30rem;
   }
 }
