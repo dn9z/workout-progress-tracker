@@ -53,14 +53,16 @@ app.use("/api/users", userRoutes);
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/types", typeRoutes);
 
-app.all("*", (req, res) => {
-  res.status(500);
-  res.send("Invalid path");
-});
+
 
 
 
 app.use("/uploads", express.static("uploads"));
+
+app.all("*", (req, res) => {
+  res.status(500);
+  res.send("Invalid path");
+});
 
 app.listen(app.get("port"), () => {
   console.log("Server started on port " + app.get("port"));
