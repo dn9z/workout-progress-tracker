@@ -18,7 +18,7 @@ export const create = async (req, res) => {
 
     return res.status(200).json({ message: "Workout was created", createdWorkout: newWorkout });
   } catch (error) {
-    return res.status(400).json({ message: "Error happened", error: error });
+    return res.status(400).json({ message: "Error happened", error: error.message });
   }
 };
 

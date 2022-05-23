@@ -18,6 +18,8 @@ router.get("/getallall", typeController.getAllall);
 router.get("/findbyid/:id", typeController.findById);
 
 router.post("/updatename/:id", typeController.updateName);
+router.post("/updateall", typeController.updateAll);
+
 
 router.delete("/delete/:id", typeController.deleteOne);
 

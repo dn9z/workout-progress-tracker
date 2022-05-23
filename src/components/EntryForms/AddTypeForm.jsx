@@ -2,8 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
-const AddTypeForm = ({setShowAddModal}) => {
-  const navigate = useNavigate();
+const AddTypeForm = ({setShowModal}) => {
   // const [isError, setIsError] = useState(false)
   // const [errorMessage, setErrorMessage] = useState("")
 
@@ -24,7 +23,7 @@ const AddTypeForm = ({setShowAddModal}) => {
         //everything went well!
         console.log("type was created");
         //  navigate("/login");
-        setShowAddModal(false)
+        setShowModal(false)
       }
     } catch (error) {
       console.log(error);

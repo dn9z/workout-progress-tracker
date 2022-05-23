@@ -3,17 +3,18 @@ import Modal from "../../components/utils/Modal/Modal";
 import AddTypeForm from "../../components/EntryForms/AddTypeForm";
 import SureToDelete from "../../components/messages/SureToDelete";
 import axios from "axios";
+import { ReactSortable } from "react-sortablejs";
+import "./Profile.scss";
+import EditTypeForm from "../../components/EntryForms/EditTypeForm";
 
 const Profile = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditNameModal, setShowEditNameModal] = useState(false);
 
-  const [typeInput, setTypeInput] = useState("");
+  // const [typeInput, setTypeInput] = useState("");
   const [myTypes, setMyTypes] = useState([]);
   const [selectedType, setSelectedType] = useState({});
-
-  const [showEditFields, setShowEditFields] = useState(false);
-  const [editNameInput, setEditNameInput] = useState("");
 
   async function getListOfTypes() {
     const res = await axios.get("/api/types/getall");
@@ -25,93 +26,78 @@ const Profile = () => {
     getListOfTypes();
   }, []);
 
-  // useEffect(() => {
-  //   getListOfTypes();
-  // }, [showEditFields,showAddModal,showDeleteModal]);
-
-  useEffect(() => {
-    async function getTypeObj() {
-      const res = await axios.get(`api/types/getonebyname?name=${typeInput}`);
-      setSelectedType(res.data.type);
-    }
-    getTypeObj();
-  }, [typeInput]);
 
   useEffect(() => {
     async function updateUI() {
-      const res = await axios.get(`api/types/getonebyname?name=${typeInput}`);
-      setSelectedType(res.data.type);
-      const res2 = await axios.get("/api/types/getall");
-      setMyTypes(res2.data.types);
+      const res = await axios.get("/api/types/getall");
+      setMyTypes(res.data.types);
     }
     updateUI();
-  }, [showEditFields, showAddModal, showDeleteModal]);
+  }, [showAddModal, showEditNameModal, showDeleteModal]);
 
-  async function handleSave() {
-    await axios.post(`/api/types/updatename/${selectedType._id}`, { newName: editNameInput });
+
+  async function handleSaveOrder() {
+    await axios.post(`/api/types/updateall`, { newList: myTypes });
   }
 
   return (
     <div className="profile-container">
-      <button
-        onClick={() => {
-          setShowAddModal(true);
-        }}
-      >
-        New
-      </button>
-      <div>
-        <label>My Workout Types</label>
-        <select
-          value={typeInput}
-          onChange={(e) => setTypeInput(e.target.value)}
-          name="my-workout-types"
+      <div className="profile-type-buttons">
+        <button
+          onClick={() => {
+            setShowAddModal(true);
+          }}
         >
-          {myTypes &&
-            myTypes.map((ele, i) => {
-              return (
-                <option value={ele.name} key={i}>
-                  {ele.name}
-                </option>
-              );
-            })}
-        </select>
+          New
+        </button>
+        <button onClick={handleSaveOrder}>Save Order</button>
+        <button onClick={() => setShowEditNameModal(true)}>Edit Name</button>
+        <button
+          onClick={() => {
+            setShowDeleteModal(true);
+            // deleteType()
+          }}
+        >
+          Delete
+        </button>
       </div>
-      {!showEditFields ? (
-        <>
-          <button onClick={() => setShowEditFields(true)}>Edit</button>
-          <button
-            onClick={() => {
-              setShowDeleteModal(true);
-              // deleteType()
-            }}
-          >
-            Delete
-          </button>
-        </>
-      ) : (
-        <>
-          <label>Edit Name:</label>
-          <input
-            value={editNameInput}
-            onChange={(e) => setEditNameInput(e.target.value)}
-            type="text"
-          />
-          <button onClick={() => setShowEditFields(false)}>Cancel</button>
-          <button
-            onClick={() => {
-              handleSave();
-              setShowEditFields(false);
-            }}
-          >
-            Save
-          </button>
-        </>
-      )}
+      <ReactSortable
+        className="dnd-list"
+        chosenClass="dnd-item-drag"
+        list={myTypes}
+        setList={setMyTypes}
+      >
+        {myTypes &&
+          myTypes.map((ele, i) => {
+            return (
+              <div
+                onClick={() => {
+                  setSelectedType(ele);
+                }}
+                className={
+                  selectedType && selectedType._id === ele._id ? `drag-item-active` : "drag-item"
+                }
+                key={i}
+              >
+                <span>{ele.name}</span>
+                <div className="type-span">
+                  <span>Type: </span>
+                  <span>{ele.category[0].toUpperCase() + ele.category.slice(1)}</span>
+                </div>
+              </div>
+            );
+          })}
+      </ReactSortable>
       {showAddModal && (
         <Modal
-          component={<AddTypeForm setShowAddModal={setShowAddModal} />}
+          component={<AddTypeForm setShowModal={setShowAddModal} />}
           setShowModal={setShowAddModal}
+        />
+      )}
+      {showEditNameModal && (
+        <Modal
+          component={<EditTypeForm selectedTypeId={selectedType._id} setShowModal={setShowEditNameModal} />}
+          setShowModal={setShowEditNameModal}
         />
       )}
       {showDeleteModal && (

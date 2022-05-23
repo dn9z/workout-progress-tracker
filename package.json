@@ -19,7 +19,9 @@
     "react-grid-layout": "^1.3.4",
     "react-infinite-scroller": "^1.2.6",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "react-sortablejs": "^6.1.1",
+    "sortablejs": "^1.15.0"
   },
   "scripts": {
     "start": "react-scripts start",
