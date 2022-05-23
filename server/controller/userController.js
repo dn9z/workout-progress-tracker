@@ -81,6 +81,25 @@ export const logout = async (req, res) => {
   //.redirect("/");
 };
 
+export const uploadAvatar = async (req, res) => {
+  const  {path}  = req.file;
+  try {
+    const user = await User.findOneAndUpdate({_id:req.user._id}, {avatar:path})
+    return res.status(200).json( path);
+  } catch (error) {
+    return res.status(400).json({ message: "Error happened", error: error.message });
+  }
+};
+
+export const getAvatar = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(400).json({ message: "Error happened", error: error });
+  }
+};
+
 // exports.listUsers = async (req, res) => {
 //   const page = Number(req.query.page) || 1;
 //   const pageSize = Number(req.query.pageSize) || 10;
@@ -121,4 +140,4 @@ export const logout = async (req, res) => {
 //   }
 // };
 
-export default { register, login, logout };
+export default { register, login, logout ,uploadAvatar,getAvatar};

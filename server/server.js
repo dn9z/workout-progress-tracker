@@ -5,10 +5,14 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import workoutRoutes from "./routes/workoutRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import typeRoutes from './routes/typeRoutes.js'
-import passport from 'passport';
+import typeRoutes from "./routes/typeRoutes.js";
+import passport from "passport";
 // import path from 'path'clear
-import configurePassport from './passport-config.js';
+import configurePassport from "./config/passport-config.js";
+// import { fileURLToPath } from "url";
+// import path, { dirname } from "path";
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
 dotenv.config();
 const app = express();
@@ -24,8 +28,7 @@ app.use(
   })
 );
 
-
-//initialize passport 
+//initialize passport
 app.use(cookieParser());
 app.use(passport.initialize());
 //configure passport using our function.
@@ -50,16 +53,14 @@ app.use("/api/users", userRoutes);
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/types", typeRoutes);
 
-
 app.all("*", (req, res) => {
   res.status(500);
   res.send("Invalid path");
 });
 
-// app.use(express.static(path.join(__dirname, "client/build")));
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname + "/client/build/index.html"));
-// });
+
+
+app.use("/uploads", express.static("uploads"));
 
 app.listen(app.get("port"), () => {
   console.log("Server started on port " + app.get("port"));
