@@ -42,6 +42,7 @@ const ProfileTypesUi = () => {
 
   return (
     <div className="profile-container">
+      <h1>My Workout Types</h1>
       <div className="profile-type-buttons">
         <button
           onClick={() => {

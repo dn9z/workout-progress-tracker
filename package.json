@@ -16,7 +16,6 @@
     "react": "^18.0.0",
     "react-chartjs-2": "^4.1.0",
     "react-dom": "^18.0.0",
-    "react-grid-layout": "^1.3.4",
     "react-infinite-scroller": "^1.2.6",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",

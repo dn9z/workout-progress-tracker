@@ -144,6 +144,14 @@ export const update = async (req, res) => {
   }
 };
 
+export const getAll = async (req, res) => {
+  try {
+    const workouts = await Workout.find({ _user: req.user._id }).populate('_type').sort({ date: 1 })
+    return res.status(200).json(workouts);
+  } catch (error) {
+    return res.status(400).json({ message: "Error happened", error: error.message });
+  }
+};
 // export const getOneByName = async (req, res) => {
 //   try {
 //     const type = await Workout.findOne({ _user: req.user._id, name: req.body.typeName });
@@ -153,14 +161,7 @@ export const update = async (req, res) => {
 //   }
 // };
 
-// export const getAll = async (req, res) => {
-//   try {
-//     const types = await Workout.find({ _user: req.user._id }).select("name");
-//     return res.status(200).json({ types });
-//   } catch (error) {
-//     return res.status(400).json({ message: "Error happened", error: error });
-//   }
-// };
+
 
 // export const deleteOne = async (req, res) => {
 //   const typeId = await Workout.findOne({ name: req.params.name });
@@ -210,4 +211,4 @@ export const update = async (req, res) => {
 //   }
 // };
 
-export default { create, paginate, chart, findById, deleteOne, update };
+export default { create, paginate, chart, findById, deleteOne, update,getAll };

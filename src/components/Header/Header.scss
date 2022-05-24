@@ -1,36 +1,76 @@
-@import '../utils/var';
+@import "../utils/var";
 
-.header-container{
+.header-container {
   display: flex;
   justify-content: space-between;
-  .header-left{
+  .searchbar {
     // height: 100%;
     width: 14rem;
     min-width: 14rem;
-    &::after{
-      content:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
-      position:relative;
+    &::after {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
+      position: relative;
 
       z-index: 1;
       left: 12.2rem;
-      top:-1.62rem;
+      top: -1.62rem;
       display: block;
       width: 1.3rem;
       opacity: 0.3;
     }
-    input{
+    input {
       background-color: $left-main-color;
       width: 100%;
       height: 100%;
       border: none;
-      border-bottom: 0.1rem groove rgba(0,0,0,0.57);
-     
+      border-bottom: 0.1rem groove rgba(0, 0, 0, 0.57);
     }
   }
-  .header-right{
-    button{
+  .header-main {
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // padding: 1rem 0 1rem 0;
+    // margin: 0.5rem;
+    padding-left: 0.4rem;
+    .logo{
+      display: flex;
+      img{
+        width: 2rem;
+        height: 1.6rem;
+
+      }
+      span{
+        font-family: 'Goldman';
+        font-size: 1.4rem;
+        text-shadow: 3px 2px 4px #9d9d9d;
+        padding-left: 0.5rem;
+      }
+    }
+    .logged-in{
+      display: flex;
+      // justify-content: center;
+      align-items: center;
+      .avatar-container {
+        cursor: pointer;
+        img {
+          border: 1px solid rgb(208, 208, 208);
+          width: 1.6rem;
+        }
+      }
+      .logout-button{
+        width: 2rem;
+        cursor: pointer;
+        svg{
+        }
+      }
+    }
+    
+    button {
       height: 100%;
       // border: none;
     }
+    
   }
 }

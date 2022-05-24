@@ -13,12 +13,16 @@ body {
   height: 100vh;
   width: 100vw;
   list-style: none;
+  display: flex;
+  justify-content: center;
+  // align-items: center;
+  padding-top:10rem;
   main {
+    padding: 0.1rem;
     background-color: aliceblue;
+    width: 38rem;
     display: flex;
-    // align-items: stretch;
-    margin: 8rem 3rem 0 3rem;
-    // height: 70vh;
+    justify-content: center;
     border-radius: 0.2rem;
     section{
       display: flex;
@@ -33,5 +37,29 @@ body {
       }
     }
   }
-  
+}
+
+.form-container{
+  // wid
+  border: 1px solid black;
+  background-color: rgb(225, 225, 225);
+  form{
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    ul{
+      list-style-type: none;
+    }
+    div{
+      display: flex;
+      width: 100%;
+      // justify-content: center;
+      label{
+        // display: flex;
+        width: 30%;
+        text-align: right;
+      }
+      input{width: 65%;}
+    }
+  }
 }

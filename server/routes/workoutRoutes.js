@@ -20,10 +20,8 @@ router.delete("/deleteone/:id", workoutController.deleteOne);
 
 router.patch("/update/:id", workoutController.update);
 
-// router.post("/getonebyname", workoutController.getOneByName);
+router.get("/getall", workoutController.getAll);
 
-
-// router.get("/getall", workoutController.getAll);
 
 // router.delete("/delete/:name", workoutController.deleteOne);
 

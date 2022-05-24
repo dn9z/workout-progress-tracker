@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useState ,useEffect} from "react";
-
+import { useState, useEffect } from "react";
+import "./ProfileAvatarUi.scss";
 const ProfileAvatarUi = () => {
-  const [path, setPath] = useState("");
+  const [avatarPath, setAvatarPath] = useState("");
   const handleSubmitForm = async (event) => {
     event.preventDefault();
 
@@ -15,33 +15,34 @@ const ProfileAvatarUi = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      setPath(res.data);
+      setAvatarPath(res.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    async function getAvatar(){
-      const res = await axios.get('/api/users/getavatar')
-      setPath(res.data.user.avatar)
+    async function getAvatar() {
+      const res = await axios.get("/api/users/getavatar");
+      setAvatarPath(res.data.user.avatar);
     }
-    getAvatar()
-  }, [])
+    getAvatar();
+  }, []);
 
   return (
-    <div className="App">
-      <h1>File upload</h1>
+    <div className="avatar-ui-container">
+      <h1>Profile</h1>
+      <div className="avatar-ui-wrapper">
+        <div className="avatar-container">
+          <img src={`/${avatarPath}`} alt="" />
+        </div>
 
-      <img src={`/${path}`} alt="" />
-
-      <form onSubmit={handleSubmitForm} encType="multipart/form-data">
-        <label>
-          Upload your avatar
+        <form className="avatar-form" onSubmit={handleSubmitForm} encType="multipart/form-data">
+          <label>Upload your avatar</label>
           <input type="file" name="avatar" accept="image/*" />
-        </label>
-        <button type="submit">Submit form</button>
-      </form>
+          <button type="submit">Submit form</button>
+        </form>
+      </div>
     </div>
   );
 };

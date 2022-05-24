@@ -8,7 +8,14 @@
   }
   .workout-right{
     // width: calc(100% - 14rem);
-    // width: 100%;
+    width: 100%;
     // min-width: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span{
+      font-family: 'Goldman';
+      font-size: 1.7rem;
+    }
   }
 }

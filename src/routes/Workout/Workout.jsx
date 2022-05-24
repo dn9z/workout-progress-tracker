@@ -12,7 +12,7 @@ const Workout = () => {
             <List workouts={workouts} setWorkouts={setWorkouts} activeItem={activeItem} setActiveItem={setActiveItem}/>
           </div>
           <div className="workout-right">
-            {activeItem? <Outlet context={[activeItem,setActiveItem,setWorkouts]} />:'please select'}
+            {activeItem? <Outlet context={[activeItem,setActiveItem,setWorkouts]} />:<span>please select</span>}
           </div>
         </div>
   );

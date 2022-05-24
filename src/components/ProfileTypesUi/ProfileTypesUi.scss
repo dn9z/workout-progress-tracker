@@ -6,17 +6,24 @@
   //   overflow: hidden;
   //   white-space: nowrap;
   // }
-
+  h1{
+    padding-left: 3rem;
+    font-size: 1.3rem;
+    font-family: 'Teko';
+  }
+    width: 90%;
+    margin: auto;
+    margin-bottom: 1rem;
   .profile-type-buttons {
     display: flex;
     justify-content: space-evenly;
     button:first-child {
-      border-top-left-radius: 0.3rem;
-      border-bottom-left-radius: 2rem;
+      border-bottom-left-radius: 0.3rem;
+      border-top-left-radius: 2rem;
     }
     button:last-child {
-      border-top-right-radius: 0.3rem;
-      border-bottom-right-radius: 2rem;
+      border-bottom-right-radius: 0.3rem;
+      border-top-right-radius: 2rem;
     }
 
     // button {
@@ -29,6 +36,7 @@
   }
 
   .dnd-list {
+    border: 0.1rem solid black;
     display: flex;
     flex-wrap: wrap;
 
@@ -118,6 +126,8 @@
   .profile-type-buttons {
     $button-secondary:#202600;
     button {
+      font-family: 'Teko';
+      font-size: 1rem;
       background: #ffffff;
       // box-shadow: 0 0.16rem $button-secondary;
       color: $button-secondary;

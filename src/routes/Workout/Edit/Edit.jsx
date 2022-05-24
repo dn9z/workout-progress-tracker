@@ -128,7 +128,7 @@ const Edit = () => {
 
 
   return (
-    <div className="edit-container">
+    <div className="form-container">
       <form onSubmit={handleSubmit}>
         <h3>Edit Workout</h3>
 
