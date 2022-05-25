@@ -1,10 +1,41 @@
+@import '../../utils/var';
 .recent-container{
   padding: 0.6rem;
   display: flex;
   justify-content: space-evenly;
+  position: relative;
+  font-family: 'Teko';
+  .recent-title{
+    position: absolute;
+    left: -0.8rem;
+    top: 0;
+    font-size: 0.9rem;
+  }
   .recent-single-container{
+    padding: 0.5rem;
+    box-shadow: 0.2rem 0.2rem 0.6rem 0.1rem #0000003d;
+    border-radius: 0.15rem;
+
+    width: 7rem;
+    .data-and-date{
+      display: flex;
+      p:first-child{
+        padding-right: 0.3rem;
+      }
+    }
+    span{
+      color:$primary-color-dashboard;
+    }
     svg{
       width: 1rem;
+    }
+    p{
+      span{
+        color:rgba(184, 18, 18, 0.709);
+      }
+    }
+    .recent-date{
+      // font-size: 0.8rem;
     }
   }
 }

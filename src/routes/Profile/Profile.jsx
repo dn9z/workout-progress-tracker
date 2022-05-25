@@ -4,7 +4,7 @@ import ProfileTypesUi from "../../components/ProfileTypesUi/ProfileTypesUi";
 const Profile = () => {
   return (
     <>
-    <ProfileAvatarUi/>
+      <ProfileAvatarUi />
       <ProfileTypesUi />
     </>
   );

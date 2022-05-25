@@ -11,9 +11,9 @@ router.post("/login", userController.login);
 
 router.post("/register", userController.register);
 
+router.get("/logout", userController.logout);
 router.use(passport.authenticate("jwt", { session: false }));
 
-router.get("/logout", userController.logout);
 
 router.post("/uploadavatar", upload.single("avatar"),userController.uploadAvatar);
 

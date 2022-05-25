@@ -14,7 +14,7 @@ router.get("/getonebyname", typeController.getOneByName);
 
 
 router.get("/getall", typeController.getAll);
-router.get("/getallall", typeController.getAllall);
+// router.get("/getallall", typeController.getAllall);
 router.get("/findbyid/:id", typeController.findById);
 
 router.post("/updatename/:id", typeController.updateName);

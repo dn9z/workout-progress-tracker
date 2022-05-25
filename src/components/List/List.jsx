@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useContext } from "react";
 import "./List.scss";
-import axios from "axios";
+import axios from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import Modal from "../utils/Modal/Modal";
 import AddWorkoutForm from "../EntryForms/AddWorkoutForm";
@@ -26,7 +26,7 @@ const List = ({ activeItem, setActiveItem ,workouts, setWorkouts}) => {
     return () => {
       setPageNumber(1);
     };
-  }, [searchQueryInput]);
+  }, [searchQueryInput,showAddModal]);
 
   async function loadMore() {
     try {

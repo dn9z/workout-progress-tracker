@@ -1,0 +1,89 @@
+@import '../utils/var';
+
+.login-form-container {
+  font-family: "Teko";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .login-form-title {
+    font-family: "Goldman";
+    // font-size: 2.7rem;
+    img{
+      width: 3rem;
+    }
+    span{
+      font-family: 'Goldman';
+      font-size: 2.1rem;
+      text-shadow: 3px 2px 4px #9d9d9d;
+      padding-left: 0.5rem;
+      line-height: 1rem;
+    }
+  }
+  .login-form-subtitle {
+    font-size: 1rem;
+    font-weight: 100;
+  }
+  .login-area-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .login-input-container {
+      position: relative;
+      margin-bottom: 0.3rem;
+      input {
+        border-radius: 0.8rem;
+        // background-color: #303245;
+        background-color: #ebebeb;
+        border: 0;
+        box-sizing: border-box;
+        color: rgb(54, 54, 54);
+        // font-size: 18px;
+        font-size: 1.2rem;
+        font-family: 'Teko';
+        height: 100%;
+        outline: 0;
+        padding: 4px 20px 0;
+        width: 100%;
+      }
+      .placeholder {
+        color: #65657b;
+        // font-family: sans-serif;
+        line-height: 0.9rem;
+        pointer-events: none;
+        position: absolute;
+        transform-origin: 0 50%;
+        transition: transform 200ms, color 200ms;
+        left: 0.7rem;
+        top: 0.4rem;
+      }
+
+      input:focus ~ .placeholder,
+      input:not(:placeholder-shown) ~ .placeholder {
+        transform: translateY(-0.5rem) translateX(10px) scale(0.75);
+      }
+
+      input:not(:placeholder-shown) ~ .placeholder {
+        color: #808097;
+      }
+
+      input:focus ~ .placeholder {
+        color: #dc2f55;
+      }
+    }
+    button {
+      background-color: $primary-color;
+      border-radius: 0.8rem;
+      border: 0;
+      box-sizing: border-box;
+      color: #eee;
+      cursor: pointer;
+      height: 2rem;
+      text-align: center;
+      width: 100%;
+    }
+
+    button:active {
+      background-color: $primary-color-clicked;
+    }
+  }
+}

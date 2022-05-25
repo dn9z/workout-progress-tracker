@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState,useEffect } from "react";
 // import { useLocation } from "react-router-dom";
 import mockEntries from "../../mockEntries";
 const MyContext = createContext(null);
@@ -21,6 +21,18 @@ const MyProvider = ({ children }) => {
       setLoggedIn(false);
     }
   };
+
+  useEffect(() => {
+    sessionStorage.setItem(
+      "login",
+      JSON.stringify({ username: username, loggedIn: loggedIn })
+    );
+  }, [username, loggedIn]);
+
+  useEffect(() => {
+    
+  }, [])
+
 
   const [searchQueryInput, setSearchQueryInput] = useState("");
   const [pageNumber, setPageNumber] = useState(1);

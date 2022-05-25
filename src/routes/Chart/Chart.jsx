@@ -2,8 +2,8 @@ import "./Chart.scss";
 import { useContext, useState, useEffect, useRef } from "react";
 import { MyContext } from "../../components/context/Context";
 import { Chart as ChartJS } from "chart.js/auto";
-import axios from "axios";
-import { format, parseISO } from "date-fns";
+import axios from "../../components/utils/axiosInstance";
+import { endOfDay, format, parseISO, startOfDay } from "date-fns";
 import ChartItem from "./ChartItem";
 // import {update} from 'chart.js'
 const toSeconds = (str) => {
@@ -20,8 +20,9 @@ const Chart = () => {
   const [outcomeInput, setOutcomeInput] = useState("average");
   // const [typeFilterInput, setTypeFilterInput] = useState("weights");
   const [dateInput, setDateInput] = useState({
-    from: "2020-01-01",
-    to: new Date().toISOString().substring(0, 10),
+    from: "1970-01-01",
+    // to: new Date().toISOString().substring(0, 10),
+    to:endOfDay(new Date()).toISOString().slice(0,10)
   });
   const [labels, setLabels] = useState([]);
   const [dataset1, setDataset] = useState([]);
@@ -60,11 +61,14 @@ const Chart = () => {
           searchQueryInput ? searchQueryInput : selectedType.name
         }&from=${dateInput.from}&to=${dateInput.to}`
       );
-      // setWorkouts(res.data);
       setData(res.data)
+      setDateInput({
+        ...dateInput,
+        from:startOfDay(new Date(Date.parse(res.data[0].date))).toISOString().slice(0,10)
+      })
     }
     (searchQueryInput || Object.keys(selectedType).length !== 0) && getWorkouts();
-  }, [selectedType]);
+  }, [selectedType,outcomeInput]);
 
 
   function setData(workouts) {

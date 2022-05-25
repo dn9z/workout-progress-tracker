@@ -32,17 +32,17 @@ export const paginate = async (req, res) => {
   try {
     let workouts = [];
     if (searchQuery) {
-      const type = await Type.findOne({ name: searchQuery }).select("_id");
+      const type = await Type.findOne({ _user: req.user._id, name: searchQuery }).select("_id");
       // console.log(type._id)
 
-      workouts = await Workout.find({ _type: type._id })
+      workouts = await Workout.find({ _user: req.user._id, _type: type._id })
         .populate("_type")
         .sort({ date: -1 })
         .skip(skipRows)
         .limit(pageSize);
     }
     if (!searchQuery) {
-      workouts = await Workout.find()
+      workouts = await Workout.find({ _user: req.user._id })
         .populate("_type")
         .sort({ date: -1 })
         .skip(skipRows)
@@ -63,27 +63,28 @@ export const chart = async (req, res) => {
   try {
     let workouts = [];
     if (searchQuery) {
-      const type = await Type.findOne({ name: searchQuery }).select("_id");
+      const type = await Type.findOne({ _user: req.user._id,name: searchQuery }).select("_id");
       workouts = await Workout.find({
+        _user: req.user._id,
         _type: type._id,
         date: {
           $gte: new Date(from),
-          $lt: new Date(to),
+          $lte: new Date(to),
         },
       })
         .populate("_type")
         .sort({ date: 1 });
     }
     if (!searchQuery) {
-      const types = await Type.findOne().select("_id");
+      const types = await Type.findOne({_user: req.user._id}).select("_id");
       workouts = await Workout.find({
+        _user: req.user._id,
         _type: types._id,
         date: {
           $gte: new Date(from),
           $lt: new Date(to),
         },
       }).sort({ date: 1 }); // will be removed at later stage
-      console.log("types", types);
     }
     return res.status(200).json(workouts);
   } catch (error) {
@@ -113,31 +114,31 @@ export const deleteOne = async (req, res) => {
 export const update = async (req, res) => {
   const id = req.params.id;
   console.log(req.body);
-  console.log(new Date(Date.parse(req.body.date)))
+  console.log(new Date(Date.parse(req.body.date)));
   try {
-    let workout = {}
-    if(req.body.type === 'weights'){
-       workout = await Workout.findByIdAndUpdate(id, {
+    let workout = {};
+    if (req.body.type === "weights") {
+      workout = await Workout.findByIdAndUpdate(id, {
         date: new Date(Date.parse(req.body.date)),
         "data.weights": Number(req.body.data.weights),
         "data.sets": req.body.data.sets,
         note: req.body.note,
-      })
-    } else if(req.body.type === 'bodyweight'){
-       workout = await Workout.findByIdAndUpdate(id, {
+      });
+    } else if (req.body.type === "bodyweight") {
+      workout = await Workout.findByIdAndUpdate(id, {
         date: new Date(Date.parse(req.body.date)),
         "data.sets": req.body.data.sets,
         note: req.body.note,
-      })
-    } else if(req.body.type === 'distance'){
-       workout = await Workout.findByIdAndUpdate(id, {
+      });
+    } else if (req.body.type === "distance") {
+      workout = await Workout.findByIdAndUpdate(id, {
         date: new Date(Date.parse(req.body.date)),
         "data.distance": req.body.data.distance,
         "data.rounds": req.body.data.rounds,
         note: req.body.note,
-      })
+      });
     }
-   
+
     return res.status(200).json(workout);
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error.message });
@@ -146,7 +147,9 @@ export const update = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const workouts = await Workout.find({ _user: req.user._id }).populate('_type').sort({ date: 1 })
+    const workouts = await Workout.find({ _user: req.user._id })
+      .populate("_type")
+      .sort({ date: 1 });
     return res.status(200).json(workouts);
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error.message });
@@ -160,8 +163,6 @@ export const getAll = async (req, res) => {
 //     return res.status(400).json({ message: "Error happened", error: error });
 //   }
 // };
-
-
 
 // export const deleteOne = async (req, res) => {
 //   const typeId = await Workout.findOne({ name: req.params.name });
@@ -211,4 +212,4 @@ export const getAll = async (req, res) => {
 //   }
 // };
 
-export default { create, paginate, chart, findById, deleteOne, update,getAll };
+export default { create, paginate, chart, findById, deleteOne, update, getAll };

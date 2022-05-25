@@ -97,13 +97,14 @@ const Highlights = ({ workouts }) => {
   // console.log(myRecords)
   return (
     <div className="highlights-container">
+      <span className="highlight-title">Highlights</span>
       {Object.keys(myRecords).length && (
         <>
-          {[0, 1, 2].map((i) => {
+          {Object.keys(myRecords).map((ele,i) => {
             return (
               <div className="highlights-single-container" key={i}>
                 <div>
-                  {Object.keys(myRecords)[i]}{" "}
+                  <span className="highlight-name">{Object.keys(myRecords)[i]}</span>{" "}
                   {Object.values(myRecords)[i].category === "weights" ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -164,12 +165,12 @@ const Highlights = ({ workouts }) => {
                   )}
                 </div>
                 <div>
-                  {Object.values(myRecords)[i].data}
+                  <span className="highlight-record">{Object.values(myRecords)[i].data}
                   {Object.values(myRecords)[i].category === "weights"
                     ? " kg"
                     : Object.values(myRecords)[i].category === "bodyweight"
                     ? " Reps"
-                    : Object.values(myRecords)[i].category === "distance" && " km"}
+                    : Object.values(myRecords)[i].category === "distance" && " km"}</span>
                 </div>
                 <div>{format(parseISO(Object.values(myRecords)[i].date), "MMM dd, yyyy")}</div>
               </div>

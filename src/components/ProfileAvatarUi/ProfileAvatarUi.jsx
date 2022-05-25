@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios from "../utils/axiosInstance";
 import { useState, useEffect } from "react";
 import "./ProfileAvatarUi.scss";
+import nopic from '../../resources/nopic.png'
 const ProfileAvatarUi = () => {
   const [avatarPath, setAvatarPath] = useState("");
   const handleSubmitForm = async (event) => {
@@ -34,13 +35,13 @@ const ProfileAvatarUi = () => {
       <h1>Profile</h1>
       <div className="avatar-ui-wrapper">
         <div className="avatar-container">
-          <img src={`/${avatarPath}`} alt="" />
+          {avatarPath?<img src={`/${avatarPath}`} alt="" />:<img src={nopic} alt="" />}
         </div>
 
         <form className="avatar-form" onSubmit={handleSubmitForm} encType="multipart/form-data">
           <label>Upload your avatar</label>
           <input type="file" name="avatar" accept="image/*" />
-          <button type="submit">Submit form</button>
+          <button type="submit">Upload</button>
         </form>
       </div>
     </div>

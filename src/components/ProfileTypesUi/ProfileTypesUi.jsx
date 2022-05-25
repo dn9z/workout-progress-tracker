@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Modal from "../../components/utils/Modal/Modal";
 import AddTypeForm from "../../components/EntryForms/AddTypeForm";
 import SureToDelete from "../../components/messages/SureToDelete";
-import axios from "axios";
+import axios from "../utils/axiosInstance";
 import { ReactSortable } from "react-sortablejs";
 import "./ProfileTypesUi.scss";
 import EditTypeForm from "../../components/EntryForms/EditTypeForm";

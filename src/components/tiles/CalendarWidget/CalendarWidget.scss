@@ -1,6 +1,25 @@
-
+@import '../../utils/var';
 
 .calendar-widget-container{
+  position: relative;
+  .calendar-widget-add{
+    cursor: pointer;
+    z-index: 5;
+    position: absolute;
+    // font-size: 30rem;
+    background-color: #90BBFF;
+    border-radius: 50%;
+    height: 1.5rem;
+    width: 1.5rem;
+    display: flex;
+    justify-content: center;
+    bottom: 0.2rem;
+    right: 0.05rem;
+    svg{
+      color: white;
+      width: 1rem;
+    }
+  }
 .red-dot{
   width: 0.45rem;
   height: 0.45rem;
@@ -46,23 +65,30 @@
   }
   .fc table{
     font-size: 0.85rem;
+    font-family: 'Teko';
+
   }
   .fc-col-header-cell {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+    font-family: 'Goldman';
+
     // padding: 0;
   }
   .fc-col-header-cell-cushion {
-    font-size: 0.7rem;
+    font-size: 0.5rem;
     padding: 0;
   }
   .fc .fc-toolbar.fc-header-toolbar {
+    font-family: 'Goldman';
     margin-bottom: 0;
-    // justify-content: space-between;
+    justify-content: flex-end;
+    margin-right: 0.5rem;
+    // margin-left: 0.5rem;
     .fc-button-group {
       .fc-prev-button {
         width: 50%;
         padding: 0;
-        // margin-left: 1rem;
+        margin-left: 0.5rem;
         // margin-right: 0.1rem;
       }
       .fc-next-button {

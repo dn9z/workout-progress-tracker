@@ -69,8 +69,6 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   // Remove the httpOnly cookie
-  console.log("I get here", req.cookies);
-  console.log("user", req.user)
   res
     .clearCookie("jwt", {
       httpOnly: true,

@@ -5,14 +5,15 @@ import Modal from "../utils/Modal/Modal";
 import LoginForm from "../UserForms/LoginForm";
 import RegisterForm from "../UserForms/RegisterForm";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
+import axios from '../utils/axiosInstance'
 import logo from "../../resources/dumbbell.png";
+import nopic from "../../resources/nopic.png";
 const Header = () => {
   const { username, loggedIn, handleLogin, searchQueryInput, setSearchQueryInput, setPageNumber } =
     useContext(MyContext);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  // const [showLoginModal, setShowLoginModal] = useState(false);
+  // const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   const [avatarPath, setAvatarPath] = useState("");
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const Header = () => {
       handleLogin(""); // empty strings will resolve to falsey value
 
       // Navigate("/");
+      navigate('/')
     } catch (error) {
       console.log(error);
       // setIsError(true);
@@ -41,9 +43,9 @@ const Header = () => {
   useEffect(() => {
     getAvatar();
   }, []);
-  useEffect(() => {
-    getAvatar();
-  }, [showLoginModal]);
+  // useEffect(() => {
+  //   getAvatar();
+  // }, [showLoginModal]);
   return (
     <div className="header-container">
       <div className="searchbar">
@@ -56,24 +58,7 @@ const Header = () => {
           <span>fitme</span>
         </div>
 
-        {!loggedIn ? (
-          <div className="logged-out">
-            <button
-              onClick={() => {
-                setShowLoginModal(true);
-              }}
-            >
-              Login
-            </button>
-            <button
-              onClick={() => {
-                setShowRegisterModal(true);
-              }}
-            >
-              Register
-            </button>
-          </div>
-        ) : (
+       
           <div className="logged-in">
             <div
               onClick={() => {
@@ -81,7 +66,7 @@ const Header = () => {
               }}
               className="avatar-container"
             >
-              <img src={`/${avatarPath}`} alt="" />
+              {avatarPath?<img src={`/${avatarPath}`} alt="" />:<img src={nopic} alt="" />}
             </div>
             <div className="logout-button" onClick={logout}>
               <svg
@@ -100,21 +85,10 @@ const Header = () => {
               </svg>
             </div>
           </div>
-        )}
-        {showLoginModal && (
-          <Modal
-            component={<LoginForm setShowLoginModal={setShowLoginModal} />}
-            setShowModal={setShowLoginModal}
-          />
-        )}
+       
       </div>
 
-      {showRegisterModal && (
-        <Modal
-          component={<RegisterForm setShowRegisterModal={setShowRegisterModal} />}
-          setShowModal={setShowRegisterModal}
-        />
-      )}
+     
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import "./Details.scss";
-import axios from "axios";
+import axios from "../../../components/utils/axiosInstance";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { format, parseISO } from "date-fns";

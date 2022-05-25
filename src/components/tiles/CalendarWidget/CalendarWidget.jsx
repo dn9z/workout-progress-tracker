@@ -5,7 +5,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import "./CalendarWidget.scss";
 import { useNavigate } from "react-router-dom";
-const CalendarWidget = ({ workouts }) => {
+
+const CalendarWidget = ({ workouts ,setShowAddModal}) => {
   const [eventArr, setEventArr] = useState([]);
   const navigate = useNavigate();
 
@@ -31,8 +32,6 @@ const CalendarWidget = ({ workouts }) => {
   // }
 
   const handleEventClick = (clickInfo) => {
-    // console.log("clicked");
-    // console.log(clickInfo)
     console.log(clickInfo.event._def.publicId);
     navigate(`/workouts/details/${clickInfo.event._def.publicId}`);
   };
@@ -40,41 +39,38 @@ const CalendarWidget = ({ workouts }) => {
   return (
     <div className="calendar-widget-container">
       {eventArr && (
-        <FullCalendar
-          // plugins={[dayGridPlugin]}
-          // initialView="dayGridMonth"
-          eventMaxStack={0}
-          moreLinkContent={<div className="red-dot"></div>}
-          firstDay={1}
-          events={eventArr}
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          headerToolbar={{
-            left: "title",
-            center: "prev,next",
-            right: "",
-          }}
-          // initialView="dayGridMonth"
-          // editable={true}
-          // selectable={true}
-          // selectMirror={true}
-          dayMaxEvents={0}
-          // contentHeight='100px'
-          // weekends={this.state.weekendsVisible}
-          // initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
-          // select={this.handleDateSelect} // when clicked on date field
-          // eventContent={renderEventContent} // custom render function
-          eventClick={handleEventClick} // when clicked on event
-          // eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
-          /* you can update a remote database when these fire:
-    eventAdd={function(){}}
-    eventChange={function(){}}
-    eventRemove={function(){}}
-    */
-          // eventChange={(e) => {
-          //   console.log(e);
-          // }}
-        />
+        <>
+          <div onClick={() => {
+            setShowAddModal(true)
+          }} className="calendar-widget-add">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+          <FullCalendar
+            titleFormat={{ year: "numeric", month: "short" }}
+            eventMaxStack={0}
+            moreLinkContent={<div className="red-dot"></div>}
+            firstDay={1}
+            events={eventArr}
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            headerToolbar={{
+              left: "title",
+              center: "prev,next",
+              right: "",
+            }}
+            dayMaxEvents={0}
+            eventClick={handleEventClick} // when clicked on event
+          />
+        </>
       )}
+      
     </div>
   );
 };

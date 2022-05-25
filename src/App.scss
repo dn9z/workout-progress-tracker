@@ -1,3 +1,4 @@
+@import './components/utils/var';
 * {
   padding: 0;
   margin: 0;
@@ -18,7 +19,7 @@ body {
   // align-items: center;
   padding-top:10rem;
   main {
-    padding: 0.1rem;
+    // padding: 0.1rem;
     background-color: aliceblue;
     width: 38rem;
     display: flex;
@@ -42,15 +43,34 @@ body {
 .form-container{
   // wid
   border: 1px solid black;
-  background-color: rgb(225, 225, 225);
+  background-color: rgb(244, 252, 255);
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  font-family: 'Teko';
+  box-shadow: 0.2rem 0.2rem 0.6rem 0.1rem #0000003d;
+
+  h3{
+    text-align: center;
+  }
   form{
     width: 20rem;
     display: flex;
     flex-direction: column;
-    ul{
-      list-style-type: none;
+    label{
+      padding-right: 0.5rem;
+    }
+    .sets-container{
+      display: flex;
+      ol{
+        list-style-type: none;
+        display: flex;
+        li{
+          padding-right: 0.3rem;
+        }
+      }
     }
     div{
+      padding: 0.3rem;
       display: flex;
       width: 100%;
       // justify-content: center;
@@ -61,5 +81,42 @@ body {
       }
       input{width: 65%;}
     }
+
+    .repetition-input-ui{
+      display: flex;
+      justify-content: space-evenly;
+      width: 65%;
+      padding: 0;
+      button{
+        border-radius: 0.3rem;
+        padding: 0;
+        // margin-right: 0.3rem;
+        font-size: 0.8rem;
+
+
+      }
+    }
+    button{
+      background-color: $primary-color;
+      border-radius: 0.8rem;
+      border: 0;
+      box-sizing: border-box;
+      color: rgb(85, 85, 85);
+      cursor: pointer;
+      // height: 2rem;
+      text-align: center;
+      // width: 100%;
+      // padding: 0.2rem;
+      font-size: 1.1rem;
+      font-family: 'Teko';
+      margin-top: 0.2rem;
+
+      &:last-child{
+        color: rgb(230, 230, 230);
+        background-color: rgb(255, 74, 74);
+      }
+
+    }
+    
   }
 }

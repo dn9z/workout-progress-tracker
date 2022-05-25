@@ -1,7 +1,6 @@
 import Type from "../models/Type.js";
 import Workout from "../models/Workout.js";
 
-
 export const create = async (req, res) => {
   try {
     // console.log(req.user)
@@ -42,21 +41,21 @@ export const deleteOne = async (req, res) => {
   const id = req.params.id;
   try {
     const type = await Type.findByIdAndDelete(id);
-    const workouts = await Workout.deleteMany({_user:req.user._id,_type:id})
+    const workouts = await Workout.deleteMany({ _user: req.user._id, _type: id });
     return res.status(200).json({ message: "deleted", type });
   } catch (error) {
     return res.status(400).json({ message: "Error happened", error: error });
   }
 };
 
-export const getAllall = async (req, res) => {
-  try {
-    const types = await Type.find({}).populate("_user");
-    return res.status(200).json({ types });
-  } catch (error) {
-    return res.status(400).json({ message: "Error happened", error: error });
-  }
-};
+// export const getAllall = async (req, res) => {
+//   try {
+//     const types = await Type.find({}).populate("_user");
+//     return res.status(200).json({ types });
+//   } catch (error) {
+//     return res.status(400).json({ message: "Error happened", error: error });
+//   }
+// };
 
 export const updateName = async (req, res) => {
   const id = req.params.id;
@@ -72,7 +71,7 @@ export const updateName = async (req, res) => {
 export const updateAll = async (req, res) => {
   const newList = req.body.newList;
   try {
-    await Type.deleteMany();
+    await Type.deleteMany({_user: req.user._id});
 
     for (let i = 0; i < newList.length; i++) {
       await Type.create({
@@ -102,7 +101,6 @@ export default {
   create,
   getOneByName,
   getAll,
-  getAllall,
   findById,
   updateName,
   updateAll,

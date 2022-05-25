@@ -7,9 +7,9 @@ const RecentWorkouts = ({ workouts }) => {
   function displayRecent(workout) {
     return (
       <>
+      {workout&&<div>
         <span>
-
-          {workout._type.name}
+          {workout._type.name}{" "}
           {workout._type.category === "weights" ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -70,33 +70,47 @@ const RecentWorkouts = ({ workouts }) => {
           )}
         </span>
         {workout._type.category === "weights" ? (
-          <div className="right-display">
-            <p>{workout.data.weights} kg</p>
-            <p>Best: {Math.max(...workout.data.sets)} Reps</p>
-            <p>{format(parseISO(workout.date), "MMM dd, yyyy")}</p>
+          <div>
+            <div className="data-and-date">
+              <p>{workout.data.weights} kg</p>{" "}
+              <p className="recent-date">{format(parseISO(workout.date), "MMM dd, yyyy")}</p>
+            </div>
+
+            <p>
+              Best Set: <span>{Math.max(...workout.data.sets)} Reps</span>{" "}
+            </p>
           </div>
         ) : workout._type.category === "bodyweight" ? (
-          <div className="right-display">
-            <p>Best: {Math.max(...workout.data.sets)} Reps</p>
-            <p>{format(parseISO(workout.date), "MMM dd, yyyy")}</p>
+          <div>
+            <p>
+              Best Set: <span>{Math.max(...workout.data.sets)} Reps</span>{" "}
+            </p>
+            <p className="recent-date">{format(parseISO(workout.date), "MMM dd, yyyy")}</p>
           </div>
         ) : (
           workout._type.category === "distance" && (
-            <div className="right-display">
-              <p>{workout.data.distance} km</p>
-              <p>Best: {getBestRound(workout.data.rounds)}</p>
-              <p>{format(parseISO(workout.date), "MMM dd, yyyy")}</p>
+            <div>
+              <div className="data-and-date">
+                <p>{workout.data.distance} km</p>
+                <p className="recent-date">{format(parseISO(workout.date), "MMM dd, yyyy")}</p>
+              </div>
+
+              <p>
+                Best Round: <span>{getBestRound(workout.data.rounds)}</span>
+              </p>
             </div>
           )
         )}
+      </div>}
       </>
     );
   }
 
   return (
     <div className="recent-container">
+      <span className="recent-title">Recent Activity</span>
       <div className="recent-single-container">
-        {workouts.length && displayRecent(workouts[workouts.length - 1])}
+        {workouts.length ? displayRecent(workouts[workouts.length - 1]):<span>No data!</span>}
       </div>
       <div className="recent-single-container">
         {workouts.length && displayRecent(workouts[workouts.length - 2])}

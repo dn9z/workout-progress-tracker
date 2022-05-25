@@ -35,32 +35,32 @@ const RegisterForm = ({setShowRegisterModal}) => {
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit}>
-        <h3>Sign Up</h3>
-        <div>
-          <label>Username</label>
-          <input type="text" name="username" placeholder="Username" />
+    <div className="login-form-container">
+      <form className="login-area-container"  onSubmit={handleSubmit}>
+        <h1 className="login-form-title">Sign Up</h1>
+        <div className="login-input-container">
+          <input id="register-username" type="text" name="username" placeholder=" " />
+          <label htmlFor="register" className="placeholder">Username</label>
         </div>
 
-        <div>
-          <label>Email address</label>
-          <input type="email" name="email" placeholder="Enter email" />
+        <div className="login-input-container">
+          <input  id="register-email"type="email" name="email" placeholder=" " />
+          <label htmlFor="register-email" className="placeholder">Email address</label>
         </div>
 
-        <div>
-          <label>Password</label>
-          <input type="password" name="password" placeholder="Enter password" />
+        <div className="login-input-container">
+          <input id="register-password" type="password" name="password" placeholder=" " />
+          <label htmlFor="register-password" className="placeholder">Password</label>
         </div>
 
-        <div>
-          <label>Re-Password</label>
-          <input type="password" name="repassword" placeholder="Enter password" />
+        <div className="login-input-container">
+          <input id="register-re-password" type="password" name="repassword" placeholder=" " />
+          <label htmlFor="register-re-password" className="placeholder">Re-Password</label>
         </div>
         {/* <ErrorMessage isVisible={isError} errorMessage={errorMessage} /> */}
         <button>Sign Up</button>
         <p>
-          Already registered <Link to="/login">sign in?</Link>
+          Already registered? <Link to="/login">Sign In.</Link>
         </p>
       </form>
     </div>

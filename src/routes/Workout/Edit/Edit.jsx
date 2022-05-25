@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../../components/context/Context";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../components/utils/axiosInstance";
 const Edit = () => {
   const navigate = useNavigate();
   const { setPageNumber } = useContext(MyContext);
@@ -148,31 +148,37 @@ const Edit = () => {
             <>
               <div>
                 <label>Repetitions</label>
-                <input value={set} onChange={(e) => setSet(e.target.value)} type="number" />
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const clone = [...setsArr];
-                    clone.push(set)
-                    setSetsArr(clone);
-                  }}
-                >
-                  Add set
-                </button>
+                <div className="repetition-input-ui">
+                  <input value={set} onChange={(e) => setSet(e.target.value)} type="number" />
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const clone = [...setsArr];
+                      clone.push(set);
+                      setSetsArr(clone);
+                    }}
+                  >
+                    Add set
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSetsArr([]);
+                    }}
+                  >
+                    Reset sets
+                  </button>
+                </div>
               </div>
-              <ol>
-                {setsArr.map((ele, i) => {
-                  return <li key={i}>{ele}</li>;
-                })}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSetsArr([]);
-                  }}
-                >
-                  Reset sets
-                </button>
-              </ol>
+              <div className="sets-container">
+                {setsArr.length > 0 && <label>Sets</label>}
+
+                <ol>
+                  {setsArr.map((ele, i) => {
+                    return <li key={i}>{ele}</li>;
+                  })}
+                </ol>
+              </div>
             </>
           )}
         {currentEntry && currentEntry._type.category === "distance" && (
@@ -183,32 +189,28 @@ const Edit = () => {
             </div>
             <div>
               <label>Time</label>
-              <input
-                type="time"
-                step="1"
-                min="00:00"
-                max="24:00"
-                onChange={(e) => {
-                  setRound(e.target.value);
-                }}
-                value={round}
-              />
-                            <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  const clone = [...roundsArr];
-                  clone.push(round);
-                  setRoundsArr(clone);
-                }}
-              >
-                Add Round
-              </button>
-              <ul>
-                {roundsArr.map((ele, i) => {
-                  return <li key={i}>{ele}</li>;
-                })}
-              </ul>
-              <button
+              <div className="repetition-input-ui">
+                <input
+                  type="time"
+                  step="1"
+                  min="00:00"
+                  max="24:00"
+                  onChange={(e) => {
+                    setRound(e.target.value);
+                  }}
+                  value={round}
+                />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const clone = [...roundsArr];
+                    clone.push(round);
+                    setRoundsArr(clone);
+                  }}
+                >
+                  Add Round
+                </button>
+                <button
                   onClick={(e) => {
                     e.preventDefault();
                     setRoundsArr([]);
@@ -216,7 +218,18 @@ const Edit = () => {
                 >
                   Reset Rounds
                 </button>
+              </div>
+              
             </div>
+            <div className="sets-container">
+              {roundsArr.length > 0 && <label>Rounds</label>}
+
+                <ol>
+                  {roundsArr.map((ele, i) => {
+                    return <li key={i}>{ele}</li>;
+                  })}
+                </ol>
+              </div>
           </>
         )}
         <div>

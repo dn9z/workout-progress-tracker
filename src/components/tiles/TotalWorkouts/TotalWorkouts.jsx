@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import "./TotalWorkouts.scss";
 const TotalWorkouts = ({ workouts }) => {
@@ -30,7 +29,7 @@ const TotalWorkouts = ({ workouts }) => {
     <div className="total-workouts-container">
       {workouts &&
         Object.keys(totals).map((ele, i) => {
-          if (i >= 3) return null; //has to be made scrollable
+          // if (i >= 3) return null; //has to be made scrollable
           return (
             <div className="total-container" key={i}>
               <div>
@@ -39,6 +38,7 @@ const TotalWorkouts = ({ workouts }) => {
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 301.015 301.015"
                     enableBackground="new 0 0 301.015 301.015"
+                    fill='#90BBFF'
                   >
                     <path
                       d="M296.075,128.44H279.11v-22.88c0-2.665-2.21-4.875-4.875-4.875H246.74V77.74c0-2.665-2.21-4.875-4.875-4.875h-32.37
@@ -58,6 +58,8 @@ const TotalWorkouts = ({ workouts }) => {
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 512 512"
                     enableBackground="new 0 0 512 512"
+                    fill='#90BBFF'
+
                   >
                     <path
                       d="M128.409,172.138c-13.739-16.825-38.508-19.314-55.319-5.585c-16.818,13.734-19.319,38.501-5.584,55.319
@@ -83,6 +85,8 @@ const TotalWorkouts = ({ workouts }) => {
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 490.1 490.1"
                       enableBackground="new 0 0 490.1 490.1"
+                      fill='#90BBFF'
+
                     >
                       <path d="m447.25,360.1l-187.7-49.1 165.8-33.9-4.2-21.8-210.6,43.7c-13,2.8-9.4,20.9 0,21.8l168.9,44.8-191.8,13.1c-10.5,1.5-12.6,13.3-6.3,19.7l62.6,59-136.6,10.9 1,21.8 159.5-13.1c7.7,0.6 14.9-11.2 6.3-19.7l-61.5-59 233.5-16.4c11.5-0.5 12.8-18.6 1.1-21.8z" />
                       <path d="m460.85,81.8c0-27.2-21.9-49.2-49-49.2s-49,22-49,49.2 21.9,49.2 49,49.2c26.1,0 49-22 49-49.2zm-77.1,1c0-15.7 12.5-28.3 28.1-28.3 14.6,0 28.1,11.5 28.1,27.2s-12.5,28.3-28.1,28.3c-15.6,0-28.1-11.5-28.1-27.2z" />
@@ -93,7 +97,7 @@ const TotalWorkouts = ({ workouts }) => {
                   )
                 )}
               </div>
-              <div>{ele}</div> <div>{totals[ele].number} Entries</div>
+              <div>{ele}</div> <div className="totals-count">{totals[ele].number} Entries</div>
             </div>
           );
         })}

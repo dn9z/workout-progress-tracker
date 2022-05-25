@@ -6,7 +6,6 @@ const Workout = () => {
   const [activeItem, setActiveItem] = useState(null);
   const [workouts, setWorkouts] = useState([]);
   const location = useLocation()
-console.log(location.pathname)
   return (
         <div className="workout-page-container">
           <div className="workout-left">

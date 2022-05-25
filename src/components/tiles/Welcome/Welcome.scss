@@ -1,8 +1,15 @@
+@import '../../utils/var';
 .welcome-container{
   display: flex;
   flex-direction: column;
   align-items: center;
   // justify-content: center;
+  font-family: 'Teko';
+  .greeting{
+    span{
+      color: $primary-color-dashboard;
+    }
+  }
   .since-last-days{
     text-align: center;
   }
