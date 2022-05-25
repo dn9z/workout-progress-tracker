@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { MyContext } from "../../context/Context";
+import './Welcome.scss'
 const Welcome = ({ workouts }) => {
   const { username } = useContext(MyContext);
 
@@ -11,12 +12,12 @@ const Welcome = ({ workouts }) => {
     return Math.floor(days);
   }
   return (
-    <>
-      <p>Welcome {username}</p>
+    <div className="welcome-container">
+      <p className="greeting">Welcome {username}</p>
       {workouts.length && (
-        <p>It's been {getDaysSinceLastWorkout()} days since your last workout!</p>
+        <p className="since-last-days">It's been {getDaysSinceLastWorkout()} days since your last workout!</p>
       )}
-    </>
+    </div>
   );
 };
 

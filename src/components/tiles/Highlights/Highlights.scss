@@ -1,0 +1,9 @@
+.highlights-container{
+  display: flex;
+  justify-content: space-evenly;
+  .highlights-single-container{
+    svg{
+      width: 1rem;
+    }
+  }
+}

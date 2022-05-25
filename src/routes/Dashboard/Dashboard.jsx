@@ -31,19 +31,19 @@ const Dashboard = () => {
   return (
     <div className="home-container">
       <div className="home-left">
-        <div className="welcome">
+        <div className="welcome tile-container">
           <Welcome workouts={workouts} />
         </div>
-        <div className="calendar-widget"><CalendarWidget workouts={workouts}/></div>
+        <div className="calendar-widget tile-container"><CalendarWidget workouts={workouts}/></div>
       </div>
       <div className="home-right">
-        <div className="entry-count">
+        <div className="entry-count tile-container">
           <TotalWorkouts workouts={workouts} />
         </div>
-        <div className="recent">
+        <div className="recent tile-container">
           <RecentWorkouts workouts={workouts} />
         </div>
-        <div className="highlights"><Highlights workouts={workouts}/></div>
+        <div className="highlights tile-container"><Highlights workouts={workouts}/></div>
       </div>
     </div>
   );

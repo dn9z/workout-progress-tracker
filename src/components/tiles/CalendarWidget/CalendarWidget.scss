@@ -1,0 +1,74 @@
+
+
+.calendar-widget-container{
+.red-dot{
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background-color: rgba(255, 0, 0, 0.569);
+  // z-index: 1;
+
+}
+
+.fc-scroller-harness>.fc-scroller {
+  overflow: hidden!important;
+}
+// .fc .fc-scroller-liquid-absolute{
+//   overflow: hidden;
+// }
+// .fc-day-grid-container.fc-scroller {
+//   height: auto!important;
+//   overflow-y: auto;
+// }
+  .fc-daygrid-more-link{
+    position: relative;
+    top: -1.6rem;
+    left: -0.15rem;
+  }
+
+  .fc-daygrid-day{
+    // border: none;
+    // height: 1rem;
+  }
+  .fc-daygrid-day-events{
+    // display: none;
+    // width: 0;
+    // height: 0;
+  }
+
+  .fc-daygrid-day-frame{
+    height: 1rem;
+  }
+
+  .fc .fc-toolbar-title{
+    font-size: 1rem;
+    // padding-left: 0.4rem;
+  }
+  .fc table{
+    font-size: 0.85rem;
+  }
+  .fc-col-header-cell {
+    font-size: 0.7rem;
+    // padding: 0;
+  }
+  .fc-col-header-cell-cushion {
+    font-size: 0.7rem;
+    padding: 0;
+  }
+  .fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0;
+    // justify-content: space-between;
+    .fc-button-group {
+      .fc-prev-button {
+        width: 50%;
+        padding: 0;
+        // margin-left: 1rem;
+        // margin-right: 0.1rem;
+      }
+      .fc-next-button {
+        padding: 0;
+        margin-right: 0.4rem;
+      }
+    }
+  }
+}

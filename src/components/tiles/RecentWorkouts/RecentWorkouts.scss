@@ -1,0 +1,10 @@
+.recent-container{
+  padding: 0.6rem;
+  display: flex;
+  justify-content: space-evenly;
+  .recent-single-container{
+    svg{
+      width: 1rem;
+    }
+  }
+}

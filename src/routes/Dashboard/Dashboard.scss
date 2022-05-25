@@ -1,32 +1,44 @@
 .home-container {
   display: flex;
-  height: 40vh;
+  height: 20rem;
   .home-left {
     width: 43%;
     height: 100%;
     display: flex;
     flex-direction: column;
     .welcome {
-      height: 50%;
+      height: 30%;
+      display: flex;
+      align-items: center;
     }
-    .calendar {
-      height: 50%;
+    .calendar-widget {
+      height: 70%;
+      .calendar-widget-container{
+        height: 100%;
+        .fc{
+          height: 100%;
+        }
+      }
     }
   }
   .home-right {
-    width: 57%;
+    width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
     .entry-count {
       height: 30%;
     }
     .random1 {
       height: 30%;
     }
-    .random2 {
-      // height: 30%;
+    .highlights {
+      // height: 100%;
     }
   }
-  div {
-    border: 1px solid black;
+  .tile-container {
+    border: 1px solid rgba(0, 0, 0, 0.015);
+    border-radius: 0.1rem;
   }
+  
 }

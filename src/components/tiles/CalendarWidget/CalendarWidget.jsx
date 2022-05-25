@@ -3,8 +3,11 @@ import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import "./CalendarWidget.scss";
+import { useNavigate } from "react-router-dom";
 const CalendarWidget = ({ workouts }) => {
   const [eventArr, setEventArr] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     workouts &&
@@ -13,18 +16,26 @@ const CalendarWidget = ({ workouts }) => {
         for (let i = 0; i < workouts.length; i++) {
           const event = {
             title: workouts[i]._type.name,
-            date: toCalendarString(workouts[i].date),
+            date: workouts[i].date,
+            id: workouts[i]._id,
           };
           arr.push(event);
         }
         return arr;
       });
   }, [workouts]);
-  function toCalendarString(str) {
-    const res = `${str.slice(0, 4)}-${str.slice(5, 7)}-${str.slice(8, 10)}`;
-    return res;
-  }
-  // toCalendarString(entries[0].date.toISOString());
+
+  // function toCalendarString(str) {
+  //   const res = `${str.slice(0, 4)}-${str.slice(5, 7)}-${str.slice(8, 10)}`;
+  //   return res;
+  // }
+
+  const handleEventClick = (clickInfo) => {
+    // console.log("clicked");
+    // console.log(clickInfo)
+    console.log(clickInfo.event._def.publicId);
+    navigate(`/workouts/details/${clickInfo.event._def.publicId}`);
+  };
 
   return (
     <div className="calendar-widget-container">
@@ -32,18 +43,22 @@ const CalendarWidget = ({ workouts }) => {
         <FullCalendar
           // plugins={[dayGridPlugin]}
           // initialView="dayGridMonth"
+          eventMaxStack={0}
+          moreLinkContent={<div className="red-dot"></div>}
+          firstDay={1}
           events={eventArr}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
-            // left: "prev,next today",
-            // center: "title",
-            // right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            left: "title",
+            center: "prev,next",
+            right: "",
           }}
-          initialView="dayGridMonth"
-          editable={true}
-          selectable={true}
+          // initialView="dayGridMonth"
+          // editable={true}
+          // selectable={true}
           // selectMirror={true}
-          dayMaxEvents={true}
+          dayMaxEvents={0}
+          // contentHeight='100px'
           // weekends={this.state.weekendsVisible}
           // initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
           // select={this.handleDateSelect} // when clicked on date field
@@ -55,28 +70,23 @@ const CalendarWidget = ({ workouts }) => {
     eventChange={function(){}}
     eventRemove={function(){}}
     */
-          eventChange={(e) => {
-            console.log(e);
-          }}
+          // eventChange={(e) => {
+          //   console.log(e);
+          // }}
         />
       )}
     </div>
   );
 };
 
-const handleEventClick = (clickInfo) => {
-  console.log("clicked");
-  console.log(clickInfo)
-};
-
-function renderEventContent(eventInfo) {
-  console.log(eventInfo);
-  return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
-  );
-}
+// function renderEventContent(eventInfo) {
+//   console.log(eventInfo);
+//   return (
+//     <>
+//       <b>{eventInfo.timeText}</b>
+//       <i>{eventInfo.event.title}</i>
+//     </>
+//   );
+// }
 
 export default CalendarWidget;
