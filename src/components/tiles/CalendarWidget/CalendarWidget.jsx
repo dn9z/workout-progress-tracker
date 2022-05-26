@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import "./CalendarWidget.scss";
 import { useNavigate } from "react-router-dom";
 
-const CalendarWidget = ({ workouts ,setShowAddModal}) => {
+const CalendarWidget = ({ workouts, setShowAddModal }) => {
   const [eventArr, setEventArr] = useState([]);
   const navigate = useNavigate();
 
@@ -40,9 +40,12 @@ const CalendarWidget = ({ workouts ,setShowAddModal}) => {
     <div className="calendar-widget-container">
       {eventArr && (
         <>
-          <div onClick={() => {
-            setShowAddModal(true)
-          }} className="calendar-widget-add">
+          <div
+            onClick={() => {
+              setShowAddModal(true);
+            }}
+            className="calendar-widget-add"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -67,10 +70,10 @@ const CalendarWidget = ({ workouts ,setShowAddModal}) => {
             }}
             dayMaxEvents={0}
             eventClick={handleEventClick} // when clicked on event
+            // aspectRatio='1'
           />
         </>
       )}
-      
     </div>
   );
 };

@@ -64,9 +64,21 @@
       display: flex;
       justify-content: space-evenly;
       font-family: "Goldman";
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       // padding: 0.1rem;
       // padding-left: 0.7rem;
+      @media (min-width: $breakpoint-s) {
+        font-size: 0.8rem;
+      }
+      @media (min-width: $breakpoint-m) {
+        font-size: 0.8rem;
+      }
+      @media (min-width: $breakpoint-l) {
+        font-size: 0.8rem;
+      }
+      @media (min-width: $breakpoint-xl) {
+        font-size: 0.8rem;
+      }
 
       .left-display {
         // padding-right: 0.7rem;

@@ -5,18 +5,40 @@
   justify-content: space-between;
   .searchbar {
     // height: 100%;
-    width: 14rem;
-    min-width: 14rem;
+    width: 19rem;
+    // min-width: 14rem;
+    @media (min-width: $breakpoint-s) {
+      height: 100%;
+    }
+    @media (min-width: $breakpoint-m) {
+      // height: 30%;
+    }
+    @media (min-width: $breakpoint-l) {
+      // height: 30%;
+    }
+    @media (min-width: $breakpoint-xl) {
+      // height: 30%;
+    }
     &::after {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
       position: relative;
 
       z-index: 1;
-      left: 12.2rem;
+      left: 7rem;
       top: -1.62rem;
       display: block;
       width: 1.3rem;
       opacity: 0.3;
+      @media (min-width: $breakpoint-s) {
+        left: 10.8rem;
+
+      }
+      @media (min-width: $breakpoint-m) {
+      }
+      @media (min-width: $breakpoint-l) {
+      }
+      @media (min-width: $breakpoint-xl) {
+      }
     }
     input {
       background-color: $left-main-color;

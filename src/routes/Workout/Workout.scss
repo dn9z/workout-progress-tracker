@@ -1,19 +1,44 @@
+@import '../../components/utils/var';
 .workout-page-container {
   display: flex;
   height: 100%;
   width: 100%;
   .workout-left{
     // width: 40%;
-    width: 14rem;
+    width: 10rem;
     // background-color: rgb(126, 126, 126);
+    @media (min-width: $breakpoint-s) {
+      width: 14rem;
+    }
+    @media (min-width: $breakpoint-m) {
+      width: 14rem;
+    }
+    @media (min-width: $breakpoint-l) {
+      width: 14rem;
+    }
+    @media (min-width: $breakpoint-xl) {
+      width: 14rem;
+    }
   }
   .workout-right{
-    // width: calc(100% - 14rem);
-    width: 100%;
+    width: calc(100% - 10rem);
+    // width: 100%;
     // min-width: 30rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    @media (min-width: $breakpoint-s) {
+      width: 100%;
+    }
+    @media (min-width: $breakpoint-m) {
+      width: 100%;
+    }
+    @media (min-width: $breakpoint-l) {
+      width: 100%;
+    }
+    @media (min-width: $breakpoint-xl) {
+      width: 100%;
+    }
     span{
       font-family: 'Goldman';
       font-size: 1.7rem;

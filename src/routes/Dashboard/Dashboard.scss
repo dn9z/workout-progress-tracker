@@ -1,20 +1,76 @@
+@import "../../components/utils/var";
 .home-container {
   display: flex;
-  height: 20rem;
+  height: 100vh;
+  flex-direction: column;
+  @media (min-width: $breakpoint-s) {
+    flex-direction: row;
+    height: 30rem;
+
+  }
+  @media (min-width: $breakpoint-m) {
+    // width: 38rem;
+  }
+  @media (min-width: $breakpoint-l) {
+    // width: 38rem;
+  }
+  @media (min-width: $breakpoint-xl) {
+    // width: 38rem;
+  }
   .home-left {
     // width: 43%;
-    width: 12rem;
-    height: 100%;
+    width: 100vw;
+
+    height: 50%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     background-color: rgb(243, 249, 255);
+    @media (min-width: $breakpoint-s) {
+      flex-direction: column;
+      width: 15rem;
+      height: calc(100% - 2rem);
+    }
+    .welcome-and-calendar {
+      height: 10rem;
+      width: 10rem;
+    }
+
+    .entry-count {
+      // width: calc(100% - 15rem);
+      width: calc(100% - 10rem);
+      padding: 2rem;
+    }
     .welcome {
-      height: 30%;
+      height: 4rem;
       display: flex;
       align-items: center;
+      @media (min-width: $breakpoint-s) {
+        height: 30%;
+      }
+      @media (min-width: $breakpoint-m) {
+        height: 30%;
+      }
+      @media (min-width: $breakpoint-l) {
+        height: 30%;
+      }
+      @media (min-width: $breakpoint-xl) {
+        height: 30%;
+      }
     }
     .calendar-widget {
-      height: 70%;
+      height: 20rem;
+      @media (min-width: $breakpoint-s) {
+        height: 70%;
+      }
+      @media (min-width: $breakpoint-m) {
+        height: 70%;
+      }
+      @media (min-width: $breakpoint-l) {
+        height: 70%;
+      }
+      @media (min-width: $breakpoint-xl) {
+        height: 70%;
+      }
       .calendar-widget-container {
         height: 100%;
         .fc {
@@ -24,10 +80,22 @@
     }
   }
   .home-right {
-    width: calc(100% - 13rem);
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
+    @media (min-width: $breakpoint-s) {
+      width: calc(100% - 12rem);
+    }
+    @media (min-width: $breakpoint-m) {
+      width: calc(100% - 12rem);
+    }
+    @media (min-width: $breakpoint-l) {
+      width: calc(100% - 12rem);
+    }
+    @media (min-width: $breakpoint-xl) {
+      width: calc(100% - 12rem);
+    }
     .entry-count {
       height: 24%;
     }
@@ -42,6 +110,11 @@
       height: 38%;
     }
   }
+
+  // .welcome-and-calendar{
+  //   display: ;
+  // }
+
   .tile-container {
     // border: 1px solid rgba(0, 0, 0, 0.015);
     // border: 1px solid black;

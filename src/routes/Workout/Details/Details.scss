@@ -1,39 +1,66 @@
+@import '../../../components/utils/var';
 .details-container {
   position: relative;
-  // border: 1px solid black;
-  // border-radius: 1rem;
-  // background-color: rgb(245, 245, 245);
-  // height: 100%;
   width: 90%;
-  // min-width: 10rem;
-
   font-family: "Teko";
-  // padding: 2rem;
   border: 1px solid black;
   background-color: rgb(244, 252, 255);
-  padding: 0.9rem;
+  padding: 0.5rem;
   border-radius: 0.2rem;
-  font-family: 'Teko';
+  font-family: "Teko";
   box-shadow: 0.2rem 0.2rem 0.6rem 0.1rem #0000003d;
-margin-bottom: 6rem;
+  margin-bottom: 6rem;
+  @media (min-width: $breakpoint-s) {
+    width: 90%;
+    padding: 0.9rem;
+
+  }
+  @media (min-width: $breakpoint-m) {
+    width: 90%;
+  }
+  @media (min-width: $breakpoint-l) {
+    width: 90%;
+  }
+  @media (min-width: $breakpoint-xl) {
+    width: 90%;
+  }
   h1 {
     font-family: "Goldman";
-    font-size: 3rem;
+    font-size: 1.3rem;
+    @media (min-width: $breakpoint-s) {
+      font-size: 3rem;
+    }
+    @media (min-width: $breakpoint-m) {
+      font-size: 3rem;
+    }
+    @media (min-width: $breakpoint-l) {
+      font-size: 3rem;
+    }
+    @media (min-width: $breakpoint-xl) {
+      font-size: 3rem;
+    }
   }
   h2 {
-    font-size: 2rem;
+    font-size: 1.1rem;
+    @media (min-width: $breakpoint-s) {
+      font-size: 2rem;
+    }
+    @media (min-width: $breakpoint-m) {
+      font-size: 2rem;
+    }
+    @media (min-width: $breakpoint-l) {
+      font-size: 2rem;
+    }
+    @media (min-width: $breakpoint-xl) {
+      font-size: 2rem;
+    }
   }
 
-  .score{
+  .score {
     font-size: 1.6rem;
   }
-  // ul {
-    //   flex-wrap: wrap;
-    //   display: flex;
-    //   flex-direction: column;
-    // }
-    .details-set-list {
-      list-style: none;
+  .details-set-list {
+    list-style: none;
     flex-wrap: wrap;
     display: flex;
     align-items: flex-end;
@@ -41,17 +68,16 @@ margin-bottom: 6rem;
     li {
       padding: 0.2rem;
       line-height: 2rem;
-
     }
   }
 
-  .edit-button{
+  .edit-button {
     width: 2rem;
     position: absolute;
     top: 0.2rem;
     right: 0.2rem;
     cursor: pointer;
-    svg{
+    svg {
       width: 1.6rem;
       color: rgb(241, 129, 129);
     }

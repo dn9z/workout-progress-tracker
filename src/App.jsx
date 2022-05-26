@@ -15,6 +15,7 @@ import Settings from "./routes/Settings/Settings";
 import LoginForm from "./components/UserForms/LoginForm";
 import RegisterForm from "./components/UserForms/RegisterForm";
 import Logout from "./components/UserForms/Logout";
+// import "swiper/css/bundle";
 function App() {
   const { loggedIn } = useContext(MyContext);
 

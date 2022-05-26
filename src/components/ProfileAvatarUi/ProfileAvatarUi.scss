@@ -1,18 +1,31 @@
+@import "../utils/var";
 .avatar-ui-container {
   padding-top: 1rem;
   // text-align: ;
-  font-family: 'Teko';
+  font-family: "Teko";
 
   h1 {
     padding-left: 5rem;
     font-size: 1.3rem;
-    font-family: 'Goldman';
-
+    font-family: "Goldman";
   }
   .avatar-ui-wrapper {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    flex-direction: column;
+    @media (min-width: $breakpoint-s) {
+      flex-direction: row;
+    }
+    @media (min-width: $breakpoint-m) {
+      // width: 38rem;
+    }
+    @media (min-width: $breakpoint-l) {
+      // width: 38rem;
+    }
+    @media (min-width: $breakpoint-xl) {
+      // width: 38rem;
+    }
     .avatar-container {
       img {
         border: 1px solid rgb(222, 222, 222);
@@ -24,10 +37,10 @@
       flex-direction: column;
     }
   }
-  button{
-    font-family: 'Teko';
+  button {
+    font-family: "Teko";
   }
-  input{
-    font-family: 'Teko';
+  input {
+    font-family: "Teko";
   }
 }

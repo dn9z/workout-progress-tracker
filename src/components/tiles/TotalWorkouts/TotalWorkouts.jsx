@@ -44,7 +44,13 @@ const TotalWorkouts = ({ workouts }) => {
         // }}
         navigation={true}
         modules={[Pagination, Navigation]}
+        direction={"vertical"}
         className="mySwiper"
+        breakpoints={{
+          576:{
+            direction:"horizontal",
+          }
+        }}
       >
         {workouts &&
           Object.keys(totals).map((ele, i) => {

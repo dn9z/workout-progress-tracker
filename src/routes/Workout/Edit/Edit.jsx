@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../../components/context/Context";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import axios from "../../../components/utils/axiosInstance";
+import './Edit.scss'
 const Edit = () => {
   const navigate = useNavigate();
   const { setPageNumber } = useContext(MyContext);
@@ -128,7 +129,7 @@ const Edit = () => {
 
 
   return (
-    <div className="form-container">
+    <div className="form-container edit-form-container">
       <form onSubmit={handleSubmit}>
         <h3>Edit Workout</h3>
 
