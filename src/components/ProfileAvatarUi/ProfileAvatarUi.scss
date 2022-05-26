@@ -1,10 +1,13 @@
 .avatar-ui-container {
   padding-top: 1rem;
   // text-align: ;
+  font-family: 'Teko';
+
   h1 {
     padding-left: 5rem;
     font-size: 1.3rem;
-    font-family: 'Teko';
+    font-family: 'Goldman';
+
   }
   .avatar-ui-wrapper {
     display: flex;
@@ -20,5 +23,11 @@
       display: flex;
       flex-direction: column;
     }
+  }
+  button{
+    font-family: 'Teko';
+  }
+  input{
+    font-family: 'Teko';
   }
 }

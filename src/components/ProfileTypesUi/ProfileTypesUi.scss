@@ -9,7 +9,7 @@
   h1{
     padding-left: 3rem;
     font-size: 1.3rem;
-    font-family: 'Teko';
+    font-family: 'Goldman';
   }
     width: 90%;
     margin: auto;
@@ -69,7 +69,7 @@
       margin: 0.3rem;
       display: flex;
       flex-direction: column;
-      background: red;
+      background: rgb(79, 99, 255);
     }
 
     .drag-item {
@@ -143,8 +143,12 @@
                 // inset 0 1px 1px 8px hsla(0,0%,100%,.25),
                 // inset 0 -30px 30px hsla(0,0%,0%,.2),
                 0 0.16rem $button-secondary;
+                &:last-child{
+                  background-color: rgb(255, 82, 82);
+                  color: #eeeeee;
+                }
     }
-    button:hover {
+        button:hover {
       background: #f4f4f4;
       box-shadow: 0 0.16rem #1e1e1e;
       color: $button-secondary;
@@ -157,6 +161,11 @@
       // inset 0 1px 1px 8px hsla(0,0%,100%,.25),
       // inset 0 -30px 30px hsla(0,0%,0%,.2),
       0 0.16rem $button-secondary;
+      &:last-child{
+        background-color: rgb(253, 14, 14);
+        color: #eeeeee;
+
+      }
     }
     button:active {
       box-shadow: 0px 0px #1b1b1b;

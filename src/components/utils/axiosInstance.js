@@ -3,7 +3,7 @@ import axios from "axios";
 const axiosApiInstance = axios.create();
 
 //defining the settings for our axios instance.
-axiosApiInstance.defaults.baseURL = "http://localhost:9001";
+axiosApiInstance.defaults.baseURL = "/";
 axiosApiInstance.defaults.headers.post["Content-Type"] = "application/json";
 axiosApiInstance.defaults.withCredentials = true;
 
