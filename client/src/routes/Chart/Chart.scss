@@ -1,6 +1,10 @@
 .chart-main {
   width: 90%;
   height: 100%;
+  // display: flex;
+  .chart-filter-inputs{
+    display: flex;
+  }
   .chart-container {
     // align-self: center;
     // width: 50rem;

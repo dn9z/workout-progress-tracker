@@ -28,7 +28,7 @@ const TotalWorkouts = ({ workouts }) => {
   }
 
   useEffect(() => {
-    setTotals(getTotalOfWorkouts());
+    workouts.length&&setTotals(getTotalOfWorkouts());
   }, [workouts]);
 
   return (

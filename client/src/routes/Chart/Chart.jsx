@@ -3,7 +3,7 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { MyContext } from "../../components/context/Context";
 import { Chart as ChartJS } from "chart.js/auto";
 import axios from "../../components/utils/axiosInstance";
-import { endOfDay, format, parseISO, startOfDay } from "date-fns";
+import { endOfDay, format, parse, parseISO, startOfDay } from "date-fns";
 import ChartItem from "./ChartItem";
 // import {update} from 'chart.js'
 const toSeconds = (str) => {
@@ -14,15 +14,10 @@ const toSeconds = (str) => {
 
 const Chart = () => {
   const { searchQueryInput } = useContext(MyContext);
-
-  // const [workouts, setWorkouts] = useState([]);
-
   const [outcomeInput, setOutcomeInput] = useState("average");
-  // const [typeFilterInput, setTypeFilterInput] = useState("weights");
   const [dateInput, setDateInput] = useState({
     from: "1970-01-01",
-    // to: new Date().toISOString().substring(0, 10),
-    to:endOfDay(new Date()).toISOString().slice(0,10)
+    to: endOfDay(new Date()).toISOString().slice(0, 10),
   });
   const [labels, setLabels] = useState([]);
   const [dataset1, setDataset] = useState([]);
@@ -41,7 +36,6 @@ const Chart = () => {
     initializeTypes();
   }, []);
 
-
   useEffect(() => {
     async function getTypeObj() {
       const res = await axios.get(`/api/types/getonebyname?name=${typeInput}`);
@@ -51,8 +45,30 @@ const Chart = () => {
   }, [typeInput]);
 
   useEffect(() => {
-    searchQueryInput && setTypeInput(searchQueryInput)
-  }, [searchQueryInput])
+    searchQueryInput && setTypeInput(searchQueryInput);
+  }, [searchQueryInput]);
+
+  // useEffect(() => {
+  //   // setDateInput({
+  //   //   ...dateInput,
+  //   //   from: startOfDay(new Date(Date.parse(res.data[0].date)))
+  //   //     .toISOString()
+  //   //     .slice(0, 10),
+  //   // });
+  //   console.log(labels[0])
+  //   // labels.length&& setDateInput({
+  //   //   ...dateInput,
+  //   //   from: startOfDay(parse(labels[0],'MMM dd, yyyy', new Date()))
+  //   //     .toISOString()
+  //   //     .slice(0, 10),
+  //   // });
+  //   dateInput={
+  //     ...dateInput,
+  //     from: startOfDay(parse(labels[0],'MMM dd, yyyy', new Date()))
+  //       .toISOString()
+  //       .slice(0, 10),
+  //   };
+  // }, [labels])
 
   useEffect(() => {
     async function getWorkouts() {
@@ -61,15 +77,10 @@ const Chart = () => {
           searchQueryInput ? searchQueryInput : selectedType.name
         }&from=${dateInput.from}&to=${dateInput.to}`
       );
-      setData(res.data)
-      setDateInput({
-        ...dateInput,
-        from:startOfDay(new Date(Date.parse(res.data[0].date))).toISOString().slice(0,10)
-      })
+      setData(res.data);
     }
     (searchQueryInput || Object.keys(selectedType).length !== 0) && getWorkouts();
-  }, [selectedType,outcomeInput]);
-
+  }, [selectedType, outcomeInput, dateInput]);
 
   function setData(workouts) {
     const dataLabels = [];
@@ -168,36 +179,45 @@ const Chart = () => {
 
   return (
     <div className="chart-main">
-      <label htmlFor="from">From</label>
-      <input id="from" type="date" value={dateInput.from} onChange={handleChange} />
-      <label htmlFor="to">To</label>
-      <input id="to" type="date" value={dateInput.to} onChange={handleChange} />
-      <div>
-        <label>Type</label>
-        <select onChange={(e) => setTypeInput(e.target.value)} value={typeInput} name="type">
-          {myTypes &&
-            myTypes.map((ele, i) => {
-              return (
-                <option value={ele.name} key={i}>
-                  {ele.name}
-                </option>
-              );
-            })}
-        </select>
+      <div className="chart-filter-inputs">
+        <div>
+          <label>From</label>
+          <input id="from" type="date" value={dateInput.from} onChange={handleChange} />
+        </div>
+        <div>
+          <label htmlFor="to">To</label>
+          <input id="to" type="date" value={dateInput.to} onChange={handleChange} />
+        </div>
+
+        <div>
+          <label>Type</label>
+          <select onChange={(e) => setTypeInput(e.target.value)} value={typeInput} name="type">
+            {myTypes &&
+              myTypes.map((ele, i) => {
+                return (
+                  <option value={ele.name} key={i}>
+                    {ele.name}
+                  </option>
+                );
+              })}
+          </select>
+        </div>
+        <div>
+          <label>Outcome</label>
+          <select
+            value={outcomeInput}
+            onChange={(e) => {
+              setOutcomeInput(e.target.value);
+            }}
+          >
+            <option value="average">Average</option>
+            <option value="highest">Highest</option>
+            <option value="lowest">Lowest</option>
+          </select>
+        </div>
       </div>
-      <label htmlFor="sets">Outcome</label>
-      <select
-        id="sets"
-        value={outcomeInput}
-        onChange={(e) => {
-          setOutcomeInput(e.target.value);
-        }}
-      >
-        <option value="average">Average</option>
-        <option value="highest">Highest</option>
-        <option value="lowest">Lowest</option>
-      </select>
-      <button onClick={setData}>Filter</button>
+
+      {/* <button onClick={setData}>Filter</button> */}
       <div className="chart-container">
         <div className="chart-wrapper">
           <ChartItem

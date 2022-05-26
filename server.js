@@ -14,9 +14,19 @@ import configurePassport from "./config/passport-config.js";
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
 
+import {fileURLToPath} from 'url';
+import { dirname } from 'path';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+// console.log("filename is", __filename);
+const __dirname = dirname(__filename);
+// console.log("directoryname is", __dirname);
+
 dotenv.config();
 const app = express();
 
+// const PORT = process.env.PORT || 3001
 app.set("port", process.env.PORT || 4000);
 
 app.use(express.urlencoded({ extended: true }));
@@ -58,6 +68,14 @@ app.use("/api/types", typeRoutes);
 
 
 app.use("/uploads", express.static("uploads"));
+
+app.use(express.static(path.join(__dirname, "client/build")));
+// * is the wildcard, anything else that's no matching a route above this.
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
+
+
 
 app.all("*", (req, res) => {
   res.status(500);

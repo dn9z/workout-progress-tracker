@@ -17,21 +17,25 @@ const RegisterForm = ({setShowRegisterModal}) => {
       email: formData.get("email"), //...
       password: formData.get("password"),
     };
-
-    try {
-      const response = await axios.post("/api/users/register", data);
-
-      if (response.status === 200) {
-        //everything went well!
-        console.log("user was created");
-        //  navigate("/login");
-        setShowRegisterModal(false)
+    if(formData.get("password") === formData.get("repassword")){
+      try {
+        const response = await axios.post("/api/users/register", data);
+  
+        if (response.status === 200) {
+          //everything went well!
+          console.log("user was created");
+           navigate("/login/");
+          // setShowRegisterModal(false)
+        }
+      } catch (error) {
+        console.log(error);
+        // setIsError(true);
+        // setErrorMessage(error.response.data.message);
       }
-    } catch (error) {
-      console.log(error);
-      // setIsError(true);
-      // setErrorMessage(error.response.data.message);
+    }else{
+      alert('Password does not match!')
     }
+    
   };
 
   return (
