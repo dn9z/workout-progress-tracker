@@ -67,7 +67,6 @@ app.use("/api/types", typeRoutes);
 
 
 
-app.use("/uploads", express.static("uploads"));
 
 app.use(express.static(path.join(__dirname, "client/build")));
 // * is the wildcard, anything else that's no matching a route above this.
@@ -75,12 +74,13 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
+// app.use("/uploads", express.static("uploads"));
 
 
-app.all("*", (req, res) => {
-  res.status(500);
-  res.send("Invalid path");
-});
+// app.all("*", (req, res) => {
+//   res.status(500);
+//   res.send("Invalid path");
+// });
 
 app.listen(app.get("port"), () => {
   console.log("Server started on port " + app.get("port"));
