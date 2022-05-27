@@ -19,9 +19,9 @@ import { dirname } from 'path';
 import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
-// console.log("filename is", __filename);
+console.log("filename is", __filename);
 const __dirname = dirname(__filename);
-// console.log("directoryname is", __dirname);
+console.log("directoryname is", __dirname);
 
 dotenv.config();
 const app = express();
