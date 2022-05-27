@@ -25,7 +25,7 @@ console.log("directoryname is", __dirname);
 
 dotenv.config();
 const app = express();
-
+console.log('env port is',process.env.PORT)
 // const PORT = process.env.PORT || 3001
 app.set("port", process.env.PORT || 4000);
 
