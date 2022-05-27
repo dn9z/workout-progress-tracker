@@ -32,7 +32,6 @@ const CalendarWidget = ({ workouts, setShowAddModal }) => {
   // }
 
   const handleEventClick = (clickInfo) => {
-    console.log(clickInfo.event._def.publicId);
     navigate(`/workouts/details/${clickInfo.event._def.publicId}`);
   };
 

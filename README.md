@@ -14,11 +14,11 @@ Create workouts and track your progress with user-defined workout types which ar
 
 - Track workout progress with charts rendered in Chart.js
 
-- Get overwiew on workouts with FullCalendar
-
 - Dynamic Dashboard, showing total numbers for different types, recent activity and all-time highlights
 
-- Navigate workouts in a comprehensive list component
+- Get overwiew on workouts with FullCalendar
+
+- Navigate workouts in a comprehensive infinite-scroll list component
 
 - Avatar upload with multer
 
