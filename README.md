@@ -2,15 +2,11 @@
 
 ## Fully featured and responsive Web Application created with MERN stack
 
-Create workouts and track your progress with user-defined workout types which are based on the three categories: Weights, Bodyweight and Distance.
+Create workouts and track your progress with user-defined workout types which are based on the three categories: Weights, Bodyweight and Distance, all of which having different sets of data.
 
 ### Features
 
-- Responsive
-
-- Login system using passport.js and JWT
-
-- Perform extensive CRUD operations on users, workout-types and workouts
+- Mobile First Responsive Design 
 
 - Track workout progress with charts rendered in Chart.js
 
@@ -19,6 +15,12 @@ Create workouts and track your progress with user-defined workout types which ar
 - Get overwiew on workouts with FullCalendar
 
 - Navigate workouts in a comprehensive infinite-scroll list component
+
+- REST API using Express
+
+- Login system using passport.js and JWT
+
+- Perform extensive CRUD operations on users, workout-types and workouts
 
 - Avatar upload with multer
 
